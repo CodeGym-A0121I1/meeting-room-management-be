@@ -17,7 +17,7 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String name;
 
     //    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL)
