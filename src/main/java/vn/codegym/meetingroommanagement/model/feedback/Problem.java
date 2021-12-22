@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,33 +16,13 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class Problem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 
     private String name;
 
-    public Problem() {
-    }
+//    Many to One
+    private List<Feedback> feedbacks;
 
-    public Problem(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
