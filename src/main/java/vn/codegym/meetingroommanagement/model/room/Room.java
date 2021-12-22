@@ -4,30 +4,50 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import vn.codegym.meetingroommanagement.model.EStatus;
+import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Room {
+
     @Id
-    private Integer roomId;
-    private String roomName;
-    private Integer roomStatus;
+    @GeneratedValue(generator = "roomIdGen")
+    @GenericGenerator(
+            name = "roomIdGen",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "ROOM"),
+            strategy = "vn.codegym.meetingroommanagement.utils.IdGenerator"
+    )
+    private String id;
+
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private EStatus status;
+
     private String image;
-    private Integer capacity;
+
+    private int capacity;
+
     @ManyToOne
-    @JoinColumn(name = "areaId",referencedColumnName = "areaId",nullable = false)
+    @JoinColumn
     private Area area;
+
     @ManyToOne
-    @JoinColumn(name = "floorId",referencedColumnName = "floorId",nullable = false)
+    @JoinColumn
     private Floor floor;
+
     @ManyToOne
-    @JoinColumn(name = "roomTypeId",referencedColumnName = "roomTypeId",nullable = false)
+    @JoinColumn
     private RoomType roomType;
 
+    @OneToMany(mappedBy = "room")
+    List<RegistrationHistory> registrationHistoryList;
 }

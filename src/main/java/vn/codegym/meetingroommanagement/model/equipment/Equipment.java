@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import vn.codegym.meetingroommanagement.model.EStatus;
 
 import javax.persistence.*;
 
@@ -12,18 +15,29 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
 public class Equipment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
-    private String description;
-    private double price;
-    private String image;
-    private int status;
 
-//    @ManyToOne
-//    @JoinColumn(name = "category_id")
-//    private Category category;
+    @Id
+    @GeneratedValue(generator = "equipmentIdGen")
+    @GenericGenerator(
+            name = "equipmentIdGen",
+            parameters = @Parameter(name = "prefix", value = "EQUIP"),
+            strategy = "vn.codegym.meetingroommanagement.utils.IdGenerator"
+    )
+    private String id;
+
+    private String name;
+
+    private String description;
+
+    private double price;
+
+    private String image;
+
+    @Enumerated(EnumType.STRING)
+    private EStatus status;
+
+    @ManyToOne
+    @JoinColumn
+    private Category category;
 }

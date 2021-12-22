@@ -4,46 +4,51 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.model.user.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Feedback {
 
+    @Id
+    @GeneratedValue(generator = "feedbackIdGen")
+    @GenericGenerator(
+            name = "feedbackIdGen",
+            parameters = @Parameter(name = "prefix", value = "FB"),
+            strategy = "vn.codegym.meetingroommanagement.utils.IdGenerator"
+    )
     private String id;
 
-//    Ngày yêu cầu phản hồi
-    private LocalDate date_request;
+    private LocalDate dateRequest;
 
-//    Ngày trả lời phản hồi
-    private LocalDate date_response;
+    private LocalDate dateResponse;
 
-//    Ghi chú thêm
     private String note;
 
-//   one to one
+    @ManyToOne
     private User user;
 
-//    one to many
+    @ManyToOne
     private Equipment equipment;
 
-//    one to many
-    private Problem problems;
+    @ManyToOne
+    private Problem problem;
 
-
-//    One to many
-    private Room rooms;
+    @ManyToOne
+    private Room room;
 
 
 }

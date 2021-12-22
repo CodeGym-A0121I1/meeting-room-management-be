@@ -1,24 +1,28 @@
 package vn.codegym.meetingroommanagement.model.room;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Area {
-    @Id
-    private Integer areaId;
-    private String areaName;
 
-    @OneToMany(mappedBy = "area",cascade = CascadeType.ALL)
-    private List<Room> rooms;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+
+    @OneToMany(mappedBy = "area")
+    @JsonBackReference
+    private List<Room> roomList;
 }

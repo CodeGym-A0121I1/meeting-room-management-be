@@ -1,5 +1,6 @@
 package vn.codegym.meetingroommanagement.model.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Department {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private String departmentId;
-    private String departmentName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+
     @OneToMany(mappedBy = "department")
+    @JsonBackReference
     List<User> userList;
 }

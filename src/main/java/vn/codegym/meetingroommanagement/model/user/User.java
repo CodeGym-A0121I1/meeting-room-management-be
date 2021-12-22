@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,16 +16,26 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String userId;
+    @GeneratedValue(generator = "userIdGen")
+    @GenericGenerator(
+            name = "userIdGen",
+            parameters = @org.hibernate.annotations.Parameter(name = "prefix", value = "U"),
+            strategy = "vn.codegym.meetingroommanagement.utils.IdGenerator"
+    )
+    private String id;
+
     private String fullName;
+
     @ManyToOne
-    @JoinColumn(name="departmentId",referencedColumnName = "departmentId")
+    @JoinColumn
     private Department department;
 
     @OneToOne
-    @JoinColumn(name = "accountId",referencedColumnName = "accountId")
+    @JoinColumn
     private Account account;
 
+    @OneToMany(mappedBy = "user")
+    List<RegistrationHistory> registrationHistoryList;
 }

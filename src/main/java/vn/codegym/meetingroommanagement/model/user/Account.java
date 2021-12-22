@@ -13,16 +13,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class Account {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String accountId;
     private String username;
+
     private String password;
+
     @OneToOne(mappedBy = "account")
     private User user;
-    @ManyToOne
-    @JoinColumn(name="roleId",referencedColumnName = "roleId")
-    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private ERole role;
 
 
 }

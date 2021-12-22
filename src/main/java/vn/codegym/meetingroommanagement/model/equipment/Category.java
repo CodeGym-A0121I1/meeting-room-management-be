@@ -1,26 +1,28 @@
 package vn.codegym.meetingroommanagement.model.equipment;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
+
     private String name;
 
-    //    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL)
-//    @JsonBackReference
-    private List<Equipment> equipments;
+    @OneToMany(mappedBy = "category")
+    @JsonBackReference
+    private List<Equipment> equipmentList;
 }
