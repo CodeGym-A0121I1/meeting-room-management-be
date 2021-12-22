@@ -19,12 +19,12 @@ import java.time.LocalTime;
 public class RegistrationHistory {
     @Id
     private String id;
-    private LocalDate date_start;
-    private LocalDate date_end;
-    private LocalTime time_start;
-    private LocalTime time_end;
+    private LocalDate dateStart;
+    private LocalDate dateEnd;
+    private LocalTime timeStart;
+    private LocalTime timeEnd;
     private String description;
-    private boolean is_cancle;
+    private boolean isCancel;
 //    @ManyToOne
     private Room room;
 //    @ManyToOne
