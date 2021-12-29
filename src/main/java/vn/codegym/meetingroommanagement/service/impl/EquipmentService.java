@@ -18,7 +18,7 @@ public class EquipmentService implements IService<Equipment, String> {
 
     @Override
     public List<Equipment> getAll() {
-        return null;
+        return equipmentRepository.findAll();
     }
 
     @Override
