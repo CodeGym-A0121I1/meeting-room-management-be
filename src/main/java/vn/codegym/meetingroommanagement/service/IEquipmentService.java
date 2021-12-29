@@ -1,5 +1,7 @@
 package vn.codegym.meetingroommanagement.service;
+
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
+
 import java.util.List;
 
 public interface IEquipmentService {
@@ -8,10 +10,10 @@ public interface IEquipmentService {
 
     Equipment getById(String id);
 
-    void delete(Equipment equipment);
+    void deleteById(String id);
 
     void save(Equipment equipment);
 
-    List<Equipment> findAllByCategory_IdAndNameLike(int id_category, String nameEquipment);
+    List<Equipment> getAllByCategory_IdAndNameLike(int id_category, String nameEquipment);
 
 }
