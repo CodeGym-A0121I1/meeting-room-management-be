@@ -40,9 +40,9 @@ public class Equipment {
 
     @ManyToOne
     @JoinColumn
-    private Category category;
+    private Room room;
 
     @ManyToOne
     @JoinColumn
-    private Room room;
+    private Category category;
 }
