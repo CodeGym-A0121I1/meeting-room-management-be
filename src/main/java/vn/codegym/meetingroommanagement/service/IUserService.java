@@ -1,7 +1,9 @@
 package vn.codegym.meetingroommanagement.service;
 
-import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.model.user.User;
 
-@Service
-public interface IUserService {
+import java.util.List;
+
+public interface IUserService  {
+    List<User> getAll() ;
 }

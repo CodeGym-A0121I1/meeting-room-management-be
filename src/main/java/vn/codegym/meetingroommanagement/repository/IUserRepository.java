@@ -6,4 +6,5 @@ import vn.codegym.meetingroommanagement.model.user.User;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
+
 }
