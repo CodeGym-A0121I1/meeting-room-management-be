@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import vn.codegym.meetingroommanagement.model.EStatus;
+import vn.codegym.meetingroommanagement.model.room.Room;
 
 import javax.persistence.*;
 
@@ -30,7 +31,7 @@ public class Equipment {
 
     private String description;
 
-    private double price;
+    private Double price;
 
     private String image;
 
@@ -40,4 +41,8 @@ public class Equipment {
     @ManyToOne
     @JoinColumn
     private Category category;
+
+    @ManyToOne
+    @JoinColumn
+    private Room room;
 }
