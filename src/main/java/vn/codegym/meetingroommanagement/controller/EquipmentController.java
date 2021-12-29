@@ -1,20 +1,12 @@
 package vn.codegym.meetingroommanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import vn.codegym.meetingroommanagement.dto.CategoryQuantityStatusDTO;
-import vn.codegym.meetingroommanagement.model.equipment.Category;
-import vn.codegym.meetingroommanagement.model.equipment.Equipment;
-import vn.codegym.meetingroommanagement.service.IEquipmentCategoryService;
-import vn.codegym.meetingroommanagement.service.IEquipmentService;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/equipment-management")
 @CrossOrigin("http://localhost:4200")
+@RequestMapping("/api/equipments")
+@RestController
 public class EquipmentController {
 
     @Autowired

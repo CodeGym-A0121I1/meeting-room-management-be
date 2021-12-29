@@ -34,7 +34,7 @@ public class Room {
 
     private String image;
 
-    private int capacity;
+    private Integer capacity;
 
     @ManyToOne
     @JoinColumn
