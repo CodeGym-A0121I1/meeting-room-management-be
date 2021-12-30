@@ -25,6 +25,4 @@ public class Problem {
     @OneToMany(mappedBy = "problem")
     @JsonBackReference
     private List<Feedback> feedbackList;
-
-
 }
