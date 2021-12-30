@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.repository.IEquipmentRepository;
 import vn.codegym.meetingroommanagement.service.IEquipmentService;
-import vn.codegym.meetingroommanagement.service.IService;
 
 import java.util.List;
 import java.util.Optional;
