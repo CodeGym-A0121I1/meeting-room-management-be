@@ -23,7 +23,7 @@ public class EquipmentService implements IService<Equipment, String> {
 
     @Override
     public Optional<Equipment> getById(String key) {
-        return Optional.empty();
+        return equipmentRepository.findById(key);
     }
 
     @Override
