@@ -26,4 +26,10 @@ public class EquipmentController {
         return new ResponseEntity<List<Equipment>>(equipments, HttpStatus.OK);
     }
 
+    @PostMapping("/create")
+    public ResponseEntity create(@RequestBody Equipment equipment){
+        equipmentService.save(equipment);
+        return ResponseEntity.ok().body(equipment);
+    }
+
 }
