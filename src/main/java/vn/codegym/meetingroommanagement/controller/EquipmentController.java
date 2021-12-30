@@ -53,25 +53,24 @@ public class EquipmentController {
     public ResponseEntity<?> delete(@PathVariable("id") String id) {
         Optional<Equipment> equipment = this.equipmentService.getById(id);
         if (equipment.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
             this.equipmentService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // TrongVT
     // Cập nhật Equipment
     // kiểm tra Equipment đã tồn tại chưa, nếu tồn tại thì không thực hiện Cập nhật và trả về NOT_FOUND (ngược lại)
     // test in Postman OK
-    @PutMapping("{id}")
-    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody Equipment equipment) {
-        Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
+    @PutMapping("")
+    public ResponseEntity<?> update(@RequestBody Equipment equipment) {
+        Optional<Equipment> equipmentOptional = this.equipmentService.getById(equipment.getId());
         if (equipmentOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            this.equipmentService.save(equipment);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        this.equipmentService.save(equipment);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // TrongVT
@@ -96,6 +95,7 @@ public class EquipmentController {
 
     // DatNT
     // Thêm mới 1 Equipment
+    // test in Postman OK
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody Equipment equipment) {
         equipmentService.save(equipment);
@@ -105,6 +105,7 @@ public class EquipmentController {
     // DatNT
     // return: đối tượng Equipment
     // id: id của đối tượng Equipment
+    // test in Postman OK
     @GetMapping("/equipment/{id}")
     public ResponseEntity<Equipment> getById(@PathVariable("id") String id) {
         Optional<Equipment> equipmentOptional = equipmentService.getById(id);
