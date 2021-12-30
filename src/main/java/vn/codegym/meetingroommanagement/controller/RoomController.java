@@ -25,7 +25,7 @@ public class RoomController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Room> getRoomById(@PathVariable("id") String id) {
         Optional<Room> room = iRoomService.getById(id);
-        if (room.get() == null) {
+        if (!room.isPresent()) {
             return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Room>(room.get(), HttpStatus.OK);
