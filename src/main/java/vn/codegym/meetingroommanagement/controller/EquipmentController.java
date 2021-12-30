@@ -40,7 +40,7 @@ public class EquipmentController {
     // return : danh sách thiết bị thuộc 1 loại tài sản
     // id: id của đối tượng Category
     // test in Postman OK
-    @GetMapping("/{idCategory}")
+    @GetMapping("/categories/{idCategory}")
     public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") int idCategory) {
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryId(idCategory);
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
@@ -106,7 +106,7 @@ public class EquipmentController {
     // return: đối tượng Equipment
     // id: id của đối tượng Equipment
     // test in Postman OK
-    @GetMapping("/equipment/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Equipment> getById(@PathVariable("id") String id) {
         Optional<Equipment> equipmentOptional = equipmentService.getById(id);
         return equipmentOptional.map(equipment -> new ResponseEntity<>(equipment, HttpStatus.OK))
