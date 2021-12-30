@@ -1,12 +1,16 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.model.equipment.Equipment;
+import vn.codegym.meetingroommanagement.repository.IEquipmentRepository;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.repository.IEquipmentRepository;
 import vn.codegym.meetingroommanagement.service.IEquipmentService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EquipmentService implements IEquipmentService {
@@ -20,23 +24,27 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
-    public Equipment getById(String id) {
-        return this.equipmentRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public void deleteById(String id) {
-        this.equipmentRepository.delete(this.getById(id));
-    }
-
-    @Override
-    public void save(Equipment equipment) {
-        this.equipmentRepository.save(equipment);
-    }
-
-    @Override
     public List<Equipment> getAllByCategory_IdAndNameLike(int id_category, String nameEquipment) {
         return this.equipmentRepository.findAllByCategory_IdAndNameContaining(id_category, nameEquipment);
     }
 
+    @Override
+    public List<Equipment> getAll() {
+        return null;
+    }
+
+    @Override
+    public Optional<Equipment> getById(String id) {
+        return equipmentRepository.findById(id);
+    }
+
+    @Override
+    public Equipment save(Equipment equipment) {
+        return equipmentRepository.save(equipment);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        this.equipmentRepository.delete(this.equipmentRepository.getById(id));
+    }
 }
