@@ -8,8 +8,8 @@ import java.util.List;
 @Service
 public interface IEquipmentService extends IService<Equipment, String> {
 
-    List<Equipment> getAllByCategory_Id(int id_category);
+    List<Equipment> getAllByCategoryId(int id_category);
 
-    List<Equipment> getAllByCategory_IdAndNameLike(int id_category, String nameEquipment);
+    List<Equipment> getAllByCategoryIdAndNameLike(int id_category, String nameEquipment);
 
 }

@@ -42,7 +42,7 @@ public class EquipmentController {
     // test in Postman OK
     @GetMapping("/{idCategory}")
     public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") int idCategory) {
-        List<Equipment> equipmentList = this.equipmentService.getAllByCategory_Id(idCategory);
+        List<Equipment> equipmentList = this.equipmentService.getAllByCategoryId(idCategory);
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
     }
 
@@ -80,7 +80,7 @@ public class EquipmentController {
     // test in Postman OK
     @GetMapping("/{idCategory}/{name}")
     public ResponseEntity<List<Equipment>> search(@PathVariable("idCategory") int idCategory, @PathVariable("name") String name) {
-        List<Equipment> equipmentList = this.equipmentService.getAllByCategory_IdAndNameLike(idCategory, name);
+        List<Equipment> equipmentList = this.equipmentService.getAllByCategoryIdAndNameLike(idCategory, name);
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
     }
 

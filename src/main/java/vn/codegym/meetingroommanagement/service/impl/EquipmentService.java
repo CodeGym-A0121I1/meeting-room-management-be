@@ -1,10 +1,7 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vn.codegym.meetingroommanagement.model.equipment.Equipment;
-import vn.codegym.meetingroommanagement.repository.IEquipmentRepository;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.repository.IEquipmentRepository;
 import vn.codegym.meetingroommanagement.service.IEquipmentService;
@@ -19,12 +16,12 @@ public class EquipmentService implements IEquipmentService {
     private IEquipmentRepository equipmentRepository;
 
     @Override
-    public List<Equipment> getAllByCategory_Id(int id_category) {
+    public List<Equipment> getAllByCategoryId(int id_category) {
         return this.equipmentRepository.findAllByCategory_Id(id_category);
     }
 
     @Override
-    public List<Equipment> getAllByCategory_IdAndNameLike(int id_category, String nameEquipment) {
+    public List<Equipment> getAllByCategoryIdAndNameLike(int id_category, String nameEquipment) {
         return this.equipmentRepository.findAllByCategory_IdAndNameContaining(id_category, nameEquipment);
     }
 
