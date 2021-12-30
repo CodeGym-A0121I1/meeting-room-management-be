@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EquipmentService implements IService<Equipment, String> {
+public class EquipmentService implements IEquipmentService {
 
     @Autowired
     IEquipmentRepository equipmentRepository;
 
     @Override
     public List<Equipment> getAll() {
-        return equipmentRepository.findAll();
+        return null;
     }
 
     @Override

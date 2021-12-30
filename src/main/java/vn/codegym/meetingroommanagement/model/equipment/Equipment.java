@@ -45,5 +45,5 @@ public class Equipment {
     @ManyToOne
     @JoinColumn
     private Room room;
-    
+
 }
