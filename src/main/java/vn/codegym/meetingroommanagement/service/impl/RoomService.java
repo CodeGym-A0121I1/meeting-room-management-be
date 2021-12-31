@@ -35,6 +35,6 @@ public class RoomService implements IRoomService {
 
     @Override
     public void deleteById(String key) {
-        roomRepository.delete(roomRepository.getById(key));
+        this.roomRepository.deleteById(key);
     }
 }
