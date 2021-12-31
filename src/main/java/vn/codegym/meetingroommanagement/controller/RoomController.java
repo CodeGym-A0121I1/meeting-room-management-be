@@ -19,7 +19,7 @@ import java.util.Optional;
 public class RoomController {
     @Autowired
     private IRoomService roomService;
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Room> deleteRoom(@PathVariable("id") String id) {
         Optional<Room> room = roomService.getById(id);
         if (!room.isPresent()) {
