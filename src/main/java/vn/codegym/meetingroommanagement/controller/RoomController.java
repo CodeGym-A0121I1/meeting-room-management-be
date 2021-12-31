@@ -24,7 +24,7 @@ public class RoomController {
     public ResponseEntity<Room> updateRoom(@PathVariable("id") String id, @RequestBody Room room){
       //find room by id in database
         Optional<Room> currentRoom = iRoomService.getById(id);
-        if(currentRoom.get()==null){
+        if (!currentRoom.isPresent()) {
             return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
         }
         iRoomService.save(room);
