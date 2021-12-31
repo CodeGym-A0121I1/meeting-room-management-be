@@ -14,15 +14,20 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/rooms")
 public class RoomController {
-    @Qualifier("roomService")
     @Autowired
     private IRoomService roomService;
-
     @GetMapping
     public ResponseEntity<List<Room>> getAllRooms(){
         return ResponseEntity.ok(roomService.getAll());
     }
-
+//    @GetMapping
+//    public ResponseEntity<List<Room>> getAll() {
+//        List<Room> rooms = roomService.getAll();
+//        if (rooms.isEmpty()) {
+//            return new ResponseEntity<List<Room>>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<List<Room>>(rooms, HttpStatus.OK);
+//    }
     @PostMapping
     public ResponseEntity<Room> createRoom(@RequestBody Room room){
         room.setStatus(EStatus.AVAILABLE);
