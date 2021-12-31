@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.service.impl.EquipmentService;
 
@@ -60,14 +61,15 @@ public class EquipmentController {
     }
 
     // TrongVT
-    // Cập nhật Equipment
+    // Cập nhật trường status của Equipment
     // kiểm tra Equipment đã tồn tại chưa, nếu tồn tại thì không thực hiện Cập nhật và trả về NOT_FOUND (ngược lại)
     // test in Postman OK
-    @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody Equipment equipment) {
-        Optional<Equipment> equipmentOptional = this.equipmentService.getById(equipment.getId());
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody EStatus status) {
+        Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
         if (equipmentOptional.isPresent()) {
-            this.equipmentService.save(equipment);
+            equipmentOptional.get().setStatus(status);
+            this.equipmentService.save(equipmentOptional.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
