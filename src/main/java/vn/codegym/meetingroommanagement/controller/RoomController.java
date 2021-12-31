@@ -29,8 +29,6 @@ public class RoomController {
         return ResponseEntity.ok(roomService.save(room));
     }
 
-
-
     // Detail a room in list
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Room> getRoomById(@PathVariable("id") String id) {
@@ -39,5 +37,19 @@ public class RoomController {
             return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Room>(room.get(), HttpStatus.OK);
+    }
+
+//    update a room meeting
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Room> updateRoom(@PathVariable("id") String id, @RequestBody Room room){
+      //find room by id in database
+        Optional<Room> currentRoom = roomService.getById(id);
+        if (!currentRoom.isPresent()) {
+            return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
+        }
+        roomService.save(room);
+        return new ResponseEntity<Room>(room,HttpStatus.OK);
+
+
     }
 }
