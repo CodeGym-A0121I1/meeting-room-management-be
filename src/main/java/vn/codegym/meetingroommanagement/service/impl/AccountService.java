@@ -23,4 +23,9 @@ public class AccountService implements IAccountService {
     public Account getById(String username) {
         return this.accountRepository.findById(username).orElse(null);
     }
+
+    @Override
+    public void save(Account account) {
+        this.accountRepository.save(account);
+    }
 }
