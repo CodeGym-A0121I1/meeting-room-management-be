@@ -17,6 +17,7 @@ import vn.codegym.meetingroommanagement.utils.JwtUtil;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/accounts")
 @CrossOrigin
 public class AccountController {
 
@@ -37,7 +38,7 @@ public class AccountController {
         return "Welcome to Meeting Room Managenment";
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
         String token = null;
         Optional<Account> account = null;
