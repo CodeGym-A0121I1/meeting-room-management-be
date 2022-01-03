@@ -57,4 +57,14 @@ public class RoomController {
 
 
     }
+    // DanhDC xoá room
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Room> delete(@PathVariable("id") String id) {
+        Optional<Room> room = roomService.getById(id);
+        if (!room.isPresent()) {
+            return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
+        }
+        roomService.deleteById(id);
+        return new ResponseEntity<Room>(HttpStatus.OK);
+    }
 }
