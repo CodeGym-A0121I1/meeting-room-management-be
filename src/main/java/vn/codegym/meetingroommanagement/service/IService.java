@@ -11,7 +11,6 @@ public interface IService<T, K> {
 
     T save(T entity);
 
-    void delete(T entity);
 
     void deleteById(K key);
 }
