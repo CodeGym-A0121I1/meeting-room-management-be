@@ -14,6 +14,7 @@ import vn.codegym.meetingroommanagement.service.impl.AccountService;
 import vn.codegym.meetingroommanagement.service.impl.MyUserDetailsService;
 import vn.codegym.meetingroommanagement.utils.JwtUtil;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -52,7 +53,9 @@ public class AccountController {
                     )
             );
         } catch (BadCredentialsException e) {
-            return new JwtResponse(token, account,e.toString());
+            return new JwtResponse(token, account,"Password was wrong !");
+        } catch (NoSuchElementException e){
+            return new JwtResponse(token, account,"Not found user: " + jwtRequest.getUsername());
         }
 
         userDetails = myUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
