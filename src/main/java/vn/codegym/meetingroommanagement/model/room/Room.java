@@ -11,6 +11,7 @@ import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -28,14 +29,14 @@ public class Room {
             strategy = "vn.codegym.meetingroommanagement.utils.IdGenerator"
     )
     private String id;
-
+    @NotBlank(message = "Please input name (blank)")
     private String name;
-
+//    @NotBlank(message = "Please input status (blank)")
     @Enumerated(EnumType.STRING)
     private EStatus status;
-
+//    @NotBlank(message = "Please input image (blank)")
     private String image;
-
+//    @NotBlank(message = "Please input capacity (blank)")
     private Integer capacity;
 
     @ManyToOne

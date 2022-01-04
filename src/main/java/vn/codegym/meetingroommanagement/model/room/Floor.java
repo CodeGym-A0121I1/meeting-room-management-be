@@ -25,4 +25,6 @@ public class Floor {
     @OneToMany(mappedBy = "floor")
     @JsonBackReference
     private List<Room> roomList;
+
+
 }

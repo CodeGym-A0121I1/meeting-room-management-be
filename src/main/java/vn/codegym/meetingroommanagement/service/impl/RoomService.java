@@ -32,18 +32,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public Room save(Room entity) {
-
-        List<Equipment> equipmentList = new ArrayList<>();
-
-        for (int i = 0; i < entity.getEquipmentList().size(); i++) {
-            equipmentList.add(entity.getEquipmentList().get(i));
-        }
-        Room room = roomRepository.save(entity);
-        for (Equipment equipment: equipmentList) {
-            equipment.setRoom(room);
-            equipmentService.save(equipment);
-        }
-        return room;
+        return roomRepository.save(entity);
     }
 
 
