@@ -94,25 +94,25 @@ public class EquipmentController {
         List<Category> categoryList = this.categoryService.getAll();
         return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
-
-    // DatNT
-    // Thêm mới 1 Equipment
-    // test in Postman OK
-    @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody Equipment equipment) {
-        equipmentService.save(equipment);
-        return ResponseEntity.ok().body(equipment);
-    }
-
-    // DatNT
-    // return: đối tượng Equipment
-    // id: id của đối tượng Equipment
-    // test in Postman OK
-    @GetMapping("/{id}")
-    public ResponseEntity<Equipment> getById(@PathVariable("id") String id) {
-        Optional<Equipment> equipmentOptional = equipmentService.getById(id);
-        return equipmentOptional.map(equipment -> new ResponseEntity<>(equipment, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+//
+//    // DatNT
+//    // Thêm mới 1 Equipment
+//    // test in Postman OK
+//    @PostMapping("")
+//    public ResponseEntity<?> create(@RequestBody Equipment equipment) {
+//        equipmentService.save(equipment);
+//        return ResponseEntity.ok().body(equipment);
+//    }
+//
+//    // DatNT
+//    // return: đối tượng Equipment
+//    // id: id của đối tượng Equipment
+//    // test in Postman OK
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Equipment> getById(@PathVariable("id") String id) {
+//        Optional<Equipment> equipmentOptional = equipmentService.getById(id);
+//        return equipmentOptional.map(equipment -> new ResponseEntity<>(equipment, HttpStatus.OK))
+//                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//    }
 
 }
