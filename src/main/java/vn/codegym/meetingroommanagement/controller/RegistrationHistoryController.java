@@ -13,7 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.service.impl.RegistrationHistoryService;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,9 +23,13 @@ import java.util.Optional;
 public class RegistrationHistoryController {
 @Autowired
     RegistrationHistoryService registrationHistoryService;
-@PostMapping("/time")
-public ResponseEntity<RegistrationHistory> timeStatistic(@Validated @ModelAttribute("question")Date day1, Date day2, Pageable pageable){
-    Page<RegistrationHistory> registrationHistory = registrationHistoryService.findAllByTimeContaining(day1,day2,pageable);
-    return (ResponseEntity<RegistrationHistory>) registrationHistory.map(equipment -> new ResponseEntity<>(equipment, HttpStatus.OK));
-}
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<List<?>> roomStatistic(@RequestParam("startDate") LocalDate startDate,
+                                                 @RequestParam("endDate") LocalDate endDate) {
+        List<?> registrationHistorys = registrationHistoryService.roomStatisticByTime(startDate, endDate);
+        if (registrationHistorys == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
+    }
 }

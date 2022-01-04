@@ -8,16 +8,49 @@ import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegistrationHistoryService implements IRegistrationHistoryService {
     @Autowired
     IRegistrationHistoryRepository iRegistrationHistoryRepository;
 
+
     @Override
-    public Page<RegistrationHistory> findAllByTimeContaining(Date startDay, Date endDay, Pageable pageable) {
-        return iRegistrationHistoryRepository.findAllByTimeStartIsBetween(startDay, endDay, pageable);
+    public List<?> roomStatisticByTime(LocalDate startDate, LocalDate endDate) {
+        return iRegistrationHistoryRepository.roomStatistic(startDate, endDate);
+    }
+//    @Override
+//    public int roomStatistic(String roomName) {
+//        return iRegistrationHistoryRepository.roomStatistic(roomName);
+//    }
+
+    @Override
+    public List<RegistrationHistory> getAll() {
+        return null;
+    }
+
+    @Override
+    public Optional<RegistrationHistory> getById(String key) {
+        return Optional.empty();
+    }
+
+    @Override
+    public RegistrationHistory save(RegistrationHistory entity) {
+        return null;
+    }
+
+    @Override
+    public void delete(RegistrationHistory entity) {
+
+    }
+
+    @Override
+    public void deleteById(String key) {
+
     }
 }
