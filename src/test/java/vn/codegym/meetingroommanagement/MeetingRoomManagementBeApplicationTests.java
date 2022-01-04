@@ -38,7 +38,8 @@ class MeetingRoomManagementBeApplicationTests {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.account.username").value("trongvt"))
-                .andExpect(jsonPath("$.jwtToken").exists());
+                .andExpect(jsonPath("$.jwtToken").exists())
+                .andExpect(jsonPath("$.status").doesNotExist());
     }
     @Test
 //    username is wrong, password is right
@@ -50,6 +51,7 @@ class MeetingRoomManagementBeApplicationTests {
                         .content(this.objectMapper.writeValueAsString(new JwtRequest("admin","123")))
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jwtToken").doesNotExist())
                 .andExpect(jsonPath("$.status").value("Not found user: admin"));
     }
 
@@ -63,6 +65,7 @@ class MeetingRoomManagementBeApplicationTests {
                         .content(this.objectMapper.writeValueAsString(new JwtRequest("trongvt","1234")))
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jwtToken").doesNotExist())
                 .andExpect(jsonPath("$.status").value("Password was wrong !"));
     }
     //    username is null, password is null
@@ -75,6 +78,7 @@ class MeetingRoomManagementBeApplicationTests {
                         .content(this.objectMapper.writeValueAsString(new JwtRequest("","")))
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jwtToken").doesNotExist())
                 .andExpect(jsonPath("$.status").value("Not found user: "));
     }
 
