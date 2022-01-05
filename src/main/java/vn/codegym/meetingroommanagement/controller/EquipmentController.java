@@ -31,6 +31,7 @@ public class EquipmentController {
 //     return List<CategoryQuantityStatus> : màn hình " Quản lý tài sản "
 //     CategoryQuantityStatus là loại thiết bị và số lượng  của mỗi trạng thái
 //     test in Postman OK
+    //
     @GetMapping("")
     public ResponseEntity<List<CategoryQuantityStatusDTO>> getAllCategoryQuantityStatusDTO() {
         List<CategoryQuantityStatusDTO> categoryQuantityStatusDTOList = this.categoryService.getAllCategoryQuantityStatusDTO();
