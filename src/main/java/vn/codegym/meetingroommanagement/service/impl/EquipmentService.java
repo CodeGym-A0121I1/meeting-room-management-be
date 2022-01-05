@@ -39,9 +39,15 @@ public class EquipmentService implements IEquipmentService {
     public Equipment save(Equipment equipment) {
         return equipmentRepository.save(equipment);
     }
+    
+    @Override
+    public void delete(Equipment entity) {
+
+    }
 
     @Override
     public void deleteById(String id) {
         this.equipmentRepository.delete(this.equipmentRepository.getById(id));
     }
+    
 }
