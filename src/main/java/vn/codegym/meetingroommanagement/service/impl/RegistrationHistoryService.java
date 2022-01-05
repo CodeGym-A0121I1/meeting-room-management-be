@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class RegistrationHistoryService implements IRegistrationHistoryService {
     @Autowired
-    IRegistrationHistoryRepository registrationHistoryRepository;
+    private IRegistrationHistoryRepository registrationHistoryRepository;
 
     @Override
     public List<?> roomStatistic(String roomType, String roomName, String month, String year) {
@@ -34,12 +34,12 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public Optional<RegistrationHistory> getById(String key) {
-        return Optional.empty();
+        return Optional.ofNullable(this.registrationHistoryRepository.findById(key).orElse(null));
     }
 
     @Override
     public RegistrationHistory save(RegistrationHistory entity) {
-        return null;
+        return this.registrationHistoryRepository.save(entity);
     }
 
     @Override

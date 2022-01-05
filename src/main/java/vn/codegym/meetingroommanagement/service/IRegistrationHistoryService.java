@@ -11,4 +11,3 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
 
     int roomCountStatistic(String roomName);
 }
-

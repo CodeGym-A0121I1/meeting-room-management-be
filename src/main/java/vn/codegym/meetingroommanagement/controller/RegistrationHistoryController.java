@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
+import java.util.Optional;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +18,20 @@ import java.util.Objects;
 public class RegistrationHistoryController {
     @Autowired
     private IRegistrationHistoryService registrationHistoryService;
+  
+    @DeleteMapping(value = "/cancel/{id}")
+    public ResponseEntity<RegistrationHistory> cancelRoomRegistration(@PathVariable("id") String id){
+
+        Optional<RegistrationHistory> optionalRegistrationHistory = registrationHistoryService.getById(id);
+
+        if (!optionalRegistrationHistory.isPresent()){
+            return new ResponseEntity<RegistrationHistory>(HttpStatus.NOT_FOUND);
+        }
+
+        optionalRegistrationHistory.get().setCancel(true);
+        registrationHistoryService.save(optionalRegistrationHistory.get());
+        return new ResponseEntity<RegistrationHistory>(HttpStatus.OK);
+    }
 
     @RequestMapping(value = "roomStatistic",method = RequestMethod.PUT)
     public ResponseEntity<List<?>> roomStatistic(@RequestParam("roomType") String roomType,
@@ -37,3 +52,4 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
     }
 }
+
