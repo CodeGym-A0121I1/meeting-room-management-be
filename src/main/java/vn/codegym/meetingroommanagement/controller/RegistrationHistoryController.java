@@ -18,17 +18,22 @@ public class RegistrationHistoryController {
     @Autowired
     private IRegistrationHistoryService registrationHistoryService;
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "roomStatistic",method = RequestMethod.PUT)
     public ResponseEntity<List<?>> roomStatistic(@RequestParam("roomType") String roomType,
                                                  @RequestParam("roomName") String roomName,
                                                  @RequestParam("month") String month,
                                                  @RequestParam("year") String year) {
-        System.out.println("Loai phong: " + roomType + "\nPhong: " + roomName + "\nThang: " + month + "\nNam: " + year);
         List<?> registrationHistorys = registrationHistoryService.roomStatistic(roomType, roomName, month, year);
-//        int countRoomName = registrationHistoryService.roomCountStatistic(roomName);
         if (registrationHistorys == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<Integer> roomStatistic(@RequestParam("roomName") String roomName) {
+        int registrationHistorys;
+        registrationHistorys = registrationHistoryService.roomCountStatistic(roomName);
         return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
     }
 }
