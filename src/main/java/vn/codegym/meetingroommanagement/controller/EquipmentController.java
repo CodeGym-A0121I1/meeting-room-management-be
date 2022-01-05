@@ -57,7 +57,7 @@ public class EquipmentController {
     // id: id của đối tượng Category
     // test in Postman OK
     @GetMapping("/categories/{idCategory}")
-    public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") int idCategory) {
+    public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") Integer idCategory) {
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryId(idCategory);
         if (equipmentList.size() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,7 +68,7 @@ public class EquipmentController {
     // TrongVT
     // Xóa 1 đối tượng Equipment bằng id
     // test in Postman OK
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id) {
         Optional<Equipment> equipment = this.equipmentService.getById(id);
         if (equipment.isPresent()) {
