@@ -1,11 +1,13 @@
 package vn.codegym.meetingroommanagement.model.room;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import vn.codegym.meetingroommanagement.model.EStatus;
+import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
@@ -49,5 +51,9 @@ public class Room {
     private RoomType roomType;
 
     @OneToMany(mappedBy = "room")
-    List<RegistrationHistory> registrationHistoryList;
+    @JsonBackReference
+    private List<RegistrationHistory> registrationHistoryList;
+
+    @OneToMany(mappedBy = "room")
+    private List<Equipment> equipmentList;
 }
