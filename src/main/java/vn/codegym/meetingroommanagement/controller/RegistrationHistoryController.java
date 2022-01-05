@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
-import vn.codegym.meetingroommanagement.service.impl.RegistrationHistoryService;
+import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -43,6 +43,10 @@ public class RegistrationHistoryController {
     public ResponseEntity<List<?>> roomStatistic(@RequestParam("startDate") LocalDate startDate,
                                                  @RequestParam("endDate") LocalDate endDate) {
         List<?> registrationHistorys = registrationHistoryService.roomStatisticByTime(startDate, endDate);
+         if (registrationHistorys == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
     }
 
     @RequestMapping(value = "roomStatistic",method = RequestMethod.PUT)
