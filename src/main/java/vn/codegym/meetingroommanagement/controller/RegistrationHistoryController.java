@@ -19,6 +19,9 @@ public class RegistrationHistoryController {
     @GetMapping()
     public ResponseEntity<List<RegistrationHistory>> getAll(){
         List<RegistrationHistory> registrationHistoryList = iRegistrationHistoryService.getAll();
+        if (registrationHistoryList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<List<RegistrationHistory>>(registrationHistoryList, HttpStatus.OK);
     }
 }

@@ -46,6 +46,5 @@ public class RegistrationHistoryList {
                                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
-
     }
 }
