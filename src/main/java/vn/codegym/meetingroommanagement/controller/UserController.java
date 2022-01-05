@@ -47,4 +47,12 @@ public class UserController {
         this.accountService.changePassword(account);
         return new ResponseEntity<>(account,HttpStatus.OK);
     }
+
+    //LongLH
+
+    @PostMapping("/add")
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        User newUser = userService.save(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
 }
