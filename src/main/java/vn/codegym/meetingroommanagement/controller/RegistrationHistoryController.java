@@ -21,10 +21,11 @@ public class RegistrationHistoryController {
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<List<?>> roomStatistic(@RequestParam("roomType") String roomType,
                                                  @RequestParam("roomName") String roomName,
-                                                 @RequestParam("month") Integer month,
-                                                 @RequestParam("year") Integer year) {
+                                                 @RequestParam("month") String month,
+                                                 @RequestParam("year") String year) {
+        System.out.println("Loai phong: " + roomType + "\nPhong: " + roomName + "\nThang: " + month + "\nNam: " + year);
         List<?> registrationHistorys = registrationHistoryService.roomStatistic(roomType, roomName, month, year);
-        int countRoomName = registrationHistoryService.roomStatistic(roomName);
+        int countRoomName = registrationHistoryService.roomCountStatistic(roomName);
         if (registrationHistorys == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

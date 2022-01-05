@@ -7,8 +7,18 @@ import java.util.List;
 
 @Service
 public interface IRegistrationHistoryService extends IService<RegistrationHistory, String> {
-    List<?> roomStatistic(String roomType, String roomnName, int month, int year);
+    List<?> roomStatistic(String roomType, String roomnName, String month, String year);
 
-    int roomStatistic(String roomName);
+    List<?> roomTypeStatistic(String roomType, String month, String year);
+
+    List<?> roomNameStatistic(String roomName, String month, String year);
+
+    List<?> roomDateStatistic( String month, String year);
+
+    List<?> roomTypeStatistic(String roomType);
+
+    List<?> roomNameStatistic(String roomName);
+
+    int roomCountStatistic(String roomName);
 }
 

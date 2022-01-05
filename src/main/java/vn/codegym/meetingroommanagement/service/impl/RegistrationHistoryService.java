@@ -15,12 +15,37 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     IRegistrationHistoryRepository registrationHistoryRepository;
 
     @Override
-    public List<?> roomStatistic(String roomType, String roomnName, int month, int year) {
+    public List<?> roomStatistic(String roomType, String roomnName, String month, String year) {
         return registrationHistoryRepository.roomStatistic(roomType, roomnName, month, year);
     }
 
     @Override
-    public int roomStatistic(String roomName) {
+    public List<?> roomTypeStatistic(String roomType, String month, String year) {
+        return registrationHistoryRepository.roomTypeStatistic(roomType, month, year);
+    }
+
+    @Override
+    public List<?> roomNameStatistic(String roomName, String month, String year) {
+        return registrationHistoryRepository.roomNameStatistic(roomName, month, year);
+    }
+
+    @Override
+    public List<?> roomDateStatistic(String month, String year) {
+        return registrationHistoryRepository.roomDateStatistic(month, year);
+    }
+
+    @Override
+    public List<?> roomTypeStatistic(String roomType) {
+        return registrationHistoryRepository.roomTypeStatistic(roomType);
+    }
+
+    @Override
+    public List<?> roomNameStatistic(String roomName) {
+        return registrationHistoryRepository.roomNameStatistic(roomName);
+    }
+
+    @Override
+    public int roomCountStatistic(String roomName) {
         return registrationHistoryRepository.roomStatistic(roomName);
     }
 
