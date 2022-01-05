@@ -1,6 +1,8 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.repository.IRoomRepository;
@@ -36,5 +38,10 @@ public class RoomService implements IRoomService {
     @Override
     public void deleteById(String key) {
         roomRepository.deleteById(key);
+    }
+
+    @Override
+    public Page<Room> getAll(Pageable pageable) {
+        return roomRepository.findAll(pageable);
     }
 }

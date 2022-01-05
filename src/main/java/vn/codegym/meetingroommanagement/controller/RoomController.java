@@ -1,6 +1,10 @@
 package vn.codegym.meetingroommanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +19,11 @@ public class RoomController {
     @Autowired
     private IRoomService roomService;
     @GetMapping
-    public ResponseEntity<List<Room>> getAll() {
-        List<Room> rooms = roomService.getAll();
+    public ResponseEntity<Page<Room>> getAll(@PageableDefault(size = 2) Pageable pageable) {
+        Page<Room> rooms = roomService.getAll(pageable);
         if (rooms.isEmpty()) {
-            return new ResponseEntity<List<Room>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<Room>>(rooms, HttpStatus.OK);
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 }
