@@ -16,12 +16,12 @@ public class EquipmentService implements IEquipmentService {
     private IEquipmentRepository equipmentRepository;
 
     @Override
-    public List<Equipment> getAllByCategoryId(int id_category) {
+    public List<Equipment> getAllByCategoryId(Integer id_category) {
         return this.equipmentRepository.findAllByCategory_Id(id_category);
     }
 
     @Override
-    public List<Equipment> getAllByCategoryIdAndNameLike(int id_category, String nameEquipment) {
+    public List<Equipment> getAllByCategoryIdAndNameLike(Integer id_category, String nameEquipment) {
         return this.equipmentRepository.findAllByCategory_IdAndNameContaining(id_category, nameEquipment);
     }
 

@@ -12,8 +12,8 @@ public interface IEquipmentRepository extends JpaRepository<Equipment, String> {
 
     // get quantity StatusEquipment of Category
     @Query(value = "select count(status) from equipment where category_id = ?1 and status = ?2", nativeQuery = true)
-    Integer countByCategory_IdAndStatus(int id, String status);
+    Integer countByCategory_IdAndStatus(Integer id, String status);
 
-    List<Equipment> findAllByCategory_IdAndNameContaining(int id_category, String nameEquipment);
+    List<Equipment> findAllByCategory_IdAndNameContaining(Integer id_category, String nameEquipment);
 
 }
