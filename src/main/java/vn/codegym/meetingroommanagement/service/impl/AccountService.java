@@ -37,4 +37,12 @@ public class AccountService implements IAccountService {
     public void deleteById(String key) {
 
     }
+    @Override
+    public void changePassword(Account account) {
+        Optional<Account> checkAccount = this.getById(account.getUsername());
+        if (checkAccount.isPresent()) {
+            this.accountRepository.save(account);
+        }
+    }
+
 }

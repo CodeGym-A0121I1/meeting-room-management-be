@@ -22,4 +22,6 @@ public interface IAccountService extends IService<Account,String> {
 
     @Override
     void deleteById(String key);
+
+    void changePassword(Account account);
 }

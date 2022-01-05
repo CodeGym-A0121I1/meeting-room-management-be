@@ -1,14 +1,16 @@
 package vn.codegym.meetingroommanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.user.User;
+import vn.codegym.meetingroommanagement.service.IAccountService;
 import vn.codegym.meetingroommanagement.service.IUserService;
 import java.util.List;
 import java.util.Optional;
+import vn.codegym.meetingroommanagement.model.user.Account;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,6 +19,8 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IAccountService accountService;
     //HuyTG
     //------------ update user ------------------
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -34,5 +38,13 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUser() {
         List<User> userList = userService.getAll();
         return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
+
+  //THangDM
+
+    @PutMapping("")
+    public ResponseEntity<?> changePassword(@RequestBody Account account) {
+        this.accountService.changePassword(account);
+        return new ResponseEntity<>(account,HttpStatus.OK);
     }
 }
