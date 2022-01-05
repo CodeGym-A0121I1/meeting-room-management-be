@@ -34,7 +34,22 @@ public class EquipmentController {
     @GetMapping("")
     public ResponseEntity<List<CategoryQuantityStatusDTO>> getAllCategoryQuantityStatusDTO() {
         List<CategoryQuantityStatusDTO> categoryQuantityStatusDTOList = this.categoryService.getAllCategoryQuantityStatusDTO();
+        if (categoryQuantityStatusDTOList.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(categoryQuantityStatusDTOList, HttpStatus.OK);
+    }
+
+    // TrongVT
+    // return: danh sách Category để dùng khi update hoặc create 1 Equipment
+    // test in Postman OK
+    @GetMapping("/categories")
+    public ResponseEntity<List<Category>> getAllCategory() {
+        List<Category> categoryList = this.categoryService.getAll();
+        if (categoryList.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
 
     // TrongVT
@@ -44,6 +59,9 @@ public class EquipmentController {
     @GetMapping("/categories/{idCategory}")
     public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") int idCategory) {
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryId(idCategory);
+        if (equipmentList.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
     }
 
@@ -66,6 +84,9 @@ public class EquipmentController {
     // test in Postman OK
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody EStatus status) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
         Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
         if (equipmentOptional.isPresent()) {
             equipmentOptional.get().setStatus(status);
@@ -81,8 +102,14 @@ public class EquipmentController {
     // idCategory: id của đối tượng Category
     // test in Postman OK
     @GetMapping("/{idCategory}/{name}")
-    public ResponseEntity<List<Equipment>> search(@PathVariable("idCategory") int idCategory, @PathVariable("name") String name) {
+    public ResponseEntity<List<Equipment>> search(@PathVariable("idCategory") Integer idCategory, @PathVariable("name") String name) {
+        if (idCategory == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryIdAndNameLike(idCategory, name);
+        if (equipmentList.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
     }
 
