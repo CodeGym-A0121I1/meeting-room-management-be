@@ -22,7 +22,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public List<?> roomStatisticByTime(LocalDate startDate, LocalDate endDate) {
-        return iRegistrationHistoryRepository.roomStatistic(startDate, endDate);
+        return registrationHistoryRepository.roomStatistic(startDate, endDate);
     }
 
     @Override
