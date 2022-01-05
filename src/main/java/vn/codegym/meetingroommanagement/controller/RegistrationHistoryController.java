@@ -25,7 +25,7 @@ public class RegistrationHistoryController {
                                                  @RequestParam("year") String year) {
         System.out.println("Loai phong: " + roomType + "\nPhong: " + roomName + "\nThang: " + month + "\nNam: " + year);
         List<?> registrationHistorys = registrationHistoryService.roomStatistic(roomType, roomName, month, year);
-        int countRoomName = registrationHistoryService.roomCountStatistic(roomName);
+//        int countRoomName = registrationHistoryService.roomCountStatistic(roomName);
         if (registrationHistorys == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
