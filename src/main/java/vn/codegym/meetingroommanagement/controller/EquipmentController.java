@@ -113,15 +113,6 @@ public class EquipmentController {
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
     }
 
-    // TrongVT
-    // return: danh sách Category để dùng khi update hoặc create 1 Equipment
-    // test in Postman OK
-    @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getAllCategory() {
-        List<Category> categoryList = this.categoryService.getAll();
-        return new ResponseEntity<>(categoryList, HttpStatus.OK);
-    }
-
     // DatNT
     // Thêm mới 1 Equipment
     // test in Postman OK
