@@ -9,7 +9,7 @@ import vn.codegym.meetingroommanagement.service.IAccountService;
 import vn.codegym.meetingroommanagement.service.IUserService;
 import java.util.List;
 import java.util.Optional;
-import vn.codegym.meetingroommanagement.model.user.Account;
+
 
 
 @RestController
@@ -39,14 +39,6 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUser() {
         List<User> userList = userService.getAll();
         return new ResponseEntity<>(userList, HttpStatus.OK);
-    }
-
-  //THangDM
-
-    @PutMapping("")
-    public ResponseEntity<?> changePassword(@RequestBody Account account) {
-        this.accountService.changePassword(account);
-        return new ResponseEntity<>(account,HttpStatus.OK);
     }
 
     //LongLH

@@ -1,11 +1,14 @@
 package vn.codegym.meetingroommanagement.controller;
 
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.jwt.JwtRequest;
 import vn.codegym.meetingroommanagement.model.jwt.JwtResponse;
@@ -33,6 +36,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String home() {
@@ -62,5 +68,14 @@ public class AccountController {
         account = accountService.getById(jwtRequest.getUsername());
         token = jwtUtil.generateToken(userDetails);
         return new JwtResponse(token, account,status);
+    }
+
+    //THangDM
+
+    @PutMapping("")
+    public ResponseEntity<?> changePassword(@RequestBody Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        this.accountService.changePassword(account);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 }
