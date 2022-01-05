@@ -6,6 +6,7 @@ import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +14,22 @@ import java.util.Optional;
 public class RegistrationHistoryService implements IRegistrationHistoryService {
     @Autowired
     private IRegistrationHistoryRepository registrationHistoryRepository;
+
+    @Override
+    public List<?> roomStatistic(String roomType, String roomName, String month, String year) {
+        List<?> registrationHistorys = registrationHistoryRepository
+                .roomStatistic(roomType, roomName, month, year);
+        return registrationHistorys;
+    }
+
+    @Override
+    public int roomCountStatistic(String roomName) {
+        return registrationHistoryRepository.roomCountStatistic(roomName);
+    }
+
     @Override
     public List<RegistrationHistory> getAll() {
-        return null;
+        return registrationHistoryRepository.findAll();
     }
 
     @Override
