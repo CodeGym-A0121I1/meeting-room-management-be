@@ -7,13 +7,36 @@ import vn.codegym.meetingroommanagement.repository.IUserRepository;
 import vn.codegym.meetingroommanagement.service.IUserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
+
     @Autowired
-    private IUserRepository userRepository ;
+    private IUserRepository userRepository;
+
     @Override
     public List<User> getAll() {
-        return this.userRepository.findAll();
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> getById(String key) {
+        return userRepository.findById(key);
+    }
+
+    @Override
+    public User save(User entity) {
+        return userRepository.save(entity);
+    }
+
+    @Override
+    public void delete(User entity) {
+        userRepository.delete(entity);
+    }
+
+    @Override
+    public void deleteById(String key) {
+        userRepository.deleteById(key);
     }
 }
