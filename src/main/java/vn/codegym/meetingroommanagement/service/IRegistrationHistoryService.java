@@ -13,5 +13,8 @@ import java.util.List;
 @Service
 public interface IRegistrationHistoryService extends IService<RegistrationHistory, String> {
     List<?> roomStatisticByTime(LocalDate startDate, LocalDate endDate);
-//    int roomStatistic(String roomName);
+  
+    List<?> roomStatistic(String roomType, String roomName, String month, String year);
+
+    int roomCountStatistic(String roomName);
 }

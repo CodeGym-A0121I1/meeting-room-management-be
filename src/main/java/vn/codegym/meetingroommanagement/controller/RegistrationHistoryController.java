@@ -16,20 +16,52 @@ import vn.codegym.meetingroommanagement.service.impl.RegistrationHistoryService;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/registration-histories")
 public class RegistrationHistoryController {
-@Autowired
-    RegistrationHistoryService registrationHistoryService;
-    @RequestMapping(method = RequestMethod.PUT)
+    @Autowired
+    private IRegistrationHistoryService registrationHistoryService;
+  
+    @DeleteMapping(value = "/cancel/{id}")
+    public ResponseEntity<RegistrationHistory> cancelRoomRegistration(@PathVariable("id") String id){
+
+        Optional<RegistrationHistory> optionalRegistrationHistory = registrationHistoryService.getById(id);
+
+        if (!optionalRegistrationHistory.isPresent()){
+            return new ResponseEntity<RegistrationHistory>(HttpStatus.NOT_FOUND);
+        }
+
+        optionalRegistrationHistory.get().setCancel(true);
+        registrationHistoryService.save(optionalRegistrationHistory.get());
+        return new ResponseEntity<RegistrationHistory>(HttpStatus.OK);
+    }
+  
+   @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<List<?>> roomStatistic(@RequestParam("startDate") LocalDate startDate,
                                                  @RequestParam("endDate") LocalDate endDate) {
         List<?> registrationHistorys = registrationHistoryService.roomStatisticByTime(startDate, endDate);
+    }
+
+    @RequestMapping(value = "roomStatistic",method = RequestMethod.PUT)
+    public ResponseEntity<List<?>> roomStatistic(@RequestParam("roomType") String roomType,
+                                                 @RequestParam("roomName") String roomName,
+                                                 @RequestParam("month") String month,
+                                                 @RequestParam("year") String year) {
+        List<?> registrationHistorys = registrationHistoryService.roomStatistic(roomType, roomName, month, year);
         if (registrationHistorys == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<Integer> roomStatistic(@RequestParam("roomName") String roomName) {
+        int registrationHistorys;
+        registrationHistorys = registrationHistoryService.roomCountStatistic(roomName);
+        return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
+    }
 }
+

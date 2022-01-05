@@ -11,37 +11,45 @@ import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RegistrationHistoryService implements IRegistrationHistoryService {
     @Autowired
-    IRegistrationHistoryRepository iRegistrationHistoryRepository;
-
+    private IRegistrationHistoryRepository registrationHistoryRepository;
 
     @Override
     public List<?> roomStatisticByTime(LocalDate startDate, LocalDate endDate) {
         return iRegistrationHistoryRepository.roomStatistic(startDate, endDate);
     }
-//    @Override
-//    public int roomStatistic(String roomName) {
-//        return iRegistrationHistoryRepository.roomStatistic(roomName);
-//    }
+
+    @Override
+    public List<?> roomStatistic(String roomType, String roomName, String month, String year) {
+        List<?> registrationHistorys = registrationHistoryRepository
+                .roomStatistic(roomType, roomName, month, year);
+        return registrationHistorys;
+    }
+
+    @Override
+    public int roomCountStatistic(String roomName) {
+        return registrationHistoryRepository.roomCountStatistic(roomName);
+    }
 
     @Override
     public List<RegistrationHistory> getAll() {
-        return null;
+        return registrationHistoryRepository.findAll();
     }
 
     @Override
     public Optional<RegistrationHistory> getById(String key) {
-        return Optional.empty();
+        return Optional.ofNullable(this.registrationHistoryRepository.findById(key).orElse(null));
     }
 
     @Override
     public RegistrationHistory save(RegistrationHistory entity) {
-        return null;
+        return this.registrationHistoryRepository.save(entity);
     }
 
     @Override
