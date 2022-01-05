@@ -14,6 +14,7 @@ import vn.codegym.meetingroommanagement.model.user.Account;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin
 public class UserController {
 
     @Autowired
