@@ -1,6 +1,7 @@
 package vn.codegym.meetingroommanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
@@ -14,7 +15,7 @@ public class EquipmentController {
 
     @PostMapping("/create")
     public ResponseEntity<Equipment> create(@RequestBody Equipment equipment){
-        equipmentService.save(equipment);
-        return ResponseEntity.ok().body(equipment);
+        Equipment newEquipment = equipmentService.save(equipment);
+        return new ResponseEntity<>(newEquipment, HttpStatus.CREATED);
     }
 }
