@@ -25,7 +25,7 @@ public class EquipmentController {
     private ICategoryService categoryService;
 
     @Autowired
-    EquipmentService equipmentService;
+    private EquipmentService equipmentService;
 
     // TrongVT
     // return List<CategoryQuantityStatus> : màn hình " Quản lý tài sản "
@@ -34,7 +34,7 @@ public class EquipmentController {
     @GetMapping("")
     public ResponseEntity<List<CategoryQuantityStatusDTO>> getAllCategoryQuantityStatusDTO() {
         List<CategoryQuantityStatusDTO> categoryQuantityStatusDTOList = this.categoryService.getAllCategoryQuantityStatusDTO();
-        if (categoryQuantityStatusDTOList.size() == 0) {
+        if (categoryQuantityStatusDTOList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(categoryQuantityStatusDTOList, HttpStatus.OK);
@@ -46,7 +46,7 @@ public class EquipmentController {
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategory() {
         List<Category> categoryList = this.categoryService.getAll();
-        if (categoryList.size() == 0) {
+        if (categoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(categoryList, HttpStatus.OK);
@@ -59,7 +59,7 @@ public class EquipmentController {
     @GetMapping("/categories/{idCategory}")
     public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") Integer idCategory) {
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryId(idCategory);
-        if (equipmentList.size() == 0) {
+        if (equipmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
@@ -85,7 +85,7 @@ public class EquipmentController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody EStatus status) {
         if (id == null) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
         if (equipmentOptional.isPresent()) {
