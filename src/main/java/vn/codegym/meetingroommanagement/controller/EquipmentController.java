@@ -72,7 +72,7 @@ public class EquipmentController {
     // TrongVT
     // Xóa 1 đối tượng Equipment bằng id
     // test in Postman OK
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id) {
         Optional<Equipment> equipment = this.equipmentService.getById(id);
         if (equipment.isPresent()) {
@@ -86,7 +86,7 @@ public class EquipmentController {
     // Cập nhật trường status của Equipment
     // kiểm tra Equipment đã tồn tại chưa, nếu tồn tại thì không thực hiện Cập nhật và trả về NOT_FOUND (ngược lại)
     // test in Postman OK
-    @PutMapping({"/{id}", "/"})
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable() String id, @RequestBody EStatus status) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.OK);

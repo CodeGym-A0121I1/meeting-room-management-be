@@ -23,7 +23,7 @@ public class EquipmentController_update {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // [item] = null
+    // [status] = null
     @Test
     public void update_1() throws Exception {
 
@@ -38,7 +38,7 @@ public class EquipmentController_update {
                 .andExpect(status().is4xxClientError());
     }
 
-    // [item] =  rỗng ("")
+    // [status] =  rỗng ("")
     @Test
     public void update_2() throws Exception {
 
@@ -54,7 +54,7 @@ public class EquipmentController_update {
     }
 
 
-    // [item] sai format ( variable status must depend on EStatus.class )
+    // [status] sai format ( variable status must depend on EStatus.class )
     @Test
     public void update_3() throws Exception {
 
@@ -68,11 +68,12 @@ public class EquipmentController_update {
                 .andExpect(status().is4xxClientError());
     }
 
-    // [item] hợp lệ
+    // [status] hợp lệ
     @Test
     public void update_4() throws Exception {
 
         EStatus status = EStatus.FIXING;
+
         this.mockMvc
                 .perform(MockMvcRequestBuilders
                         .put("/api/equipments/{id}", "EQUIP0010")
