@@ -13,6 +13,7 @@ public class EquipmentController {
     @Autowired
     private IEquipmentService equipmentService;
 
+
     @PostMapping("/create")
     public ResponseEntity<Equipment> create(@RequestBody Equipment equipment){
         Equipment newEquipment = equipmentService.save(equipment);
