@@ -52,7 +52,7 @@ public class RoomController {
     }
 
     // DanhDC xoá room
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<String> deleteRoom(@PathVariable("id") String id) {
         Optional<Room> room = roomService.getById(id);
 

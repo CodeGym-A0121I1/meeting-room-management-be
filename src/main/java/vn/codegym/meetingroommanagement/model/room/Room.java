@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
+import vn.codegym.meetingroommanagement.model.feedback.Feedback;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
@@ -50,10 +51,13 @@ public class Room {
     @JoinColumn
     private RoomType roomType;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room",cascade = CascadeType.ALL)
     @JsonBackReference
     private List<RegistrationHistory> registrationHistoryList;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room",cascade = CascadeType.ALL)
     private List<Equipment> equipmentList;
+
+    @OneToMany(mappedBy = "room",cascade = CascadeType.ALL)
+    private List<Feedback> feedbackList;
 }

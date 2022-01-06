@@ -2,6 +2,7 @@ package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.repository.IRoomRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class RoomService implements IRoomService {
 
     @Autowired
@@ -51,6 +53,8 @@ public class RoomService implements IRoomService {
 
     @Override
     public void deleteById(String key) {
+        roomRepository.setRoomNull(key);
         roomRepository.deleteById(key);
     }
+
 }
