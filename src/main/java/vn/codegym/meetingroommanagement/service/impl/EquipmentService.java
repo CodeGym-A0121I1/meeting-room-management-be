@@ -41,6 +41,11 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
+    public void delete(Equipment entity) {
+
+    }
+
+    @Override
     public void deleteById(String id) {
         this.equipmentRepository.delete(this.equipmentRepository.getById(id));
     }
