@@ -10,8 +10,6 @@ public interface IService<T, K> {
     Optional<T> getById(K key);
 
     T save(T entity);
-    
-    void delete(T entity);
 
     void deleteById(K key);
 }
