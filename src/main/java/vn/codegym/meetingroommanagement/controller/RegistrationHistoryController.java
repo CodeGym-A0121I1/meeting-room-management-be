@@ -40,6 +40,9 @@ public class RegistrationHistoryController {
         if (registrationHistorys.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        if (roomName != "" && month != "" && year != "") {
+            registrationHistoryService.registrationPerformance(roomName, month, year, registrationHistorys);
+        }
         return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
     }
 

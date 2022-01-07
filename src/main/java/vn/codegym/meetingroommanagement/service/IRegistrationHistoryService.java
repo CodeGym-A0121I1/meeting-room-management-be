@@ -14,5 +14,7 @@ import java.util.List;
 public interface IRegistrationHistoryService extends IService<RegistrationHistory, String> {
     List<RegistrationHistory> roomStatistic(String roomType, String roomName, String month, String year);
 
+    float registrationPerformance(String roomName, String month, String year, List<RegistrationHistory> registrationHistories);
+
     int roomCountStatistic(String roomName);
 }
