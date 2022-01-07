@@ -14,6 +14,7 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
     @Query("select r " +
             "from RegistrationHistory r inner join r.room inner join r.room.roomType inner join r.user " +
             "where r.room.roomType.name like concat('%',:roomType,'%') " +
+            "and r.isCancel=false " +
             "and r.room.name like concat('%',:roomName,'%')" +
             "and ((substring(r.dateStart,6, 2) like concat('%',:month,'%') and substring(r.dateStart,1, 4) like concat('%',:year,'%')) " +
             "or (substring(r.dateStart,6, 2) like concat('%',:month,'%') and substring(r.dateStart,1, 4) like concat('%',:year,'%')))")
