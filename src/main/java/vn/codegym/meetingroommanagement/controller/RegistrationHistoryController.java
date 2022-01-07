@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
+import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
 import java.util.List;
@@ -18,13 +19,13 @@ public class RegistrationHistoryController {
     @Autowired
     private IRegistrationHistoryService registrationHistoryService;
 
-    @RequestMapping(value = "roomStatistic",method = RequestMethod.PUT)
-    public ResponseEntity<List<?>> roomStatistic(@RequestParam("roomType") String roomType,
-                                                 @RequestParam("roomName") String roomName,
-                                                 @RequestParam("month") String month,
-                                                 @RequestParam("year") String year) {
-        List<?> registrationHistorys = registrationHistoryService.roomStatistic(roomType, roomName, month, year);
-        if (registrationHistorys == null) {
+    @RequestMapping(value = "roomStatistic", method = RequestMethod.PUT)
+    public ResponseEntity<List<RegistrationHistory>> roomStatistic(@RequestParam("roomType") String roomType,
+                                                                   @RequestParam("roomName") String roomName,
+                                                                   @RequestParam("month") String month,
+                                                                   @RequestParam("year") String year) {
+        List<RegistrationHistory> registrationHistorys = registrationHistoryService.roomStatistic(roomType, roomName, month, year);
+        if (registrationHistorys.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
