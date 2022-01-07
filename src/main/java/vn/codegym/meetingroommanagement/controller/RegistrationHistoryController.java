@@ -44,8 +44,11 @@ public class RegistrationHistoryController {
     }
 
     @RequestMapping(value = "total", method = RequestMethod.PUT)
-    public ResponseEntity<Integer> totalUseMeetingRoom(@RequestParam("roomName") String roomName) {
-        int totalUse = registrationHistoryService.roomCountStatistic(roomName);
+    public ResponseEntity<Integer> totalUseMeetingRoom(@RequestParam("roomType") String roomType,
+                                                       @RequestParam("roomName") String roomName,
+                                                       @RequestParam("month") String month,
+                                                       @RequestParam("year") String year) {
+        int totalUse = registrationHistoryService.roomCountStatistic(roomType, roomName, month, year);
         return new ResponseEntity<>(totalUse, HttpStatus.OK);
     }
 }

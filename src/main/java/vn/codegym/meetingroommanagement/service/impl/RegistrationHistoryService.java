@@ -50,8 +50,22 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     @Override
-    public int roomCountStatistic(String roomName) {
-        return 0;
+    public int roomCountStatistic(String roomType, String roomName, String month, String year) {
+        int totalUse = 0;
+        List<RegistrationHistory> registrationHistories = this.roomStatistic(roomType, roomName, month, year);
+        for (RegistrationHistory registrationHistory : registrationHistories) {
+            YearMonth yearMonthStart = YearMonth.of(registrationHistory.getDateStart().getYear(), registrationHistory.getDateStart().getMonthValue());
+            YearMonth yearMonthEnd = YearMonth.of(registrationHistory.getDateEnd().getYear(), registrationHistory.getDateEnd().getMonthValue());
+            int dayConversion;
+            if (yearMonthEnd.compareTo(yearMonthStart) != 0) {
+                dayConversion = dayConversion(registrationHistory.getDateStart(), yearMonthStart.atEndOfMonth());
+            } else {
+                dayConversion = dayConversion(registrationHistory.getDateStart(), registrationHistory.getDateEnd());
+            }
+            totalUse += dayConversion;
+        }
+
+        return totalUse;
     }
 
     @Override

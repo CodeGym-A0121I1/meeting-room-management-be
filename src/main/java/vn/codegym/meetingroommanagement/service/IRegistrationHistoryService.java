@@ -11,5 +11,5 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
 
     float registrationPerformance(String roomType, String roomName, String month, String year);
 
-    int roomCountStatistic(String roomName);
+    int roomCountStatistic(String roomType, String roomName, String month, String year);
 }
