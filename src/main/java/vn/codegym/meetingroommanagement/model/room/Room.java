@@ -1,5 +1,6 @@
 package vn.codegym.meetingroommanagement.model.room;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,5 +50,6 @@ public class Room {
     private RoomType roomType;
 
     @OneToMany(mappedBy = "room")
+    @JsonBackReference
     List<RegistrationHistory> registrationHistoryList;
 }

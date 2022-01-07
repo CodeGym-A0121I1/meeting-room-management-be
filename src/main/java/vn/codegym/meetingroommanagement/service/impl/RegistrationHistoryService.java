@@ -59,6 +59,5 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public void deleteById(String key) {
-
     }
 }
