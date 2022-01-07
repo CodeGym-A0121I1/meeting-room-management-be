@@ -22,7 +22,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         return registrationHistories;
     }
 
-    public float registrationPerformance(String roomName, String month, String year, List<RegistrationHistory> registrationHistories) {
+    public float registrationPerformance(String roomType, String roomName, String month, String year) {
         int m = Integer.parseInt(month);
         int y = Integer.parseInt(year);
         YearMonth yearMonth = YearMonth.of(y, m);
@@ -31,6 +31,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         long totalTime = dayConversion(startMonth, endMonth) * 8 * 60 * 60;
 
         long totalUseTime = 0;
+        List<RegistrationHistory> registrationHistories = this.roomStatistic(roomType, roomName, month, year);
         for (RegistrationHistory registrationHistory : registrationHistories) {
             YearMonth yearMonthStart = YearMonth.of(registrationHistory.getDateStart().getYear(), registrationHistory.getDateStart().getMonthValue());
             YearMonth yearMonthEnd = YearMonth.of(registrationHistory.getDateEnd().getYear(), registrationHistory.getDateEnd().getMonthValue());

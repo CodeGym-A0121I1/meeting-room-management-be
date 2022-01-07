@@ -9,7 +9,7 @@ import java.util.List;
 public interface IRegistrationHistoryService extends IService<RegistrationHistory, String> {
     List<RegistrationHistory> roomStatistic(String roomType, String roomName, String month, String year);
 
-    float registrationPerformance(String roomName, String month, String year, List<RegistrationHistory> registrationHistories);
+    float registrationPerformance(String roomType, String roomName, String month, String year);
 
     int roomCountStatistic(String roomName);
 }

@@ -39,8 +39,7 @@ public class RegistrationHistoryController {
                                                          @RequestParam("roomName") String roomName,
                                                          @RequestParam("month") String month,
                                                          @RequestParam("year") String year) {
-        List<RegistrationHistory> registrationHistorys = registrationHistoryService.roomStatistic(roomType, roomName, month, year);
-        float registrationPerformance = registrationHistoryService.registrationPerformance(roomName, month, year, registrationHistorys);
+        float registrationPerformance = registrationHistoryService.registrationPerformance(roomType, roomName, month, year);
         return new ResponseEntity<>(registrationPerformance, HttpStatus.OK);
     }
 
