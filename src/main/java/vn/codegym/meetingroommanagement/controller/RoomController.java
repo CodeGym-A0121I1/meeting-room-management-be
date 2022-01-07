@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.service.IRoomService;
 
@@ -23,6 +20,7 @@ public class RoomController {
 
     // Detail a room in list
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Room> getRoomById(@PathVariable("id") String id) {
         Optional<Room> room = iRoomService.getById(id);
         if (!room.isPresent()) {
