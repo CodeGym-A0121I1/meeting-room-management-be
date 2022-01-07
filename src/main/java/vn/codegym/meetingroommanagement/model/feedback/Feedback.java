@@ -1,10 +1,7 @@
 package vn.codegym.meetingroommanagement.model.feedback;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
@@ -47,4 +44,23 @@ public class Feedback {
     @ManyToOne
     @JoinColumn
     private Room room;
+
+    public String toStringRequest() {
+        return "Người phản hồi: " + user.getFullName() +
+                "\nTên phòng: " + room.getName() +
+                "\nNgày gửi: " + dateRequest +
+                "\nNội dung: " + noteRequest +
+                "\nTrạng thái: Chưa xử lý";
+    }
+
+    public String toStringResponse() {
+        return "Người xử lý: Admin" +
+                "\nTên phòng: " + room.getName() +
+                "\nNgày gửi phản hồi: " + dateRequest +
+                "\nNội dung phản hồi: " + noteRequest +
+                "\nNgày xử lý: " + dateResponse +
+                "\nNội dung xử lý: " + noteResponse +
+                "\nTrạng thái: Đã xử lý";
+    }
+
 }

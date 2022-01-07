@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.feedback.Feedback;
 import vn.codegym.meetingroommanagement.service.IFeedbackService;
 
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -35,30 +38,41 @@ public class FeedbackController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody Feedback feedback) {
+    public ResponseEntity<Boolean> create(@RequestBody Feedback feedback) {
         // set time now request for Feedback
         if (feedback.getNoteRequest().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         feedback.setDateRequest(LocalDate.now());
         this.feedbackService.save(feedback);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            this.feedbackService.sendEmail("NEW FEEDBACK", feedback.toStringRequest());
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody String noteResponse) {
+    public ResponseEntity<Boolean> update(@PathVariable("id") String id, @RequestBody String noteResponse) {
         if (id.isEmpty() || noteResponse.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Optional<Feedback> feedbackOptional = this.feedbackService.getById(id);
+        Feedback feedback = this.feedbackService.getById(id).orElse(null);
 
-        if (feedbackOptional.isPresent()) {
-            // set time now response and set noteResponse of Admin to fix Feedback
-            feedbackOptional.get().setDateResponse(LocalDate.now());
-            feedbackOptional.get().setNoteResponse(noteResponse);
-            this.feedbackService.save(feedbackOptional.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+
+        if (feedback == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        // set time now response and set noteResponse of Admin to fix Feedback
+        feedback.setDateResponse(LocalDate.now());
+        feedback.setNoteResponse(noteResponse);
+        this.feedbackService.save(feedback);
+        try {
+            this.feedbackService.sendEmail("REPLY FEEDBACK",feedback.toStringResponse());
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
     }
 }

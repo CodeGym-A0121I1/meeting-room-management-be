@@ -6,4 +6,6 @@ import vn.codegym.meetingroommanagement.model.feedback.Feedback;
 @Service
 public interface IFeedbackService extends IService<Feedback, String> {
 
+    void sendEmail(String subject, String content);
+
 }
