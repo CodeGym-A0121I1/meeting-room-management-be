@@ -28,40 +28,8 @@ import java.util.Optional;
 @RequestMapping("/api/registration-histories")
 public class RegistrationHistoryController {
 
+    @Autowired
     private IRegistrationHistoryService registrationHistoryService;
-  
-   @GetMapping()
-    public ResponseEntity<List<RegistrationHistory>> getAll(){
-        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.getAll();
-        if (registrationHistoryList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<RegistrationHistory>>(registrationHistoryList, HttpStatus.OK);
-    }
-  
-    @DeleteMapping(value = "/cancel/{id}")
-    public ResponseEntity<RegistrationHistory> cancelRoomRegistration(@PathVariable("id") String id){
-
-        Optional<RegistrationHistory> optionalRegistrationHistory = registrationHistoryService.getById(id);
-
-        if (!optionalRegistrationHistory.isPresent()){
-            return new ResponseEntity<RegistrationHistory>(HttpStatus.NOT_FOUND);
-        }
-
-        optionalRegistrationHistory.get().setCancel(true);
-        registrationHistoryService.save(optionalRegistrationHistory.get());
-        return new ResponseEntity<RegistrationHistory>(HttpStatus.OK);
-    }
-  
-   @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<List<?>> roomStatistic(@RequestParam("startDate") LocalDate startDate,
-                                                 @RequestParam("endDate") LocalDate endDate) {
-        List<?> registrationHistorys = registrationHistoryService.roomStatisticByTime(startDate, endDate);
-         if (registrationHistorys == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(registrationHistorys, HttpStatus.OK);
-    }
 
     @RequestMapping(value = "roomStatistic", method = RequestMethod.PUT)
     public ResponseEntity<List<RegistrationHistory>> roomStatistic(@RequestParam("roomType") String roomType,

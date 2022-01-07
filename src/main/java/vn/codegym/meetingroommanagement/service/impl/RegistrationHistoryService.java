@@ -22,11 +22,6 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     private IRegistrationHistoryRepository registrationHistoryRepository;
 
     @Override
-    public List<?> roomStatisticByTime(LocalDate startDate, LocalDate endDate) {
-        return registrationHistoryRepository.roomStatistic(startDate, endDate);
-    }
-
-    @Override
     public List<RegistrationHistory> roomStatistic(String roomType, String roomName, String month, String year) {
         List<RegistrationHistory> registrationHistories = registrationHistoryRepository.findAll();
 
