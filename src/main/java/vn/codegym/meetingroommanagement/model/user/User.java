@@ -33,11 +33,11 @@ public class User {
     @JoinColumn
     private Department department;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    @JsonBackReference
     private Account account;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     List<RegistrationHistory> registrationHistoryList;
 }

@@ -1,20 +1,20 @@
 package vn.codegym.meetingroommanagement.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.codegym.meetingroommanagement.dto.CategoryDTO;
 import vn.codegym.meetingroommanagement.model.EStatus;
-import vn.codegym.meetingroommanagement.model.equipment.Equipment;
-import vn.codegym.meetingroommanagement.service.impl.EquipmentService;
-
-import java.util.Optional;
-
-import vn.codegym.meetingroommanagement.dto.CategoryQuantityStatusDTO;
 import vn.codegym.meetingroommanagement.model.equipment.Category;
+import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.service.ICategoryService;
+import vn.codegym.meetingroommanagement.service.IEquipmentService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/equipments")
@@ -24,31 +24,28 @@ public class EquipmentController {
     private ICategoryService categoryService;
 
     @Autowired
-    EquipmentService equipmentService;
+    private IEquipmentService equipmentService;
 
-    // TrongVT
-    // return List<CategoryQuantityStatus> : màn hình " Quản lý tài sản "
-    // CategoryQuantityStatus là loại thiết bị và số lượng  của mỗi trạng thái
-    // test in Postman OK
-    @GetMapping("")
-    public ResponseEntity<List<CategoryQuantityStatusDTO>> getAllCategoryQuantityStatusDTO() {
-        List<CategoryQuantityStatusDTO> categoryQuantityStatusDTOList = this.categoryService.getAllCategoryQuantityStatusDTO();
-        if (categoryQuantityStatusDTOList.size() == 0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(categoryQuantityStatusDTOList, HttpStatus.OK);
-    }
+    @Autowired
+    private ModelMapper modelMapper;
 
     // TrongVT
     // return: danh sách Category để dùng khi update hoặc create 1 Equipment
     // test in Postman OK
-    @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getAllCategory() {
+    @GetMapping
+    public ResponseEntity<List<CategoryDTO>> getAllCategory() {
         List<Category> categoryList = this.categoryService.getAll();
         if (categoryList.size() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(categoryList, HttpStatus.OK);
+
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+
+        for (Category category : categoryList) {
+            categoryDTOList.add(modelMapper.map(category, CategoryDTO.class));
+        }
+
+        return new ResponseEntity<>(categoryDTOList, HttpStatus.OK);
     }
 
     // TrongVT

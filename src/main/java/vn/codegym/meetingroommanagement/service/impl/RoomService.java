@@ -2,6 +2,7 @@ package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.repository.IRoomRepository;
@@ -23,7 +24,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getAll() {
-       return roomRepository.findAll();
+        return roomRepository.findAll();
     }
 
     @Override
@@ -43,6 +44,7 @@ public class RoomService implements IRoomService {
 
         equipmentList.forEach(equipment -> {
             equipment.setRoom(room);
+            equipment.setStatus(EStatus.USING);
             equipmentService.save(equipment);
         });
 
@@ -51,6 +53,21 @@ public class RoomService implements IRoomService {
 
     @Override
     public void deleteById(String key) {
-        roomRepository.deleteById(key);
+        Optional<Room> roomOptional = getById(key);
+
+        roomOptional.ifPresent(room -> {
+            List<Equipment> equipmentList = new ArrayList<>();
+            room.getEquipmentList().forEach(equipment -> {
+                equipmentService.getById(equipment.getId()).ifPresent(equipmentList::add);
+            });
+
+            equipmentList.forEach(equipment -> {
+                equipment.setRoom(null);
+                equipment.setStatus(EStatus.AVAILABLE);
+                equipmentService.save(equipment);
+            });
+
+            roomRepository.deleteById(key);
+        });
     }
 }

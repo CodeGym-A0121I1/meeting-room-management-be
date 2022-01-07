@@ -1,7 +1,11 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.dto.ChangePasswordRequest;
 import vn.codegym.meetingroommanagement.model.user.Account;
 import vn.codegym.meetingroommanagement.repository.IAccountRepository;
 import vn.codegym.meetingroommanagement.service.IAccountService;
@@ -11,8 +15,13 @@ import java.util.Optional;
 
 @Service
 public class AccountService implements IAccountService {
+
     @Autowired
     private IAccountRepository accountRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public List<Account> getAll() {
         return null;
@@ -29,20 +38,30 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public void delete(Account entity) {
-
-    }
-
-    @Override
     public void deleteById(String key) {
 
     }
+
     @Override
-    public void changePassword(Account account) {
-        Optional<Account> checkAccount = this.getById(account.getUsername());
-        if (checkAccount.isPresent()) {
-            this.accountRepository.save(account);
-        }
+    public boolean changePassword(ChangePasswordRequest changePasswordRequest) {
+        Optional<Account> accountOptional = this.getById(changePasswordRequest.getUsername());
+
+        return accountOptional.map(account -> {
+            if (bCryptPasswordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())) {
+                account.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
+                accountRepository.save(account);
+
+                return true;
+            }
+
+            return false;
+        }).orElse(false);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Account> accountOptional = getById(username);
+
+        return accountOptional.map(MyUserDetails::new).orElseGet(null);
+    }
 }
