@@ -42,16 +42,11 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
                     .filter(r -> r.getRoom().getName().equals(roomName))
                     .collect(Collectors.toList());
         }
-        if (month != "") {
+        if (month != "" && year != "") {
             registrationHistories = registrationHistories
                     .stream()
-                    .filter(r -> (r.getDateStart().getMonthValue() == m) || (r.getDateEnd().getMonthValue() == m))
-                    .collect(Collectors.toList());
-        }
-        if (year != "") {
-            registrationHistories = registrationHistories
-                    .stream()
-                    .filter(r -> (r.getDateStart().getYear() == y) || (r.getDateEnd().getYear() == y))
+                    .filter(r -> (r.getDateStart().getMonthValue() == m && r.getDateStart().getYear() == y)
+                            || (r.getDateEnd().getMonthValue() == m && r.getDateEnd().getYear() == y))
                     .collect(Collectors.toList());
         }
         return registrationHistories;
