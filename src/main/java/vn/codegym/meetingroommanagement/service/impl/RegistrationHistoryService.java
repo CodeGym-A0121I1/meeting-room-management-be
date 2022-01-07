@@ -1,19 +1,14 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
 import java.time.*;
-import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class RegistrationHistoryService implements IRegistrationHistoryService {
@@ -28,17 +23,29 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     public float registrationPerformance(String roomName, String month, String year, List<RegistrationHistory> registrationHistories) {
-        float performance = 0;
-        long totalTime = (timeConversion(month, year).getDays() + 1) * 8 * 60 * 60;
+        int m = Integer.parseInt(month);
+        int y = Integer.parseInt(year);
+        YearMonth yearMonth = YearMonth.of(y, m);
+        LocalDate startMonth = yearMonth.atDay(1);
+        LocalDate endMonth = yearMonth.atEndOfMonth();
+        long totalTime = dayConversion(startMonth, endMonth) * 8 * 60 * 60;
+
         long totalUseTime = 0;
         for (RegistrationHistory registrationHistory : registrationHistories) {
-            int monthStart = registrationHistory.getDateStart().getMonthValue();
-            int monthEnd = registrationHistory.getDateEnd().getMonthValue();
+            YearMonth yearMonthStart = YearMonth.of(registrationHistory.getDateStart().getYear(), registrationHistory.getDateStart().getMonthValue());
+            YearMonth yearMonthEnd = YearMonth.of(registrationHistory.getDateEnd().getYear(), registrationHistory.getDateEnd().getMonthValue());
+            int dayConversion;
+            long secondConversion;
+            if (yearMonthEnd.compareTo(yearMonthStart) != 0) {
+                dayConversion = dayConversion(registrationHistory.getDateStart(), yearMonthStart.atEndOfMonth());
+            } else {
+                dayConversion = dayConversion(registrationHistory.getDateStart(), registrationHistory.getDateEnd());
+            }
+            secondConversion = secondConversion(registrationHistory.getTimeStart(), registrationHistory.getTimeEnd());
+            totalUseTime += dayConversion * secondConversion;
         }
 
-        performance = (totalUseTime / totalTime);
-
-        return performance;
+        return (float) totalUseTime / totalTime;
     }
 
     @Override
@@ -70,13 +77,13 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     public void deleteById(String key) {
     }
 
-    private Period timeConversion(String month, String year) {
-        int m = Integer.parseInt(month);
-        int y = Integer.parseInt(year);
-        YearMonth yearMonth = YearMonth.of(y, m);
-        LocalDate startMonth = yearMonth.atDay(1);
-        LocalDate endMonth = yearMonth.atEndOfMonth();
-        Period period = Period.between(startMonth, endMonth);
-        return period;
+    private int dayConversion(LocalDate dateStart, LocalDate dateEnd) {
+        int dayConversion = Period.between(dateStart, dateEnd).getDays() + 1;
+        return dayConversion;
+    }
+
+    private long secondConversion(LocalTime timeStart, LocalTime timeEnd) {
+        long dayConversion = Duration.between(timeStart, timeEnd).getSeconds();
+        return dayConversion;
     }
 }
