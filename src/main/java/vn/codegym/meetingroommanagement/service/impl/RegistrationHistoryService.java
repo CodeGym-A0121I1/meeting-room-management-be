@@ -22,29 +22,8 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public List<RegistrationHistory> roomStatistic(String roomType, String roomName, String month, String year) {
-        List<RegistrationHistory> registrationHistories = registrationHistoryRepository.findAll();
-
-        int m = Integer.parseInt(month);
-        int y = Integer.parseInt(year);
-        if (roomType != "") {
-            registrationHistories = registrationHistories
-                    .stream()
-                    .filter(r -> r.getRoom().getRoomType().getName().equals(roomType))
-                    .collect(Collectors.toList());
-        }
-        if (roomName != "") {
-            registrationHistories = registrationHistories
-                    .stream()
-                    .filter(r -> r.getRoom().getName().equals(roomName))
-                    .collect(Collectors.toList());
-        }
-        if (month != "" && year != "") {
-            registrationHistories = registrationHistories
-                    .stream()
-                    .filter(r -> (r.getDateStart().getMonthValue() == m && r.getDateStart().getYear() == y)
-                            || (r.getDateEnd().getMonthValue() == m && r.getDateEnd().getYear() == y))
-                    .collect(Collectors.toList());
-        }
+        List<RegistrationHistory> registrationHistories = registrationHistoryRepository
+                .roomStatistic(roomType, roomName, month, year);
         return registrationHistories;
     }
 
