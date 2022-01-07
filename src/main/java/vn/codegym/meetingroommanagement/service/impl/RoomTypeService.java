@@ -1,13 +1,9 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
-import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.room.RoomType;
-import vn.codegym.meetingroommanagement.service.IEquipmentService;
+import vn.codegym.meetingroommanagement.service.IRoomTypeService;
 
-@Service
-public class EquipmentService implements IEquipmentService {
-
-
+public class RoomTypeService implements IRoomTypeService {
     @Override
     public Iterable<RoomType> findAll() {
         return null;
