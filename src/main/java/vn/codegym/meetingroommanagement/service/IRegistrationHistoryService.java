@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
+import vn.codegym.meetingroommanagement.model.room.RoomType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,4 +18,6 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
     List<?> roomStatistic(String roomType, String roomName, String month, String year);
 
     int roomCountStatistic(String roomName);
+    List<?> finall();
+
 }
