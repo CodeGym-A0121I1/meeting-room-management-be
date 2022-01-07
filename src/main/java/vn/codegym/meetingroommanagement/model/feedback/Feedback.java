@@ -1,5 +1,6 @@
 package vn.codegym.meetingroommanagement.model.feedback;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,7 @@ import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.model.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -36,19 +34,17 @@ public class Feedback {
 
     private LocalDate dateResponse;
 
-    private String note;
+    private String noteRequest;
+
+    private String noteResponse;
+
+    private boolean status;
 
     @ManyToOne
+    @JoinColumn
     private User user;
 
     @ManyToOne
-    private Equipment equipment;
-
-    @ManyToOne
-    private Problem problem;
-
-    @ManyToOne
+    @JoinColumn
     private Room room;
-
-
 }

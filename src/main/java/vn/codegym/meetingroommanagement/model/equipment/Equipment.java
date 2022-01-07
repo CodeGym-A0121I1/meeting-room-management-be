@@ -1,5 +1,6 @@
 package vn.codegym.meetingroommanagement.model.equipment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,9 +41,11 @@ public class Equipment {
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private Category category;
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private Room room;
 }

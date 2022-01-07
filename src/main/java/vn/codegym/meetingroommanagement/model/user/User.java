@@ -1,10 +1,13 @@
 package vn.codegym.meetingroommanagement.model.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import vn.codegym.meetingroommanagement.model.feedback.Feedback;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
@@ -34,8 +37,13 @@ public class User {
 
     @OneToOne
     @JoinColumn
+    @JsonBackReference
     private Account account;
 
     @OneToMany(mappedBy = "user")
     List<RegistrationHistory> registrationHistoryList;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    List<Feedback> feedbackList;
 }

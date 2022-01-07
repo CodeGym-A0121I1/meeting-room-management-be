@@ -23,7 +23,6 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    @JsonBackReference
     private List<Equipment> equipmentList;
 
 
