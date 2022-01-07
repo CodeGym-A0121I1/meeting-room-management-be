@@ -21,6 +21,7 @@ public class Account {
     private String password;
 
     @OneToOne(mappedBy = "account")
+    @JsonBackReference
     private User user;
 
     @Enumerated(EnumType.STRING)
