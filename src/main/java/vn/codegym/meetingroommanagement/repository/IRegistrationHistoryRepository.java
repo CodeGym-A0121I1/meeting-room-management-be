@@ -15,11 +15,6 @@ import java.util.List;
 
 @Repository
 public interface IRegistrationHistoryRepository extends JpaRepository<RegistrationHistory, String> {
-    @Query("select s.user.fullName, s.room.name, s.dateStart, s.dateEnd, s.timeStart, s.timeEnd, s.isCancel " +
-            "from RegistrationHistory s inner join s.room inner join s.room.roomType inner join s.user " +
-            "where s.dateStart>=?1 and s.dateEnd<=?2")
-    List<?> roomStatistic(LocalDate startTime, LocalDate endTime);
-
     @Query("select count(s.room.name) " +
             "from RegistrationHistory s inner join s.room " +
             "where s.isCancel=false " +
