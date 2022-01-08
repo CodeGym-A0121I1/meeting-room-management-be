@@ -55,4 +55,13 @@ public class UserController {
         User newUser = userService.save(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
+    //TheDHN delete user
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteByEmployeeId(@PathVariable String id) {
+        if(id == null){
+            return ResponseEntity.badRequest().body("Không có người dùng này !");
+        }
+        userService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
