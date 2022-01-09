@@ -45,12 +45,11 @@ public class FeedbackService implements IFeedbackService {
     }
 
     @Override
-    public void sendEmail(String subject, String content) {
+    public void sendEmail(String toEmail, String subject, String content) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("trungtrongcr21@gmail.com");
 
         // this email address can be changed to the new one email of accepter
-        mailMessage.setTo("trungtrongcr21@gmail.com");
+        mailMessage.setTo(toEmail);
         mailMessage.setSubject(subject);
         mailMessage.setText(content);
 
