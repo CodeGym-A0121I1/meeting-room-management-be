@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public interface IAccountService extends IService<Account, String>, UserDetailsService {
+public interface IAccountService extends IService<Account, String> {
     @Override
     List<Account> getAll();
 

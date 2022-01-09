@@ -1,9 +1,8 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.dto.ChangePasswordRequest;
 import vn.codegym.meetingroommanagement.model.user.Account;
@@ -19,8 +18,6 @@ public class AccountService implements IAccountService {
     @Autowired
     private IAccountRepository accountRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<Account> getAll() {
@@ -41,6 +38,8 @@ public class AccountService implements IAccountService {
     public void deleteById(String key) {
 
     }
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public boolean changePassword(ChangePasswordRequest changePasswordRequest) {
@@ -56,12 +55,5 @@ public class AccountService implements IAccountService {
 
             return false;
         }).orElse(false);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Account> accountOptional = getById(username);
-
-        return accountOptional.map(MyUserDetails::new).orElseGet(null);
     }
 }

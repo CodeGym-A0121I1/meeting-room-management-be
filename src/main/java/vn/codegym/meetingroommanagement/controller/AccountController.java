@@ -9,15 +9,20 @@ import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.jwt.JwtRequest;
 import vn.codegym.meetingroommanagement.model.jwt.JwtResponse;
 import vn.codegym.meetingroommanagement.model.user.Account;
-import vn.codegym.meetingroommanagement.service.IAccountService;
+import vn.codegym.meetingroommanagement.service.impl.AccountService;
+import vn.codegym.meetingroommanagement.service.impl.MyUserDetailsService;
 import vn.codegym.meetingroommanagement.utils.JwtUtil;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
-public class HomeController {
+@RequestMapping("/api/accounts")
+@CrossOrigin
+public class AccountController {
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -26,11 +31,11 @@ public class HomeController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private IAccountService accountService;
+    private AccountService accountService;
 
     @GetMapping("/")
     public String home() {
-        return "Welcome to Meeting Room Management";
+        return "Welcome to Meeting Room Managenment";
     }
 
     @PostMapping("/login")
@@ -52,7 +57,7 @@ public class HomeController {
             return new JwtResponse(token, account, "Not found user: " + jwtRequest.getUsername());
         }
 
-        userDetails = accountService.loadUserByUsername(jwtRequest.getUsername());
+        userDetails = myUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
         account = accountService.getById(jwtRequest.getUsername());
         token = jwtUtil.generateToken(userDetails);
         return new JwtResponse(token, account, status);

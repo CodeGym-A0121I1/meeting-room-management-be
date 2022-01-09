@@ -7,30 +7,31 @@ import vn.codegym.meetingroommanagement.model.user.Account;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class MyUserDetails implements UserDetails {
-    private Account account;
+    private Optional<Account> account;
 
-    public MyUserDetails(Account account) {
+    public MyUserDetails(Optional<Account> account) {
         this.account = account;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(account.getRole().toString()));
+        authorities.add(new SimpleGrantedAuthority(account.get().getRole().toString()));
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return (account).getPassword();
+        return (account).get().getPassword();
     }
 
     @Override
     public String getUsername() {
-        return account.getUsername();
+        return account.get().getUsername();
     }
 
     @Override

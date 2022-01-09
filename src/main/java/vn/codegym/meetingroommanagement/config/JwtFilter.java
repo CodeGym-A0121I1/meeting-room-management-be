@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import vn.codegym.meetingroommanagement.service.IAccountService;
+import vn.codegym.meetingroommanagement.service.impl.MyUserDetailsService;
 import vn.codegym.meetingroommanagement.utils.JwtUtil;
 
 import javax.servlet.FilterChain;
@@ -18,12 +18,10 @@ import java.io.IOException;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-
     @Autowired
     private JwtUtil jwtUtil;
-
     @Autowired
-    private IAccountService accountService;
+    private MyUserDetailsService myUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
             username = jwtUtil.getUsernameFromToken(jwtToken);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = accountService.loadUserByUsername(username);
+            UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
             if (jwtUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
