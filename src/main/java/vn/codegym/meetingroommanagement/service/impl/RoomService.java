@@ -9,6 +9,7 @@ import vn.codegym.meetingroommanagement.service.IEquipmentService;
 import vn.codegym.meetingroommanagement.service.IRoomService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getAll() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -48,6 +49,6 @@ public class RoomService implements IRoomService {
 
     @Override
     public void deleteById(String key) {
-
+//DanhDC
     }
 }
