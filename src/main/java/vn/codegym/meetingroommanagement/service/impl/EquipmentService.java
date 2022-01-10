@@ -16,8 +16,8 @@ public class EquipmentService implements IEquipmentService {
     private IEquipmentRepository equipmentRepository;
 
     @Override
-    public List<Equipment> getAllByCategoryId(Integer id_category) {
-        return this.equipmentRepository.findAllByCategory_Id(id_category);
+    public List<Equipment> getAllByCategoryId(Integer idCategory) {
+        return this.equipmentRepository.findAllByCategory_Id(idCategory);
     }
 
     @Override
