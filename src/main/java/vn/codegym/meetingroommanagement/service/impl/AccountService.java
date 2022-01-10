@@ -1,6 +1,7 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -61,7 +62,19 @@ public class AccountService implements IAccountService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Account> accountOptional = getById(username);
+        boolean enabled = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
 
-        return accountOptional.map(MyUserDetails::new).orElseGet(null);
+        return accountOptional.map(account ->
+                new User(account.getUsername(),
+                        account.getPassword(),
+                        enabled,
+                        accountNonExpired,
+                        credentialsNonExpired,
+                        accountNonLocked,
+                        account.getAuthorities())
+        ).orElseGet(null);
     }
 }
