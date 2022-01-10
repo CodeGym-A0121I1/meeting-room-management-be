@@ -25,4 +25,6 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonBackReference
     private List<Equipment> equipmentList;
+
+
 }

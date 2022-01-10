@@ -41,11 +41,6 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     @Override
-    public void delete(RegistrationHistory entity) {
-
-    }
-
-    @Override
     public void deleteById(String key) {
         registrationHistoryRepository.deleteById(key);
     }

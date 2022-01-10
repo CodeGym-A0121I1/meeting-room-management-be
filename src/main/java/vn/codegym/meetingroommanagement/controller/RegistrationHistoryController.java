@@ -31,7 +31,7 @@ public class RegistrationHistoryController {
         }
         return new ResponseEntity<List<RegistrationHistory>>(registrationHistories, HttpStatus.OK);
     }
-
+  
     @DeleteMapping(value = "/cancel/{id}")
     public ResponseEntity<RegistrationHistory> cancelRoomRegistration(@PathVariable("id") String id) {
 
@@ -86,3 +86,4 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(totalUse, HttpStatus.OK);
     }
 }
+

@@ -1,7 +1,13 @@
 package vn.codegym.meetingroommanagement.service;
 
-import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.dto.CategoryQuantityStatusDTO;
+import vn.codegym.meetingroommanagement.model.equipment.Category;
 
-@Service
+import java.util.List;
+
 public interface ICategoryService {
+
+    List<Category> getAll();
+
+    List<CategoryQuantityStatusDTO> getAllCategoryQuantityStatusDTO();
 }

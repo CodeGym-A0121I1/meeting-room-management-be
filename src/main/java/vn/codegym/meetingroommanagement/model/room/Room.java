@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import vn.codegym.meetingroommanagement.model.EStatus;
+import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
@@ -51,5 +52,8 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     @JsonBackReference
-    List<RegistrationHistory> registrationHistoryList;
+    private List<RegistrationHistory> registrationHistoryList;
+
+    @OneToMany(mappedBy = "room")
+    private List<Equipment> equipmentList;
 }
