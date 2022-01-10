@@ -1,7 +1,6 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.dto.CategoryQuantityStatusDTO;
 import vn.codegym.meetingroommanagement.model.EStatus;
@@ -11,19 +10,38 @@ import vn.codegym.meetingroommanagement.service.ICategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService implements ICategoryService {
 
-    @Autowired
-    private ICategoryRepository categoryRepository;
+    private final ICategoryRepository categoryRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    public CategoryService(ICategoryRepository categoryRepository, ModelMapper modelMapper) {
+        this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public List<Category> getAll() {
         return this.categoryRepository.findAll();
+    }
+
+    @Override
+    public Optional<Category> getById(Integer key) {
+        return categoryRepository.findById(key);
+    }
+
+    @Override
+    public Category save(Category entity) {
+        return categoryRepository.save(entity);
+    }
+
+    @Override
+    public void deleteById(Integer key) {
+        categoryRepository.deleteById(key);
     }
 
     // thiết lập danh sách với các trường phù hợp từ Equipment và Category sang 1 đối tượng DTO
@@ -45,9 +63,5 @@ public class CategoryService implements ICategoryService {
             categoryQuantityStatusDTOList.add(categoryQuantityStatusDTO);
         }
         return categoryQuantityStatusDTOList;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new CategoryService().getAll());
     }
 }

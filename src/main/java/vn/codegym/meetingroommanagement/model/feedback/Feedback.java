@@ -1,10 +1,11 @@
 package vn.codegym.meetingroommanagement.model.feedback;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.model.user.User;
 
@@ -40,6 +41,10 @@ public class Feedback {
     @ManyToOne
     @JoinColumn
     private User user;
+
+    @ManyToOne
+    @JoinColumn
+    private Problem problem;
 
     @ManyToOne
     @JoinColumn

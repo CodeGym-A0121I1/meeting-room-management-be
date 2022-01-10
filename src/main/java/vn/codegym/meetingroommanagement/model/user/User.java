@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.model.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,12 +36,12 @@ public class User {
     @JoinColumn
     private Department department;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    @JsonBackReference
     private Account account;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<RegistrationHistory> registrationHistoryList;
 
     @OneToMany(mappedBy = "user")

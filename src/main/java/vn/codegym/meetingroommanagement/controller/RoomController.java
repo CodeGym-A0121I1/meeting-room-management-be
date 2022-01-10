@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +19,17 @@ import java.util.Optional;
 @RequestMapping("/api/rooms")
 public class RoomController {
 
-    @Autowired
-    private IRoomService roomService;
+    private final IRoomService roomService;
 
-    @Autowired
-    private IEquipmentService equipmentService;
+    private final IEquipmentService equipmentService;
 
-    @Autowired
-    private IAreaService areaService;
+    private final IAreaService areaService;
+
+    public RoomController(IRoomService roomService, IEquipmentService equipmentService, IAreaService areaService) {
+        this.roomService = roomService;
+        this.equipmentService = equipmentService;
+        this.areaService = areaService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Room>> getAllRoom() {
@@ -58,9 +60,7 @@ public class RoomController {
         return roomOptional.map(r -> {
                     List<Equipment> equipmentList = new ArrayList<>();
 
-                    r.getEquipmentList().forEach(equipment -> {
-                        equipmentService.getById(equipment.getId()).ifPresent(equipmentList::add);
-                    });
+                    r.getEquipmentList().forEach(equipment -> equipmentService.getById(equipment.getId()).ifPresent(equipmentList::add));
 
                     equipmentList.forEach(equipment -> {
                         equipment.setRoom(null);

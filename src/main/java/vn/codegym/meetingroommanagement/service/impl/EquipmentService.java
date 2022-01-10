@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.repository.IEquipmentRepository;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @Service
 public class EquipmentService implements IEquipmentService {
 
-    @Autowired
-    private IEquipmentRepository equipmentRepository;
+    private final IEquipmentRepository equipmentRepository;
+
+    public EquipmentService(IEquipmentRepository equipmentRepository) {
+        this.equipmentRepository = equipmentRepository;
+    }
 
     @Override
     public List<Equipment> getAllByCategoryId(Integer id_category) {

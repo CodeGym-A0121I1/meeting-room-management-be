@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,15 +16,18 @@ import java.util.Optional;
 @Service
 public class AccountService implements IAccountService {
 
-    @Autowired
-    private IAccountRepository accountRepository;
+    private final IAccountRepository accountRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public AccountService(IAccountRepository accountRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.accountRepository = accountRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     public List<Account> getAll() {
-        return null;
+        return accountRepository.findAll();
     }
 
     @Override
@@ -35,12 +37,12 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account save(Account entity) {
-        return null;
+        return accountRepository.save(entity);
     }
 
     @Override
     public void deleteById(String key) {
-
+        accountRepository.deleteById(key);
     }
 
     @Override
@@ -75,6 +77,6 @@ public class AccountService implements IAccountService {
                         credentialsNonExpired,
                         accountNonLocked,
                         account.getAuthorities())
-        ).orElseGet(null);
+        ).orElse(null);
     }
 }

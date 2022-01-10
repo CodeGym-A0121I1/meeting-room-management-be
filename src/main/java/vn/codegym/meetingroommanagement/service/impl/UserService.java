@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.user.User;
@@ -13,11 +12,14 @@ import java.util.Optional;
 @Service
 public class UserService implements IUserService {
 
-    @Autowired
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserService(IUserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     public List<User> getAll() {

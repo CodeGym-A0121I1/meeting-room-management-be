@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,11 @@ import java.util.Optional;
 @RequestMapping("/api/feedbacks")
 public class FeedbackController {
 
-    @Autowired
-    private IFeedbackService feedbackService;
+    private final IFeedbackService feedbackService;
+
+    public FeedbackController(IFeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
+    }
 
     @GetMapping("")
     public ResponseEntity<List<Feedback>> getAll() {
@@ -30,24 +32,24 @@ public class FeedbackController {
     @GetMapping("/{id}")
     public ResponseEntity<Feedback> getById(@PathVariable("id") String id) {
         Optional<Feedback> feedback = this.feedbackService.getById(id);
-        return feedback.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return feedback.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("")
-    public ResponseEntity<Boolean> create(@RequestBody Feedback feedback) {
+    public ResponseEntity<Feedback> create(@RequestBody Feedback feedback) {
         // set time now request for Feedback
         if (feedback.getNoteRequest().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         feedback.setDateRequest(LocalDate.now());
-        this.feedbackService.save(feedback);
         try {
             this.feedbackService.sendEmail("trungtrongcr21@gmail.com", "NEW FEEDBACK", feedback.toStringRequest());
-            return new ResponseEntity<>(true, HttpStatus.OK);
+            return new ResponseEntity<>(feedbackService.save(feedback), HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(false, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Boolean> update(@PathVariable("id") String id, @RequestBody String noteResponse) {

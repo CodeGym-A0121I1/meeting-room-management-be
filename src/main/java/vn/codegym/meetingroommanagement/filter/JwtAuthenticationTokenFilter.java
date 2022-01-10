@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.filter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +18,14 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private IAccountService accountService;
+    private final IAccountService accountService;
+
+    public JwtAuthenticationTokenFilter(JwtUtil jwtUtil, IAccountService accountService) {
+        this.jwtUtil = jwtUtil;
+        this.accountService = accountService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

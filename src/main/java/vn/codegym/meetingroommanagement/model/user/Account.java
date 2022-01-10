@@ -1,6 +1,6 @@
 package vn.codegym.meetingroommanagement.model.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class Account {
     private String password;
 
     @OneToOne(mappedBy = "account")
-    @JsonBackReference
+    @JsonIgnore
     private User user;
 
     @Enumerated(EnumType.STRING)

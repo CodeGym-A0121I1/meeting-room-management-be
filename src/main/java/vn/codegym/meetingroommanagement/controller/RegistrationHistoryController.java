@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/registration-histories")
 public class RegistrationHistoryController {
-    @Autowired
-    private IRegistrationHistoryService registrationHistoryService;
+
+    private final IRegistrationHistoryService registrationHistoryService;
+
+    public RegistrationHistoryController(IRegistrationHistoryService registrationHistoryService) {
+        this.registrationHistoryService = registrationHistoryService;
+    }
 
     @DeleteMapping(value = "/cancel/{id}")
     public ResponseEntity<RegistrationHistory> cancelRoomRegistration(@PathVariable("id") String id) {
@@ -23,12 +26,12 @@ public class RegistrationHistoryController {
         Optional<RegistrationHistory> optionalRegistrationHistory = registrationHistoryService.getById(id);
 
         if (!optionalRegistrationHistory.isPresent()) {
-            return new ResponseEntity<RegistrationHistory>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         optionalRegistrationHistory.get().setCancel(true);
         registrationHistoryService.save(optionalRegistrationHistory.get());
-        return new ResponseEntity<RegistrationHistory>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("static-by-time")

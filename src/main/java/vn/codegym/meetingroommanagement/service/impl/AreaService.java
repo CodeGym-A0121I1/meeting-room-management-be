@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.room.Area;
 import vn.codegym.meetingroommanagement.repository.IAreaRepository;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @Service
 public class AreaService implements IAreaService {
 
-    @Autowired
-    private IAreaRepository areaRepository;
+    private final IAreaRepository areaRepository;
+
+    public AreaService(IAreaRepository areaRepository) {
+        this.areaRepository = areaRepository;
+    }
 
     @Override
     public List<Area> getAll() {

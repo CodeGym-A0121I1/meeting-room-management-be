@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,14 @@ import java.util.Optional;
 @Service
 public class FeedbackService implements IFeedbackService {
 
-    @Autowired
-    private IFeedbackRepository feedbackRepository;
+    private final IFeedbackRepository feedbackRepository;
 
-    @Autowired
-    private MailSender mailSender;
+    private final MailSender mailSender;
+
+    public FeedbackService(IFeedbackRepository feedbackRepository, MailSender mailSender) {
+        this.feedbackRepository = feedbackRepository;
+        this.mailSender = mailSender;
+    }
 
     @Override
     public List<Feedback> getAll() {
@@ -33,10 +35,6 @@ public class FeedbackService implements IFeedbackService {
     @Override
     public Feedback save(Feedback feedback) {
         return this.feedbackRepository.save(feedback);
-    }
-
-    @Override
-    public void delete(Feedback entity) {
     }
 
     @Override
