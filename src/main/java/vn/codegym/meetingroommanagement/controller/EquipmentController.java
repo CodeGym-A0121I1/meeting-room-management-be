@@ -27,10 +27,11 @@ public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
 
-    // TrongVT
-    // return List<CategoryQuantityStatus> : màn hình " Quản lý tài sản "
-    // CategoryQuantityStatus là loại thiết bị và số lượng  của mỗi trạng thái
-    // test in Postman OK
+//     TrongVT
+//     return List<CategoryQuantityStatus> : màn hình " Quản lý tài sản "
+//     CategoryQuantityStatus là loại thiết bị và số lượng  của mỗi trạng thái
+//     test in Postman OK
+    //
     @GetMapping("")
     public ResponseEntity<List<CategoryQuantityStatusDTO>> getAllCategoryQuantityStatusDTO() {
         List<CategoryQuantityStatusDTO> categoryQuantityStatusDTOList = this.categoryService.getAllCategoryQuantityStatusDTO();
@@ -69,11 +70,11 @@ public class EquipmentController {
     // Xóa 1 đối tượng Equipment bằng id
     // test in Postman OK
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") String id) {
-        Optional<Equipment> equipment = this.equipmentService.getById(id);
-        if (equipment.isPresent()) {
+    public ResponseEntity<Equipment> delete(@PathVariable("id") String id) {
+        Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
+        if (equipmentOptional.isPresent()) {
             this.equipmentService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(equipmentOptional.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -83,7 +84,7 @@ public class EquipmentController {
     // kiểm tra Equipment đã tồn tại chưa, nếu tồn tại thì không thực hiện Cập nhật và trả về NOT_FOUND (ngược lại)
     // test in Postman OK
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody EStatus status) {
+    public ResponseEntity<Equipment> update(@PathVariable("id") String id, @RequestBody EStatus status) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -91,7 +92,7 @@ public class EquipmentController {
         if (equipmentOptional.isPresent()) {
             equipmentOptional.get().setStatus(status);
             this.equipmentService.save(equipmentOptional.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(equipmentOptional.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -107,7 +108,7 @@ public class EquipmentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryIdAndNameLike(idCategory, name);
-        if (equipmentList.size() == 0) {
+        if (equipmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);

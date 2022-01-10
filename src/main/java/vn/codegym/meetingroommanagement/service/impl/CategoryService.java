@@ -33,7 +33,7 @@ public class CategoryService implements ICategoryService {
         for (Category category : this.getAll()) {
             CategoryQuantityStatusDTO categoryQuantityStatusDTO = modelMapper.map(category, CategoryQuantityStatusDTO.class);
             for (EStatus status : EStatus.values()) {
-                int number = this.categoryRepository.countByCategory_IdAndStatus(category.getId(), status.toString());
+                int number = this.categoryRepository.countByCategoryIdAndStatus(category.getId(), status.toString());
                 if (status.toString().equals("FIXING")) {
                     categoryQuantityStatusDTO.setFixing(number);
                 } else if (status.toString().equals("AVAILABLE")) {
