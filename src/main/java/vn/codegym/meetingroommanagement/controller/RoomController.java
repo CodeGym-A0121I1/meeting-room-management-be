@@ -19,13 +19,13 @@ public class RoomController {
     IRoomService iRoomService;
 
     // Detail a room in list
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Room> getRoomById(@PathVariable("id") String id) {
         Optional<Room> room = iRoomService.getById(id);
         if (!room.isPresent()) {
-            return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Room>(room.get(), HttpStatus.OK);
+        return new ResponseEntity<>(room.get(), HttpStatus.OK);
     }
 }

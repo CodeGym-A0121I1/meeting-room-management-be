@@ -6,6 +6,7 @@ import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.repository.IRoomRepository;
 import vn.codegym.meetingroommanagement.service.IRoomService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,7 @@ public class RoomService implements IRoomService {
     @Autowired
     IRoomRepository iRoomRepository;
     @Override
-    public List<Room> getAll() {
-        return null;
+    public List<Room> getAll() {return Collections.emptyList();
     }
 
     @Override
@@ -30,11 +30,11 @@ public class RoomService implements IRoomService {
 
     @Override
     public void delete(Room entity) {
-
+        // DanhDC do
     }
 
     @Override
     public void deleteById(String key) {
-
+        // DanhDC do
     }
 }

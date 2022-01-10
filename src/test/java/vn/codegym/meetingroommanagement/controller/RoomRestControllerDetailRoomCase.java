@@ -13,12 +13,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RoomRestController_detailRoom {
+ class RoomRestControllerDetailRoomCase {
 @Autowired
     private MockMvc mockMvc;
 // trương hợp id = null trả về status 4xx
 @Test
-    public void testGetInformationRoom_byId_null() throws Exception{
+     void testGetInformationRoomByIdNull() throws Exception{
     this.mockMvc.perform(
             MockMvcRequestBuilders
                     .get("/api/rooms/{id}","null"))
@@ -27,7 +27,7 @@ public class RoomRestController_detailRoom {
 }
     // trương hợp id khong có trong database trả về status 4xx
     @Test
-    public void testGetInformationRoom_byId_not_in_Database() throws Exception{
+     void testGetInformationRoomByIdNotInDatabase() throws Exception{
         this.mockMvc.perform(
                         MockMvcRequestBuilders
                                 .get("/api/rooms/{id}","room46"))
@@ -36,7 +36,7 @@ public class RoomRestController_detailRoom {
     }
     // trương hợp id bằng rỗng trả về status 4xx
     @Test
-    public void testGetInformationRoom_byId_equal_blank() throws Exception{
+     void testGetInformationRoomByIdEqualBlank() throws Exception{
         this.mockMvc.perform(
                         MockMvcRequestBuilders
                                 .get("/api/rooms/{id}",""))
@@ -45,7 +45,7 @@ public class RoomRestController_detailRoom {
     }
     // trường hơp id có trong database trả về 2xx
     @Test
-    public void testGetInformationRoom_byId() throws Exception {
+     void testGetInformationRoomById() throws Exception {
         this.mockMvc.perform(
                         MockMvcRequestBuilders
                                 .get("/api/rooms/{id}", "room1"))
