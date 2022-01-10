@@ -1,19 +1,14 @@
 package vn.codegym.meetingroommanagement.model.feedback;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.model.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -36,19 +31,36 @@ public class Feedback {
 
     private LocalDate dateResponse;
 
-    private String note;
+    private String noteRequest;
+
+    private String noteResponse;
+
+    private boolean status;
 
     @ManyToOne
+    @JoinColumn
     private User user;
 
     @ManyToOne
-    private Equipment equipment;
-
-    @ManyToOne
-    private Problem problem;
-
-    @ManyToOne
+    @JoinColumn
     private Room room;
 
+    public String toStringRequest() {
+        return "Người phản hồi: " + user.getFullName() +
+                "\nTên phòng: " + room.getName() +
+                "\nNgày gửi: " + dateRequest +
+                "\nNội dung: " + noteRequest +
+                "\nTrạng thái: Chưa xử lý";
+    }
+
+    public String toStringResponse() {
+        return "Người xử lý: Admin" +
+                "\nTên phòng: " + room.getName() +
+                "\nNgày gửi phản hồi: " + dateRequest +
+                "\nNội dung phản hồi: " + noteRequest +
+                "\nNgày xử lý: " + dateResponse +
+                "\nNội dung xử lý: " + noteResponse +
+                "\nTrạng thái: Đã xử lý";
+    }
 
 }

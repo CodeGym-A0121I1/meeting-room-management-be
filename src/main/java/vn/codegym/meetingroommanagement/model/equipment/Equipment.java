@@ -1,6 +1,6 @@
 package vn.codegym.meetingroommanagement.model.equipment;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,6 @@ import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.room.Room;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -29,13 +28,10 @@ public class Equipment {
     )
     private String id;
 
-    @NotBlank(message = "Name is mandatory")
     private String name;
 
     private String description;
 
-    @NotBlank(message = "Price is mandatory")
-    
     private Double price;
 
     private String image;
@@ -45,10 +41,11 @@ public class Equipment {
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private Category category;
 
     @ManyToOne
     @JoinColumn
-    @JsonBackReference
+    @JsonIgnore
     private Room room;
 }
