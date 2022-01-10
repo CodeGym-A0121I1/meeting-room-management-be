@@ -21,13 +21,13 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
-    public List<Equipment> getAllByCategoryIdAndNameLike(Integer id_category, String nameEquipment) {
-        return this.equipmentRepository.findAllByCategory_IdAndNameContaining(id_category, nameEquipment);
+    public List<Equipment> getAllByCategoryIdAndNameLike(Integer idCategory, String nameEquipment) {
+        return this.equipmentRepository.findAllByCategoryIdAndNameContaining(idCategory, nameEquipment);
     }
 
     @Override
     public List<Equipment> getAll() {
-        return null;
+        return this.equipmentRepository.findAll();
     }
 
     @Override

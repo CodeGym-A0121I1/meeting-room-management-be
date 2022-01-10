@@ -8,6 +8,7 @@ import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.service.impl.EquipmentService;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import vn.codegym.meetingroommanagement.dto.CategoryQuantityStatusDTO;
@@ -25,17 +26,16 @@ public class EquipmentController {
     private ICategoryService categoryService;
 
     @Autowired
-    EquipmentService equipmentService;
+    private EquipmentService equipmentService;
 
-//     TrongVT
-//     return List<CategoryQuantityStatus> : màn hình " Quản lý tài sản "
-//     CategoryQuantityStatus là loại thiết bị và số lượng  của mỗi trạng thái
-//     test in Postman OK
-    //
+    // TrongVT
+    // return List<CategoryQuantityStatus> : màn hình " Quản lý tài sản "
+    // CategoryQuantityStatus là loại thiết bị và số lượng  của mỗi trạng thái
+    // test in Postman OK
     @GetMapping("")
     public ResponseEntity<List<CategoryQuantityStatusDTO>> getAllCategoryQuantityStatusDTO() {
         List<CategoryQuantityStatusDTO> categoryQuantityStatusDTOList = this.categoryService.getAllCategoryQuantityStatusDTO();
-        if (categoryQuantityStatusDTOList.size() == 0) {
+        if (categoryQuantityStatusDTOList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(categoryQuantityStatusDTOList, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class EquipmentController {
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategory() {
         List<Category> categoryList = this.categoryService.getAll();
-        if (categoryList.size() == 0) {
+        if (categoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(categoryList, HttpStatus.OK);
@@ -59,11 +59,8 @@ public class EquipmentController {
     // test in Postman OK
     @GetMapping("/categories/{idCategory}")
     public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") Integer idCategory) {
-        if (idCategory == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryId(idCategory);
-        if (equipmentList.size() == 0) {
+        if (equipmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
@@ -73,11 +70,11 @@ public class EquipmentController {
     // Xóa 1 đối tượng Equipment bằng id
     // test in Postman OK
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") String id) {
-        Optional<Equipment> equipment = this.equipmentService.getById(id);
-        if (equipment.isPresent()) {
+    public ResponseEntity<Equipment> delete(@PathVariable("id") String id) {
+        Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
+        if (equipmentOptional.isPresent()) {
             this.equipmentService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(equipmentOptional.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -87,15 +84,15 @@ public class EquipmentController {
     // kiểm tra Equipment đã tồn tại chưa, nếu tồn tại thì không thực hiện Cập nhật và trả về NOT_FOUND (ngược lại)
     // test in Postman OK
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable() String id, @RequestBody EStatus status) {
+    public ResponseEntity<Equipment> update(@PathVariable("id") String id, @RequestBody EStatus status) {
         if (id == null) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
         if (equipmentOptional.isPresent()) {
             equipmentOptional.get().setStatus(status);
             this.equipmentService.save(equipmentOptional.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(equipmentOptional.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -111,31 +108,10 @@ public class EquipmentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryIdAndNameLike(idCategory, name);
-        if (equipmentList.size() == 0) {
+        if (equipmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
     }
-
-//
-//    // DatNT
-//    // Thêm mới 1 Equipment
-//    // test in Postman OK
-//    @PostMapping("")
-//    public ResponseEntity<?> create(@RequestBody Equipment equipment) {
-//        equipmentService.save(equipment);
-//        return ResponseEntity.ok().body(equipment);
-//    }
-//
-//    // DatNT
-//    // return: đối tượng Equipment
-//    // id: id của đối tượng Equipment
-//    // test in Postman OK
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Equipment> getById(@PathVariable("id") String id) {
-//        Optional<Equipment> equipmentOptional = equipmentService.getById(id);
-//        return equipmentOptional.map(equipment -> new ResponseEntity<>(equipment, HttpStatus.OK))
-//                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-//    }
 
 }

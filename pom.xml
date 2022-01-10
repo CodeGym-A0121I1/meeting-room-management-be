@@ -15,6 +15,10 @@
     <description>meeting-room-management-be</description>
     <properties>
         <java.version>1.8</java.version>
+        <sonar.host.url>http://18.223.133.219:9000/</sonar.host.url>
+        <sonar.login>f4570cffe1dd5bf39ecbeed0ef04eef921709b5a</sonar.login>
+        <sonar.projectKey>A0121I1_ReviewCode_TrongVT</sonar.projectKey>
+        <sonar.projectName>A0121I1_ReviewCode_TrongVT</sonar.projectName>
     </properties>
     <dependencies>
         <dependency>
@@ -37,7 +41,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -70,9 +73,13 @@
             <version>2.4.5</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.7.0.1746</version>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -87,5 +94,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
