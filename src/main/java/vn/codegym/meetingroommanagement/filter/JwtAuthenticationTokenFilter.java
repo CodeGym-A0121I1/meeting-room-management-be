@@ -30,6 +30,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
         String username = null;
 
         if (authorizationHeader != null) {
