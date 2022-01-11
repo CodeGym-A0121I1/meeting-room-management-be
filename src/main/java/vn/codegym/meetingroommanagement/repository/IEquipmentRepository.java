@@ -14,6 +14,6 @@ public interface IEquipmentRepository extends JpaRepository<Equipment, String> {
     @Query(value = "select count(status) from equipment where category_id = ?1 and status = ?2", nativeQuery = true)
     Integer countByCategoryIdAndStatus(Integer id, String status);
 
-    List<Equipment> findAllByCategoryIdAndNameContaining(Integer idCategory, String nameEquipment);
+    List<Equipment> findAllByCategory_IdAndNameContaining(Integer idCategory, String nameEquipment);
 
 }
