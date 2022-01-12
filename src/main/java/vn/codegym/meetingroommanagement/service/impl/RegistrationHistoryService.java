@@ -6,7 +6,10 @@ import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,35 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     @Override
     public int roomCountStatistic(String roomName) {
         return registrationHistoryRepository.roomCountStatistic(roomName);
+    }
+
+    @Override
+    public List<RegistrationHistory> listSearch(String roomName)  {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            if(dateStart == null ){
+//                dateStart = simpleDateFormat.parse("2000-01-01");
+//            }
+//            if (dateEnd == null){
+//                dateEnd = simpleDateFormat.parse("3000-01-01");
+//            }
+//        }catch (ParseException parseException){
+//            System.out.println(parseException.getMessage());
+//        };
+//
+        if (roomName == null){
+            roomName ="";
+        }
+//        if (status == null){
+//            status = "";
+//        }
+//        if (roomType == null){
+//            roomType="";
+//        }
+        return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName);
+
+       // return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName,dateStart,dateEnd,status);
     }
 
     @Override

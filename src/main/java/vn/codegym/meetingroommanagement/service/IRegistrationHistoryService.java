@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -17,4 +18,7 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
     List<?> roomStatistic(String roomType, String roomName, String month, String year);
 
     int roomCountStatistic(String roomName);
+
+    List<RegistrationHistory> listSearch(String roomName);
+   // List<RegistrationHistory> listSearch(String roomName, Date dateStart, Date dateEnd, String status);
 }
