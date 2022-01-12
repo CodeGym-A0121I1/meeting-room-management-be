@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +86,21 @@ public class RegistrationHistoryController {
                                                        @RequestParam("year") String year) {
         int totalUse = registrationHistoryService.roomCountStatistic(roomType, roomName, month, year);
         return new ResponseEntity<>(totalUse, HttpStatus.OK);
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam("roomName") String name,
+                                                                             @RequestParam("dateStart") Date dateStart,
+                                                                             @RequestParam("dateEnd") Date dateEnd,
+                                                                             @RequestParam("status") String status,
+                                                                             @RequestParam("roomType") String roomType){
+
+        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.listSearch(name, dateStart, dateEnd, status,roomType);
+
+        if (registrationHistoryList == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(registrationHistoryList, HttpStatus.OK);
     }
 }
 

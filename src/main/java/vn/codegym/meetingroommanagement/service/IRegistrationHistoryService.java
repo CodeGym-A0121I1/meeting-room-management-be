@@ -3,6 +3,7 @@ package vn.codegym.meetingroommanagement.service;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
     float registrationPerformance(String roomType, String roomName, String month, String year);
 
     int roomCountStatistic(String roomType, String roomName, String month, String year);
+
+    List<RegistrationHistory> listSearch(String roomName, Date dateStart, Date dateEnd, String status, String roomType);
 }

@@ -6,6 +6,7 @@ import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
+import java.sql.Date;
 import java.time.*;
 import java.util.List;
 import java.util.Optional;
@@ -89,6 +90,11 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         }
 
         return totalUse;
+    }
+
+    @Override
+    public List<RegistrationHistory> listSearch(String roomName, Date dateStart, Date dateEnd, String status, String roomType) {
+        return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName,dateStart,dateEnd,status,roomType);
     }
 
     private int dayConversion(LocalDate dateStart, LocalDate dateEnd) {
