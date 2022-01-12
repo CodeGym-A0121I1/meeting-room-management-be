@@ -1,6 +1,7 @@
 package vn.codegym.meetingroommanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -90,8 +91,8 @@ public class RegistrationHistoryController {
 
     @GetMapping("search")
     public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam("roomName") String name,
-                                                                             @RequestParam("dateStart") Date dateStart,
-                                                                             @RequestParam("dateEnd") Date dateEnd,
+                                                                             @RequestParam(value = "dateStart", required = false) Date dateStart,
+                                                                             @RequestParam(value = "dateEnd", required = false) Date dateEnd,
                                                                              @RequestParam("status") String status,
                                                                              @RequestParam("roomType") String roomType){
 
