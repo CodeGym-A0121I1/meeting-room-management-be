@@ -23,6 +23,6 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
             "and r.isCancel=false " +
             "and r.room.name like concat('%',:roomName,'%')" +
             "and ((substring(r.dateStart,6, 2) like concat('%',:month,'%') and substring(r.dateStart,1, 4) like concat('%',:year,'%')) " +
-            "or (substring(r.dateStart,6, 2) like concat('%',:month,'%') and substring(r.dateStart,1, 4) like concat('%',:year,'%')))")
+            "or (substring(r.dateEnd,6, 2) like concat('%',:month,'%') and substring(r.dateEnd,1, 4) like concat('%',:year,'%')))")
     List<RegistrationHistory> statisticByRoom(@Param("roomType") String roomType, @Param("roomName") String roomName, @Param("month") String month, @Param("year") String year);
 }
