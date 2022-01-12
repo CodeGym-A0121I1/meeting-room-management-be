@@ -32,7 +32,7 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
     @Query("select r "+
             "from RegistrationHistory r inner join r.room "+
             "where r.room.name like concat('%',:roomName,'%')"+
-             "and r.dateStart between "+
+             "and r.dateStart like concat('%',:dateStart,'%')"+
             "and r.dateEnd like concat('%',:dateEnd,'%')"+
             "and r.room.status like concat('%',:status,'%')"+
             "and r.room.roomType like concat('%',:roomType,'%')"
