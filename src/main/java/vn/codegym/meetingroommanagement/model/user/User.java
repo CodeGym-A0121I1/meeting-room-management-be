@@ -32,6 +32,8 @@ public class User {
 
     private String email;
 
+    private String phone;
+
     @ManyToOne
     @JoinColumn
     private Department department;

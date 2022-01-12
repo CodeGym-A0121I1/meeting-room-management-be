@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.dto.CategoryDTO;
+import vn.codegym.meetingroommanagement.dto.EquipmentDTO;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Category;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
@@ -14,6 +15,7 @@ import vn.codegym.meetingroommanagement.service.IEquipmentService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/equipments")
@@ -47,7 +49,15 @@ public class EquipmentController {
             categoryDTOList.add(modelMapper.map(category, CategoryDTO.class));
         }
 
-        return new ResponseEntity<>(categoryDTOList, HttpStatus.OK);
+        for (CategoryDTO categoryDTO : categoryDTOList) {
+            categoryDTO.setEquipmentList(categoryDTO.getEquipmentList().stream().filter(equipment ->
+                    equipment.getStatus() == EStatus.AVAILABLE
+            ).collect(Collectors.toList()));
+        }
+
+        categoryDTOList = categoryDTOList.stream().filter(categoryDTO -> !categoryDTO.getEquipmentList().isEmpty()).collect(Collectors.toList());
+
+        return categoryDTOList.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(categoryDTOList, HttpStatus.OK);
     }
 
     // TrongVT
@@ -115,7 +125,9 @@ public class EquipmentController {
     // Thêm mới 1 Equipment
     // test in Postman OK
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody Equipment equipment) {
+    public ResponseEntity<?> create(@RequestBody EquipmentDTO equipmentDTO) {
+        equipmentDTO.setStatus(EStatus.AVAILABLE);
+        Equipment equipment = modelMapper.map(equipmentDTO, Equipment.class);
         equipmentService.save(equipment);
         return ResponseEntity.ok().body(equipment);
     }
