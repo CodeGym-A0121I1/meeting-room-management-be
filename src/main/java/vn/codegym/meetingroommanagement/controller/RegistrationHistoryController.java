@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -61,5 +62,20 @@ public class RegistrationHistoryController {
         int registrationHistories;
         registrationHistories = registrationHistoryService.roomCountStatistic(roomName);
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam(value = "roomName",required = false) String name,
+                                                                             @RequestParam(value = "dateStart",required = false) Date dateStart,
+                                                                             @RequestParam(value = "dateEnd",required = false) Date dateEnd,
+                                                                             @RequestParam(value = "status",required = false) String status
+                                                                            ){
+
+        //List<RegistrationHistory> registrationHistoryList = registrationHistoryService.listSearch(name, dateStart, dateEnd, status);
+        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.listSearch(name);
+
+        if (registrationHistoryList == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(registrationHistoryList, HttpStatus.OK);
     }
 }
