@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/equipments")
 public class EquipmentController {
 
@@ -91,13 +92,13 @@ public class EquipmentController {
     // kiểm tra Equipment đã tồn tại chưa, nếu tồn tại thì không thực hiện Cập nhật và trả về NOT_FOUND (ngược lại)
     // test in Postman OK
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody EStatus status) {
+    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody Equipment equipment) {
         if (id == null) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Optional<Equipment> equipmentOptional = this.equipmentService.getById(id);
         if (equipmentOptional.isPresent()) {
-            equipmentOptional.get().setStatus(status);
+            equipmentOptional.get().setStatus(equipment.getStatus());
             this.equipmentService.save(equipmentOptional.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
