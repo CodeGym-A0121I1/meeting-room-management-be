@@ -1,10 +1,14 @@
 package vn.codegym.meetingroommanagement.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.dto.ChangePasswordRequest;
+import vn.codegym.meetingroommanagement.model.user.ERole;
 import vn.codegym.meetingroommanagement.model.user.User;
+import vn.codegym.meetingroommanagement.repository.IUserRepository;
 import vn.codegym.meetingroommanagement.service.IAccountService;
 import vn.codegym.meetingroommanagement.service.IUserService;
 
@@ -56,5 +60,11 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body("Wrong password");
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> search( @Param("name") String name ,@Param("role") ERole role ){
+        List<User> userList = userService.search(name,role);
+        return new ResponseEntity<>(userList,HttpStatus.OK);
     }
 }
