@@ -13,28 +13,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RoomRestController_deleteRoom {
+class TestRestControllerDeleteRoom {
     @Autowired
     private MockMvc mockMvc;
     // trương hợp id không có trong database trả về status 4xx
     @Test
-    public void testDeleteRoom_byId_1() throws Exception{
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/rooms/{id}","R009"))
+    void testDeleteRoom_byId_1() throws Exception{
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/rooms/delete/{id}","R009"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     // trương hợp id bằng rỗng trả về status 4xx
     @Test
-    public void testDeleteRoom_byId_2() throws Exception{
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/rooms/{id}",""))
+    void testDeleteRoom_byId_2() throws Exception{
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/rooms/delete/{id}",""))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     // trường hơp id có trong database và xoá thành công
-    @Test
-    public void testDeleteRoom_byId_3() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/rooms/{id}", "R001"))
+    /*@Test
+    void testDeleteRoom_byId_3() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/rooms/delete/{id}", "R001"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
-    }
+    }*/
 }

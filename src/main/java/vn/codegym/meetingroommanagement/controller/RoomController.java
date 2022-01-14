@@ -52,15 +52,19 @@ public class RoomController {
     }
 
     // DanhDC xoá room
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> deleteRoom(@PathVariable("id") String id) {
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Room> deleteRoom(@PathVariable("id") String id) {
         Optional<Room> room = roomService.getById(id);
 
-        return room.map(r -> {
+        /*return room.map(r -> {
             roomService.deleteById(id);
 
             return ResponseEntity.ok("Delete Successful");
-        }).orElseGet(ResponseEntity.notFound()::build);
-
+        }).orElseGet(ResponseEntity.notFound()::build);*/
+        if(room.isPresent()){
+            this.roomService.deleteById(id);
+            return new ResponseEntity<>(room.get(),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

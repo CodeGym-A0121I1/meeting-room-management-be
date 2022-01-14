@@ -46,7 +46,7 @@ public class Room {
     @ManyToOne
     @JoinColumn
     private Floor floor;
-
+    
     @ManyToOne
     @JoinColumn
     private RoomType roomType;
