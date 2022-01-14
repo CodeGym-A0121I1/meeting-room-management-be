@@ -30,5 +30,4 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
             "where s.isCancel=false " +
             "group by s.room.name having s.room.name=?1")
     int roomCountStatistic(String roomName);
-
 }
