@@ -68,4 +68,9 @@ public class RoomService implements IRoomService {
             roomRepository.deleteById(key);
         });
     }
+
+    @Override
+    public String getNameForImage() {
+        return "imageRoom" + roomRepository.getNumberOfRoom();
+    }
 }
