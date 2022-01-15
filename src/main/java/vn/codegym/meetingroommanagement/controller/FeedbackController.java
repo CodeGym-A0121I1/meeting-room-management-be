@@ -37,17 +37,19 @@ public class FeedbackController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Feedback> create(@RequestBody Feedback feedback) {
+    public ResponseEntity<Boolean> create(@RequestBody Feedback feedback) {
         // set time now request for Feedback
         if (feedback.getNoteRequest().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         feedback.setDateRequest(LocalDate.now());
+        feedback.setStatus(true);
+        feedbackService.save(feedback);
         try {
             this.feedbackService.sendEmail("trungtrongcr21@gmail.com", "NEW FEEDBACK", feedback.toStringRequest());
-            return new ResponseEntity<>(feedbackService.save(feedback), HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
 
