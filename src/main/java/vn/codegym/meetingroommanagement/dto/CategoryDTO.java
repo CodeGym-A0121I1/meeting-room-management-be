@@ -1,28 +1,19 @@
-package vn.codegym.meetingroommanagement.model.equipment;
+package vn.codegym.meetingroommanagement.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CategoryDTO {
     private Integer id;
-
     private String name;
-
-    @OneToMany(mappedBy = "category")
     private List<Equipment> equipmentList;
-
-
 }
