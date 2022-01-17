@@ -7,21 +7,26 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import vn.codegym.meetingroommanagement.service.impl.AccountService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import vn.codegym.meetingroommanagement.filter.CustomAccessDeniedHandler;
+import vn.codegym.meetingroommanagement.filter.JwtAuthenticationTokenFilter;
+import vn.codegym.meetingroommanagement.filter.RestAuthenticationEntryPoint;
+import vn.codegym.meetingroommanagement.service.IAccountService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(new AccountService());
+    public WebSecurityConfiguration(JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter, IAccountService accountService) {
+        this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
+        this.accountService = accountService;
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(accountService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -30,17 +35,36 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public RestAuthenticationEntryPoint restServicesEntryPoint() {
+        return new RestAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    private final IAccountService accountService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll();
-        http.cors();
-        http.csrf().disable();
-//                .authorizeRequests()
-//                .antMatchers("/api/accounts/login")
-//                .permitAll()
-//                .anyRequest().authenticated()
-//                .and().sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.cors().disable();
+        http.csrf().ignoringAntMatchers("/api/**");
+        http.csrf().ignoringAntMatchers("/api/**");
+        http.antMatcher("/api/**").httpBasic().authenticationEntryPoint(restServicesEntryPoint())
+                .and()
+                .authorizeRequests()
+                .anyRequest().permitAll()
+//                .antMatchers("/api/login").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+//                .antMatchers("/api/**").access("hasRole('ROLE_ADMIN')")
+                .and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }
 }

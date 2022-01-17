@@ -1,11 +1,12 @@
 package vn.codegym.meetingroommanagement.model.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import vn.codegym.meetingroommanagement.model.feedback.Feedback;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
@@ -29,6 +30,10 @@ public class User {
 
     private String fullName;
 
+    private String email;
+
+    private String phone;
+
     @ManyToOne
     @JoinColumn
     private Department department;
@@ -38,6 +43,10 @@ public class User {
     private Account account;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+    @JsonIgnore
     List<RegistrationHistory> registrationHistoryList;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    List<Feedback> feedbackList;
 }

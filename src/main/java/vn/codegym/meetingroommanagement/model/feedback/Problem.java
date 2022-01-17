@@ -1,6 +1,6 @@
 package vn.codegym.meetingroommanagement.model.feedback;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +23,6 @@ public class Problem {
     private String name;
 
     @OneToMany(mappedBy = "problem")
-    @JsonBackReference
+    @JsonIgnore
     private List<Feedback> feedbackList;
 }

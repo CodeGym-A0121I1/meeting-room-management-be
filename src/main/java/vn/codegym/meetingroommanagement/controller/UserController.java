@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +17,15 @@ import java.util.Optional;
 @CrossOrigin
 public class UserController {
 
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
 
-    @Autowired
-    private IAccountService accountService;
+    private final IAccountService accountService;
 
-    //HuyTG
-    //------------ update user ------------------
+    public UserController(IUserService userService, IAccountService accountService) {
+        this.userService = userService;
+        this.accountService = accountService;
+    }
+
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         Optional<User> currentUser = userService.getById(user.getId());
@@ -35,14 +35,11 @@ public class UserController {
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 
-    //Thang DM
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUser() {
         List<User> userList = userService.getAll();
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
-
-    //LongLH
 
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody User user) {

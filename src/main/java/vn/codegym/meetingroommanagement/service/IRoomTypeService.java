@@ -1,7 +1,8 @@
 package vn.codegym.meetingroommanagement.service;
 
+import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.room.RoomType;
 
-public interface IRoomTypeService {
-    Iterable<RoomType> findAll();
+@Service
+public interface IRoomTypeService extends IService<RoomType, Integer> {
 }

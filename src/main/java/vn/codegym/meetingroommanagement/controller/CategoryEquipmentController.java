@@ -1,7 +1,5 @@
 package vn.codegym.meetingroommanagement.controller;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.codegym.meetingroommanagement.dto.CategoryQuantityStatusDTO;
 import vn.codegym.meetingroommanagement.model.equipment.Category;
 import vn.codegym.meetingroommanagement.service.ICategoryService;
-import vn.codegym.meetingroommanagement.service.IEquipmentService;
 
 import java.util.List;
 
@@ -18,14 +15,11 @@ import java.util.List;
 @RequestMapping("/api/categories")
 public class CategoryEquipmentController {
 
-    @Autowired
-    private ICategoryService categoryService;
+    private final ICategoryService categoryService;
 
-    @Autowired
-    private IEquipmentService equipmentService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    public CategoryEquipmentController(ICategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/quantity")
     public ResponseEntity<List<CategoryQuantityStatusDTO>> getAllCategoryQuantityStatusDTO() {
