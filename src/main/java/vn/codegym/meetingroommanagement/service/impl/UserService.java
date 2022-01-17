@@ -44,7 +44,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> search(String name, ERole role) {
-        return userRepository.search(name, role);
+    public List<User> search(String username, ERole role, String fullName) {
+        return userRepository.search(username, role ,fullName);
     }
 }

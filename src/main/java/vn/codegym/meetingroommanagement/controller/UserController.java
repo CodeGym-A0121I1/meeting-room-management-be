@@ -63,8 +63,8 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<User>> search( @Param("name") String name ,@Param("role") ERole role ){
-        List<User> userList = userService.search(name,role);
+    public ResponseEntity<List<User>> search( @Param("username") String username ,@Param("role") ERole role ,@Param("fullName") String fullName ){
+        List<User> userList = userService.search(username,role ,fullName);
         return new ResponseEntity<>(userList,HttpStatus.OK);
     }
 }

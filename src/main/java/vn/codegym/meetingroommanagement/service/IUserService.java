@@ -8,5 +8,5 @@ import java.util.List;
 
 @Service
 public interface IUserService extends IService<User, String> {
-    List<User> search(String name, ERole role);
+    List<User> search(String username, ERole role,String fullName);
 }
