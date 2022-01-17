@@ -43,7 +43,6 @@ public class FeedbackController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         feedback.setDateRequest(LocalDate.now());
-        feedback.setStatus(true);
         feedbackService.save(feedback);
         try {
             this.feedbackService.sendEmail("trungtrongcr21@gmail.com", "NEW FEEDBACK", feedback.toStringRequest());
@@ -68,6 +67,7 @@ public class FeedbackController {
         // set time now response and set noteResponse of Admin to fix Feedback
         feedback.setDateResponse(LocalDate.now());
         feedback.setNoteResponse(noteResponse);
+        feedback.setStatus(true);
         this.feedbackService.save(feedback);
         try {
             this.feedbackService.sendEmail(feedback.getUser().getEmail(), "REPLY FEEDBACK", feedback.toStringResponse());

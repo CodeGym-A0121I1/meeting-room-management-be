@@ -10,4 +10,13 @@ public enum EStatus {
     private EStatus(String label){
         this.label = label;
     }
+//
+//    public static EStatus getEStatus(String label){
+//        for (EStatus eStatus: EStatus.values()) {
+//            if (eStatus.label.equals(label)) {
+//                return eStatus;
+//            }
+//        }
+//        return null;
+//    }
 }
