@@ -1,6 +1,5 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
@@ -16,11 +15,14 @@ import java.util.Optional;
 @Service
 public class RoomService implements IRoomService {
 
-    @Autowired
-    private IRoomRepository roomRepository;
+    private final IRoomRepository roomRepository;
 
-    @Autowired
-    private IEquipmentService equipmentService;
+    private final IEquipmentService equipmentService;
+
+    public RoomService(IRoomRepository roomRepository, IEquipmentService equipmentService) {
+        this.roomRepository = roomRepository;
+        this.equipmentService = equipmentService;
+    }
 
     @Override
     public List<Room> getAll() {
@@ -36,9 +38,7 @@ public class RoomService implements IRoomService {
     public Room save(Room entity) {
 
         List<Equipment> equipmentList = new ArrayList<>();
-        entity.getEquipmentList().forEach(equipment -> {
-            equipmentService.getById(equipment.getId()).ifPresent(equipmentList::add);
-        });
+        entity.getEquipmentList().forEach(equipment -> equipmentService.getById(equipment.getId()).ifPresent(equipmentList::add));
 
         Room room = roomRepository.save(entity);
 
@@ -57,9 +57,7 @@ public class RoomService implements IRoomService {
 
         roomOptional.ifPresent(room -> {
             List<Equipment> equipmentList = new ArrayList<>();
-            room.getEquipmentList().forEach(equipment -> {
-                equipmentService.getById(equipment.getId()).ifPresent(equipmentList::add);
-            });
+            room.getEquipmentList().forEach(equipment -> equipmentService.getById(equipment.getId()).ifPresent(equipmentList::add));
 
             equipmentList.forEach(equipment -> {
                 equipment.setRoom(null);
@@ -69,5 +67,10 @@ public class RoomService implements IRoomService {
 
             roomRepository.deleteById(key);
         });
+    }
+
+    @Override
+    public String getNameForImage() {
+        return "imageRoom" + roomRepository.getNumberOfRoom();
     }
 }

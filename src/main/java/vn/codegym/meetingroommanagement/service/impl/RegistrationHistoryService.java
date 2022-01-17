@@ -32,6 +32,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public List<?> finall() {
+
         return registrationHistoryRepository.findAll();
     }
 

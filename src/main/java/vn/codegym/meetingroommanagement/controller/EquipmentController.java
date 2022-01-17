@@ -1,11 +1,11 @@
 package vn.codegym.meetingroommanagement.controller;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.dto.CategoryDTO;
+import vn.codegym.meetingroommanagement.dto.EquipmentDTO;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Category;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
@@ -15,19 +15,23 @@ import vn.codegym.meetingroommanagement.service.IEquipmentService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/equipments")
 public class EquipmentController {
 
-    @Autowired
-    private ICategoryService categoryService;
+    private final ICategoryService categoryService;
 
-    @Autowired
-    private IEquipmentService equipmentService;
+    private final IEquipmentService equipmentService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    public EquipmentController(ICategoryService categoryService, IEquipmentService equipmentService, ModelMapper modelMapper) {
+        this.categoryService = categoryService;
+        this.equipmentService = equipmentService;
+        this.modelMapper = modelMapper;
+    }
 
     // TrongVT
     // return: danh sách Category để dùng khi update hoặc create 1 Equipment
@@ -35,7 +39,7 @@ public class EquipmentController {
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategory() {
         List<Category> categoryList = this.categoryService.getAll();
-        if (categoryList.size() == 0) {
+        if (categoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -45,7 +49,15 @@ public class EquipmentController {
             categoryDTOList.add(modelMapper.map(category, CategoryDTO.class));
         }
 
-        return new ResponseEntity<>(categoryDTOList, HttpStatus.OK);
+        for (CategoryDTO categoryDTO : categoryDTOList) {
+            categoryDTO.setEquipmentList(categoryDTO.getEquipmentList().stream().filter(equipment ->
+                    equipment.getStatus() == EStatus.AVAILABLE
+            ).collect(Collectors.toList()));
+        }
+
+        categoryDTOList = categoryDTOList.stream().filter(categoryDTO -> !categoryDTO.getEquipmentList().isEmpty()).collect(Collectors.toList());
+
+        return categoryDTOList.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(categoryDTOList, HttpStatus.OK);
     }
 
     // TrongVT
@@ -55,7 +67,7 @@ public class EquipmentController {
     @GetMapping("/categories/{idCategory}")
     public ResponseEntity<List<Equipment>> getAllEquipmentByCategoryId(@PathVariable("idCategory") Integer idCategory) {
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryId(idCategory);
-        if (equipmentList.size() == 0) {
+        if (equipmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
@@ -103,7 +115,7 @@ public class EquipmentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<Equipment> equipmentList = this.equipmentService.getAllByCategoryIdAndNameLike(idCategory, name);
-        if (equipmentList.size() == 0) {
+        if (equipmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentList, HttpStatus.OK);
@@ -113,7 +125,9 @@ public class EquipmentController {
     // Thêm mới 1 Equipment
     // test in Postman OK
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody Equipment equipment) {
+    public ResponseEntity<?> create(@RequestBody EquipmentDTO equipmentDTO) {
+        equipmentDTO.setStatus(EStatus.AVAILABLE);
+        Equipment equipment = modelMapper.map(equipmentDTO, Equipment.class);
         equipmentService.save(equipment);
         return ResponseEntity.ok().body(equipment);
     }
