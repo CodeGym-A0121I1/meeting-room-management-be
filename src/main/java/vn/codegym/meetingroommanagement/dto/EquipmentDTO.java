@@ -13,7 +13,9 @@ import vn.codegym.meetingroommanagement.model.equipment.Category;
 @AllArgsConstructor
 public class EquipmentDTO {
     private String id;
+
     private String name;
+
     private String description;
 
     private Double price;

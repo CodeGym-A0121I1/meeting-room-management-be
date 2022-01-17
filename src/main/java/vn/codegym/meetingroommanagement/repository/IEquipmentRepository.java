@@ -16,4 +16,6 @@ public interface IEquipmentRepository extends JpaRepository<Equipment, String> {
 
     List<Equipment> findAllByCategory_IdAndNameContaining(Integer id_category, String nameEquipment);
 
+    //    @Query(value = "select cat from Category as cat where cat.name like %?1%")
+    List<Equipment> findAllByNameContaining(String name);
 }

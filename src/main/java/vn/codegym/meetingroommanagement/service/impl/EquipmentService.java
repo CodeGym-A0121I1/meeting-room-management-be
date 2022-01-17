@@ -18,6 +18,11 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
+    public List<Equipment> findAllByNameContaining(String name) {
+        return equipmentRepository.findAllByNameContaining(name);
+    }
+
+    @Override
     public List<Equipment> getAllByCategoryId(Integer id_category) {
         return this.equipmentRepository.findAllByCategory_Id(id_category);
     }
