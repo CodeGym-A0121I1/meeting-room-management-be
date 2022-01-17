@@ -13,12 +13,14 @@ import java.util.List;
 
 @Service
 public interface IRegistrationHistoryService extends IService<RegistrationHistory, String> {
-    List<?> roomStatisticByTime(LocalDate startDate, LocalDate endDate);
-  
-    List<?> roomStatistic(String roomType, String roomName, String month, String year);
+    List<RegistrationHistory> statisticByTime(LocalDate startDate, LocalDate endDate);
 
-    int roomCountStatistic(String roomName);
+    List<RegistrationHistory> statisticByRoom(String roomType, String roomName, String month, String year);
 
-    List<RegistrationHistory> listSearch(String roomName);
-   // List<RegistrationHistory> listSearch(String roomName, Date dateStart, Date dateEnd, String status);
+    float registrationPerformance(String roomType, String roomName, String month, String year);
+
+    int roomCountStatistic(String roomType, String roomName, String month, String year);
+
+//    List<RegistrationHistory> listSearch(String roomName);
+    // List<RegistrationHistory> listSearch(String roomName, Date dateStart, Date dateEnd, String status);
 }
