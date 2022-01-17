@@ -46,7 +46,7 @@ public class RegistrationHistoryController {
         return new ResponseEntity<RegistrationHistory>(HttpStatus.OK);
     }
 
-    @PutMapping("static-by-time")
+    @GetMapping("static-by-time")
     public ResponseEntity<List<RegistrationHistory>> staticByTime(@RequestParam("startDate") LocalDate startDate,
                                                                   @RequestParam("endDate") LocalDate endDate) {
         List<RegistrationHistory> registrationHistories = registrationHistoryService.statisticByTime(startDate, endDate);
@@ -56,7 +56,7 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
     }
 
-    @PutMapping("static-by-room")
+    @GetMapping("static-by-room")
     public ResponseEntity<List<RegistrationHistory>> staticByRoom(@RequestParam("roomType") String roomType,
                                                                   @RequestParam("roomName") String roomName,
                                                                   @RequestParam("month") String month,
