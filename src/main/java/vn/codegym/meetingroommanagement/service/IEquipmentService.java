@@ -12,4 +12,5 @@ public interface IEquipmentService extends IService<Equipment, String> {
 
     List<Equipment> getAllByCategoryIdAndNameLike(Integer id_category, String nameEquipment);
 
+    List<Equipment> findAllByNameContaining(String name);
 }

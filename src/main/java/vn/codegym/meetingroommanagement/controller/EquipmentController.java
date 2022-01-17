@@ -143,4 +143,19 @@ public class EquipmentController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<CategoryDTO>> searchEquipments(@RequestParam("name") String name, @RequestParam("category") Integer categoryId) {
+        List<CategoryDTO> result = new ArrayList<>();
+        if (categoryId == 0) {
+            result = categoryService.getAllEquipmentByName(name);
+        } else {
+            CategoryDTO categoryDTO = categoryService.getAllEquipmentByCategoryAndName(name, categoryId);
+
+            if (categoryDTO != null) {
+                result.add(categoryDTO);
+            }
+        }
+        return result.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
+    }
+
 }

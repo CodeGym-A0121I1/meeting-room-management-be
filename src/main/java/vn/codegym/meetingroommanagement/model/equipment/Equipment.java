@@ -41,7 +41,7 @@ public class Equipment {
 
     @ManyToOne
     @JoinColumn
-    @JsonIgnore
+//    @JsonIgnore
     private Category category;
 
     @ManyToOne

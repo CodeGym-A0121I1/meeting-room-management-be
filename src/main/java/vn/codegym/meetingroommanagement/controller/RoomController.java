@@ -119,6 +119,12 @@ public class RoomController {
         return ResponseEntity.ok(roomTypeService.getAll());
     }
 
+    @GetMapping("/image")
+    public ResponseEntity<String> getNameImage() {
+
+        return ResponseEntity.ok(roomService.getNameForImage());
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationException(MethodArgumentNotValidException exception) {
