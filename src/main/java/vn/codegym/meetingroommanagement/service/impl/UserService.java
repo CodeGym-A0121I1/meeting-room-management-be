@@ -2,6 +2,7 @@ package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.model.user.Department;
 import vn.codegym.meetingroommanagement.model.user.ERole;
 import vn.codegym.meetingroommanagement.model.user.User;
 import vn.codegym.meetingroommanagement.repository.IUserRepository;
@@ -44,7 +45,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> search(String username, ERole role, String fullName) {
-        return userRepository.search(username, role ,fullName);
+    public List<User> search(String username, ERole role, String fullName, Integer departmentName) {
+        return userRepository.search(username, role ,fullName,departmentName);
     }
 }

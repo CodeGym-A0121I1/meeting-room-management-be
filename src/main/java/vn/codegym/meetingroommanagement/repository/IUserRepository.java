@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, String> {
-    @Query("select u from User u where ( :username is null or u.account.username like %:username% ) and (:role is null or u.account.role= :role) and (:fullName is null or u.fullName like %:fullName%)")
-    List<User> search(String username, ERole role, String fullName);
+    @Query("select u from User u where ( :username is null or u.account.username like %:username% ) and (:role is null or u.account.role= :role) and (:fullName is null or u.fullName like %:fullName%) and (:departmentName is null or u.department.id= :departmentName)")
+    List<User> search(String username, ERole role, String fullName,Integer departmentName);
 }

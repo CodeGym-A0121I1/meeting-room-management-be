@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.dto.ChangePasswordRequest;
+import vn.codegym.meetingroommanagement.model.user.Department;
 import vn.codegym.meetingroommanagement.model.user.ERole;
 import vn.codegym.meetingroommanagement.model.user.User;
 import vn.codegym.meetingroommanagement.repository.IUserRepository;
@@ -63,8 +64,8 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<User>> search( @Param("username") String username ,@Param("role") ERole role ,@Param("fullName") String fullName ){
-        List<User> userList = userService.search(username,role ,fullName);
+    public ResponseEntity<List<User>> search( @Param("username") String username ,@Param("role") ERole role ,@Param("fullName") String fullName ,@Param("departmentName") Integer departmentName ){
+        List<User> userList = userService.search(username,role ,fullName ,departmentName);
         return new ResponseEntity<>(userList,HttpStatus.OK);
     }
 }
