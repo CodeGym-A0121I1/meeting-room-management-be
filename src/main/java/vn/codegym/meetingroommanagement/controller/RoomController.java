@@ -119,7 +119,7 @@ public class RoomController {
         return ResponseEntity.ok(roomTypeService.getAll());
     }
 
-    @GetMapping("/image")
+    @GetMapping("/image/new-name")
     public ResponseEntity<String> getNameImage() {
 
         return ResponseEntity.ok(roomService.getNameForImage());

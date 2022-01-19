@@ -31,6 +31,12 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     @Override
+    public Integer roomCountStatisticById(String roomId) {
+        return registrationHistoryRepository.roomCountStatisticById(roomId);
+
+    }
+
+    @Override
     public List<RegistrationHistory> getAll() {
         return registrationHistoryRepository.findAll();
     }

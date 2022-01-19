@@ -62,4 +62,11 @@ public class RegistrationHistoryController {
         registrationHistories = registrationHistoryService.roomCountStatistic(roomName);
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
     }
+
+    @GetMapping("static-room-id")
+    public ResponseEntity<Integer> roomStatisticById(@RequestParam("roomId") String roomID) {
+        int registrationHistories;
+        registrationHistories = registrationHistoryService.roomCountStatisticById(roomID);
+        return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
+    }
 }
