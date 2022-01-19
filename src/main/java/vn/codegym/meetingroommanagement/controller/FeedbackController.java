@@ -73,7 +73,7 @@ public class FeedbackController {
             this.feedbackService.sendEmail(feedback.getUser().getEmail(), "REPLY FEEDBACK", feedback.toStringResponse());
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
     }
 }
