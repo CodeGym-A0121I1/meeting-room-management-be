@@ -39,6 +39,8 @@ public class EquipmentController {
     // test in Postman OK
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategory() {
+        System.out.println(EStatus.AVAILABLE);
+        System.out.println(EStatus.AVAILABLE.label);
         List<Category> categoryList = this.categoryService.getAll();
         if (categoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
