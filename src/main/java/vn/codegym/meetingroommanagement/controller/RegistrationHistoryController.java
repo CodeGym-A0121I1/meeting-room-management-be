@@ -60,11 +60,12 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
     }
 
-    @PutMapping("static-by-room")
+    @GetMapping(value = "static-by-room")
     public ResponseEntity<List<RegistrationHistory>> staticByRoom(@RequestParam("roomType") String roomType,
                                                                   @RequestParam("roomName") String roomName,
                                                                   @RequestParam("month") String month,
                                                                   @RequestParam("year") String year) {
+        
         List<RegistrationHistory> registrationHistories = registrationHistoryService.statisticByRoom(roomType, roomName, month, year);
         if (registrationHistories == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

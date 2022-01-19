@@ -12,6 +12,9 @@ import vn.codegym.meetingroommanagement.model.feedback.Feedback;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -30,6 +33,7 @@ public class Room {
     )
     private String id;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -37,18 +41,23 @@ public class Room {
 
     private String image;
 
+    @NotNull(message = "Capacity is mandatory")
+    @Min(value = 0, message = "Capacity must be bigger than 0")
     private Integer capacity;
 
     @ManyToOne
     @JoinColumn
+    @NotNull(message = "Area is mandatory")
     private Area area;
 
     @ManyToOne
     @JoinColumn
+    @NotNull(message = "Floor is mandatory")
     private Floor floor;
 
     @ManyToOne
     @JoinColumn
+    @NotNull(message = "Room Type is mandatory")
     private RoomType roomType;
 
     @OneToMany(mappedBy = "room")

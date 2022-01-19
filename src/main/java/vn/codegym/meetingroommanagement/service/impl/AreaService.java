@@ -19,7 +19,7 @@ public class AreaService implements IAreaService {
 
     @Override
     public List<Area> getAll() {
-        return null;
+        return areaRepository.findAll();
     }
 
     @Override
