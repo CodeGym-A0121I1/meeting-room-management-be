@@ -7,9 +7,8 @@ import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Area;
 import vn.codegym.meetingroommanagement.model.room.Room;
-import vn.codegym.meetingroommanagement.service.IAreaService;
-import vn.codegym.meetingroommanagement.service.IEquipmentService;
-import vn.codegym.meetingroommanagement.service.IRoomService;
+import vn.codegym.meetingroommanagement.model.room.RoomType;
+import vn.codegym.meetingroommanagement.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +24,14 @@ public class RoomController {
 
     private final IAreaService areaService;
 
-    public RoomController(IRoomService roomService, IEquipmentService equipmentService, IAreaService areaService) {
+    private final IRoomTypeService roomTypeService;
+
+    public RoomController(IRoomService roomService, IEquipmentService equipmentService, IAreaService areaService, IRoomTypeService roomTypeService) {
         this.roomService = roomService;
         this.equipmentService = equipmentService;
         this.areaService = areaService;
+        this.roomTypeService = roomTypeService;
+
     }
 
     @GetMapping
@@ -88,5 +91,12 @@ public class RoomController {
     public ResponseEntity<Area> createArea(@RequestBody Area area) {
 
         return ResponseEntity.ok(areaService.save(area));
+    }
+    @GetMapping("/roomTypes")
+    public ResponseEntity<List<RoomType>> getAllRoomType() {
+        List<RoomType> roomTypes = (List<RoomType>) roomTypeService.findAll();
+
+        return roomTypes.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(roomTypes
+                , HttpStatus.OK);
     }
 }

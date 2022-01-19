@@ -6,11 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -49,6 +51,34 @@ public class Feedback {
     @ManyToOne
     @JoinColumn
     private Room room;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "note")
+    private String note;
+
+    @ManyToOne
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment;
+
+    @Column(name = "date_end")
+    private LocalDate dateEnd;
+
+    @Column(name = "date_start")
+    private LocalDate dateStart;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "is_cancel", nullable = false)
+    private Boolean isCancel = false;
+
+    @Column(name = "time_end")
+    private LocalTime timeEnd;
+
+    @Column(name = "time_start")
+    private LocalTime timeStart;
 
     public String toStringRequest() {
         return "Người phản hồi: " + user.getFullName() +

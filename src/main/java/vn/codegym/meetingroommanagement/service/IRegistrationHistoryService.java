@@ -1,14 +1,11 @@
 package vn.codegym.meetingroommanagement.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
+
 import java.util.List;
 
 @Service
@@ -19,6 +16,9 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
 
     int roomCountStatistic(String roomName);
 
-    List<RegistrationHistory> listSearch(String roomName);
-   // List<RegistrationHistory> listSearch(String roomName, Date dateStart, Date dateEnd, String status);
+    List<RegistrationHistory> registrationHistoryByIsCancel();
+
+    List<RegistrationHistory> REGISTRATION_HISTORY_LIST(String roomName,LocalDate dateStart,LocalDate dateEnd, EStatus status, Integer roomType);
+
+
 }

@@ -1,7 +1,9 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.stereotype.Service;
+import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
@@ -9,6 +11,8 @@ import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,32 +38,40 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     @Override
-    public List<RegistrationHistory> listSearch(String roomName)  {
+    public List<RegistrationHistory> registrationHistoryByIsCancel() {
+        return registrationHistoryRepository.countRegistrationHistoryByIsCancel();
+    }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        try {
-//            if(dateStart == null ){
-//                dateStart = simpleDateFormat.parse("2000-01-01");
-//            }
-//            if (dateEnd == null){
-//                dateEnd = simpleDateFormat.parse("3000-01-01");
-//            }
-//        }catch (ParseException parseException){
-//            System.out.println(parseException.getMessage());
-//        };
-//
-        if (roomName == null){
-            roomName ="";
+    @Override
+    public List<RegistrationHistory> REGISTRATION_HISTORY_LIST(String roomName,LocalDate dateStart, LocalDate dateEnd, EStatus status, Integer roomType) {
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<RegistrationHistory> registrationHistories= new ArrayList<>();
+        if (dateStart == null) {
+            dateStart = LocalDate.parse("2000-01-01",dateTimeFormatter);
         }
-//        if (status == null){
-//            status = "";
-//        }
-//        if (roomType == null){
-//            roomType="";
-//        }
-        return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName);
 
-       // return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName,dateStart,dateEnd,status);
+        if (dateEnd == null) {
+            dateEnd = LocalDate.parse("3000-01-01",dateTimeFormatter);
+        }
+
+        if (roomName == null) {
+            roomName = "";
+        }
+
+//        if (status == null){
+//            status = ;
+//        }
+
+        if(dateEnd!=null&&dateStart!=null && status!=null&& roomName!=null){
+            registrationHistories = registrationHistoryRepository.searchRegistrationHistoryByNotRoomType(roomName,dateStart,dateEnd,status);
+        }else {
+            registrationHistories = registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName, dateStart, dateEnd, status, roomType);
+        }
+
+        return registrationHistories;
+        //  return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName,dateStart,dateEnd,status,roomType);
+
     }
 
     @Override

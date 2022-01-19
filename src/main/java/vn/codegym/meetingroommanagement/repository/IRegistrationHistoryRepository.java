@@ -1,14 +1,15 @@
 package vn.codegym.meetingroommanagement.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,3 +31,40 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
             "where s.isCancel=false " +
             "group by s.room.name having s.room.name=?1")
     int roomCountStatistic(String roomName);
+
+    //query search list
+
+    @Query(value = "select r from RegistrationHistory as r" +
+            " inner join " +
+            "Room as o on r.room.id=o.id " +
+            " where" +
+            " o.name like %:roomName% and" +
+            " o.status = :status" +
+            " and o.roomType.id = :roomType and o.name like %:roomName% and r.dateStart between :start and :end and r.dateEnd between :start and :end")
+    List<RegistrationHistory> REGISTRATION_HISTORY_LIST(@Param("roomName") String roomName,
+                                                        @Param("start") LocalDate dateStart,
+                                                        @Param("end") LocalDate dateEnd,
+                                                        @Param("status") EStatus status,
+                                                        @Param("roomType")Integer roomType
+    );
+
+    @Query(value = "select r from RegistrationHistory as r" +
+            " inner join " +
+            "Room as o on r.room.id=o.id " +
+            " where" +
+            " o.name like %:roomName% and" +
+            " o.status = :status" +
+            " and o.name like %:roomName% and r.dateStart between :start and :end and r.dateEnd between :start and :end")
+    List<RegistrationHistory> searchRegistrationHistoryByNotRoomType(@Param("roomName") String roomName,
+                                                        @Param("start") LocalDate dateStart,
+                                                        @Param("end") LocalDate dateEnd,
+                                                        @Param("status") EStatus status
+    );
+
+
+    @Query(value = "select r from RegistrationHistory as r where r.isCancel = false ")
+    List<RegistrationHistory> countRegistrationHistoryByIsCancel ();
+}
+
+
+
