@@ -8,9 +8,9 @@ import vn.codegym.meetingroommanagement.service.IFeedbackService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/feedbacks")
 public class FeedbackController {
 
@@ -29,24 +29,20 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackList, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Feedback> getById(@PathVariable("id") String id) {
-        Optional<Feedback> feedback = this.feedbackService.getById(id);
-        return feedback.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
     @PostMapping("")
-    public ResponseEntity<Feedback> create(@RequestBody Feedback feedback) {
+    public ResponseEntity<Boolean> create(@RequestBody Feedback feedback) {
         // set time now request for Feedback
-        if (feedback.getNoteRequest().isEmpty()) {
+        if (feedback.getNoteRequest().isEmpty() || feedback.getUser() == null || feedback.getRoom().getId() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         feedback.setDateRequest(LocalDate.now());
+
+        this.feedbackService.save(feedback);
         try {
             this.feedbackService.sendEmail("trungtrongcr21@gmail.com", "NEW FEEDBACK", feedback.toStringRequest());
-            return new ResponseEntity<>(feedbackService.save(feedback), HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
     }
 
@@ -58,19 +54,19 @@ public class FeedbackController {
         }
         Feedback feedback = this.feedbackService.getById(id).orElse(null);
 
-
         if (feedback == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         // set time now response and set noteResponse of Admin to fix Feedback
         feedback.setDateResponse(LocalDate.now());
         feedback.setNoteResponse(noteResponse);
+        feedback.setStatus(true);
         this.feedbackService.save(feedback);
         try {
             this.feedbackService.sendEmail(feedback.getUser().getEmail(), "REPLY FEEDBACK", feedback.toStringResponse());
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
     }
 }

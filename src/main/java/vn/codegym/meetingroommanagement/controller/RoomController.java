@@ -1,10 +1,12 @@
 package vn.codegym.meetingroommanagement.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import vn.codegym.meetingroommanagement.dto.RoomDTO;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
 import vn.codegym.meetingroommanagement.model.room.Area;
@@ -18,6 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/rooms")
+@CrossOrigin
 public class RoomController {
 
     private final IRoomService roomService;
@@ -30,16 +33,20 @@ public class RoomController {
 
     private final IRoomTypeService roomTypeService;
 
+    private final ModelMapper modelMapper;
+
     public RoomController(IRoomService roomService,
                           IEquipmentService equipmentService,
                           IAreaService areaService,
                           IFloorService floorService,
-                          IRoomTypeService roomTypeService) {
+                          IRoomTypeService roomTypeService,
+                          ModelMapper modelMapper) {
         this.roomService = roomService;
         this.equipmentService = equipmentService;
         this.areaService = areaService;
         this.floorService = floorService;
         this.roomTypeService = roomTypeService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
@@ -47,6 +54,19 @@ public class RoomController {
         List<Room> roomList = roomService.getAll();
 
         return roomList.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(roomList, HttpStatus.OK);
+    }
+    
+    @GetMapping("dto")
+    public ResponseEntity<List<RoomDTO>> getAllRoomDTO(){
+        List<Room> roomList = this.roomService.getAll();
+        if (roomList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<RoomDTO> roomDTOList = new ArrayList<>();
+        for (Room room: roomList) {
+            roomDTOList.add(modelMapper.map(room, RoomDTO.class));
+        }
+        return new ResponseEntity<>(roomDTOList, HttpStatus.OK);
     }
 
     @PostMapping
