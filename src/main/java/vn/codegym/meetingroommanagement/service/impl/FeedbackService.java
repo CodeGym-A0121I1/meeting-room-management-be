@@ -24,7 +24,7 @@ public class FeedbackService implements IFeedbackService {
 
     @Override
     public List<Feedback> getAll() {
-        return this.feedbackRepository.findAll();
+        return this.feedbackRepository.findByOrderByIdDesc();
     }
 
     @Override

@@ -8,7 +8,6 @@ import vn.codegym.meetingroommanagement.service.IFeedbackService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -30,20 +29,15 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackList, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Feedback> getById(@PathVariable("id") String id) {
-        Optional<Feedback> feedback = this.feedbackService.getById(id);
-        return feedback.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
     @PostMapping("")
     public ResponseEntity<Boolean> create(@RequestBody Feedback feedback) {
         // set time now request for Feedback
-        if (feedback.getNoteRequest().isEmpty()) {
+        if (feedback.getNoteRequest().isEmpty() || feedback.getUser() == null || feedback.getRoom().getId() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         feedback.setDateRequest(LocalDate.now());
-        feedbackService.save(feedback);
+
+        this.feedbackService.save(feedback);
         try {
             this.feedbackService.sendEmail("trungtrongcr21@gmail.com", "NEW FEEDBACK", feedback.toStringRequest());
             return new ResponseEntity<>(true, HttpStatus.OK);
@@ -59,7 +53,6 @@ public class FeedbackController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Feedback feedback = this.feedbackService.getById(id).orElse(null);
-
 
         if (feedback == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

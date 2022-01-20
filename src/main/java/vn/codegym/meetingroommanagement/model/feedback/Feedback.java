@@ -51,7 +51,7 @@ public class Feedback {
     private Room room;
 
     public String toStringRequest() {
-        return "Người phản hồi: " + user.getFullName() +
+        return "ID người phản hồi: " + user.getId() +
                 "\nTên phòng: " + room.getName() +
                 "\nNgày gửi: " + dateRequest +
                 "\nNội dung: " + noteRequest +
