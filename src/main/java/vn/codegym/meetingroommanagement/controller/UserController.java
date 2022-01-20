@@ -48,13 +48,13 @@ public class UserController {
     }
 
     @PutMapping("/account/password")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         boolean isSuccessful = this.accountService.changePassword(changePasswordRequest);
 
         if (isSuccessful) {
-            return ResponseEntity.ok("Successful");
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return ResponseEntity.badRequest().body("Wrong password");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
