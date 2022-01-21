@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -20,8 +21,10 @@ import java.util.List;
 public class Account {
 
     @Id
+    @Size(min = 1, max = 30, message = "Tên đăng nhập tối đa 30 kí tự")
     private String username;
 
+    @Size(min = 6, max = 30, message = "Mật khẩu tối thiểu 6 kí tự và tối đa 30 kí tự")
     private String password;
 
     @OneToOne(mappedBy = "account")

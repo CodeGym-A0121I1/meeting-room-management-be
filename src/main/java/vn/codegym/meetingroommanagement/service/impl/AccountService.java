@@ -79,4 +79,9 @@ public class AccountService implements IAccountService {
                         account.getAuthorities())
         ).orElse(null);
     }
+
+    @Override
+    public boolean checkExistUsername(String username) {
+        return accountRepository.existsById(username);
+    }
 }

@@ -41,4 +41,8 @@ public class UserService implements IUserService {
     public void deleteById(String key) {
         userRepository.deleteById(key);
     }
+
+    public List<String> getAllUsername() {
+        return this.userRepository.getAllUsername();
+    }
 }
