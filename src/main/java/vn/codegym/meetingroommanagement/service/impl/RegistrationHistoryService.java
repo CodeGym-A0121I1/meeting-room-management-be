@@ -7,6 +7,7 @@ import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepositor
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -96,7 +97,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         for (RegistrationHistory registrationHistory : registrationHistories) {
             LocalDate dateStart = registrationHistory.getDateStart();
             LocalDate dateEnd = registrationHistory.getDateEnd();
-            int dayConversion = 0;
+            long dayConversion = 0;
             long secondConversion;
             if (dateStart.compareTo(timeStart.minusDays(1)) > 0 && dateEnd.compareTo(timeEnd.plusDays(1)) < 0) {
                 dayConversion = dayConversion(dateStart, dateEnd);
@@ -130,7 +131,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         for (RegistrationHistory registrationHistory : registrationHistories) {
             LocalDate dateStart = registrationHistory.getDateStart();
             LocalDate dateEnd = registrationHistory.getDateEnd();
-            int dayConversion = 0;
+            long dayConversion = 0;
             if (dateStart.compareTo(timeStart.minusDays(1)) > 0 && dateEnd.compareTo(timeEnd.plusDays(1)) < 0) {
                 dayConversion = dayConversion(dateStart, dateEnd);
             } else if (dateStart.compareTo(timeStart.minusDays(1)) < 0 && dateEnd.compareTo(timeEnd.plusDays(1)) > 0) {
@@ -148,14 +149,12 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         return totalUse;
     }
 
-    private int dayConversion(LocalDate dateStart, LocalDate dateEnd) {
-        int dayConversion = Period.between(dateStart, dateEnd).getDays() + 1;
-        return dayConversion;
+    private long dayConversion(LocalDate dateStart, LocalDate dateEnd) {
+        return ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
     }
 
     private long secondConversion(LocalTime timeStart, LocalTime timeEnd) {
-        long secondConversion = Duration.between(timeStart, timeEnd).getSeconds();
-        return secondConversion;
+        return Duration.between(timeStart, timeEnd).getSeconds();
     }
 
 }
