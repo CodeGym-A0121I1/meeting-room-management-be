@@ -42,12 +42,6 @@ public class UserController {
         return new ResponseEntity<>(listUsername, HttpStatus.OK);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = iUserService.getAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
     @PostMapping("/add/account")
     public ResponseEntity<Account> addAccount(@RequestBody Account account) {
         if (iAccountService.checkExistUsername(account.getUsername())) {
