@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.equipment.Equipment;
+import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.model.room.Area;
 import vn.codegym.meetingroommanagement.model.room.Floor;
 import vn.codegym.meetingroommanagement.model.room.Room;
@@ -30,16 +31,20 @@ public class RoomController {
 
     private final IRoomTypeService roomTypeService;
 
+    private final IRegistrationHistoryService registrationHistoryService;
+
     public RoomController(IRoomService roomService,
                           IEquipmentService equipmentService,
                           IAreaService areaService,
                           IFloorService floorService,
-                          IRoomTypeService roomTypeService) {
+                          IRoomTypeService roomTypeService,
+                          IRegistrationHistoryService registrationHistoryService) {
         this.roomService = roomService;
         this.equipmentService = equipmentService;
         this.areaService = areaService;
         this.floorService = floorService;
         this.roomTypeService = roomTypeService;
+        this.registrationHistoryService = registrationHistoryService;
     }
 
     @GetMapping
@@ -85,14 +90,15 @@ public class RoomController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteRoom(@PathVariable("id") String id) {
-        Optional<Room> room = roomService.getById(id);
-
-        return room.map(r -> {
-            roomService.deleteById(id);
-
-            return ResponseEntity.ok("Delete Successful");
-        }).orElseGet(ResponseEntity.notFound()::build);
+    public ResponseEntity<Room> deleteRoom(@PathVariable("id") String id) {
+            Optional<Room> room = roomService.getById(id);
+            return room.map(r -> {
+                if (roomService.deleteRoomById(id)){
+                    return new ResponseEntity<>(room.get(),HttpStatus.OK);
+                }else {
+                    return new ResponseEntity<>(room.get(),HttpStatus.METHOD_NOT_ALLOWED);
+                }
+            }).orElseGet(ResponseEntity.notFound()::build);
     }
 
     @PostMapping("/areas")

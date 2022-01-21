@@ -7,4 +7,5 @@ import vn.codegym.meetingroommanagement.model.room.Room;
 public interface IRoomService extends IService<Room, String> {
 
     public String getNameForImage();
+    public boolean deleteRoomById(String id);
 }
