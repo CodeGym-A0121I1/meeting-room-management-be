@@ -2,6 +2,7 @@ package vn.codegym.meetingroommanagement.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -56,10 +57,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/equipments/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/api/rooms/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+                .antMatchers("/api/equipments/**").hasRole("ADMIN")
+                .antMatchers("/api/rooms/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("api/rooms").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "api/rooms/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "api/rooms/dto").hasRole("USER")
+
+                .antMatchers(HttpMethod.POST, "/api/feedbacks").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-                .antMatchers("/api/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/api/**").hasRole("ADMIN")
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
