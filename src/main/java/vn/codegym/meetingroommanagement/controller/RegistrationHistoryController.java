@@ -54,7 +54,7 @@ public class RegistrationHistoryController {
     public ResponseEntity<List<RegistrationHistory>> staticByTime(@RequestParam("startDate") LocalDate startDate,
                                                                   @RequestParam("endDate") LocalDate endDate) {
         List<RegistrationHistory> registrationHistories = registrationHistoryService.statisticByTime(startDate, endDate);
-        if (registrationHistories == null) {
+        if (registrationHistories.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
@@ -67,7 +67,7 @@ public class RegistrationHistoryController {
                                                                   @RequestParam("year") String year) {
         
         List<RegistrationHistory> registrationHistories = registrationHistoryService.statisticByRoom(roomType, roomName, month, year);
-        if (registrationHistories == null) {
+        if (registrationHistories.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
@@ -91,19 +91,4 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(totalUse, HttpStatus.OK);
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam(value = "roomName", required = false) String name,
-//                                                                             @RequestParam(value = "dateStart", required = false) Date dateStart,
-//                                                                             @RequestParam(value = "dateEnd", required = false) Date dateEnd,
-//                                                                             @RequestParam(value = "status", required = false) String status
-//    ) {
-//
-//        //List<RegistrationHistory> registrationHistoryList = registrationHistoryService.listSearch(name, dateStart, dateEnd, status);
-//        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.listSearch(name);
-//
-//        if (registrationHistoryList == null) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(registrationHistoryList, HttpStatus.OK);
-//    }
 }

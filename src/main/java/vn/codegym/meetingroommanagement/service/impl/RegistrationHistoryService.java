@@ -6,8 +6,6 @@ import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +23,25 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public List<RegistrationHistory> statisticByRoom(String roomType, String roomName, String month, String year) {
-        return registrationHistoryRepository.statisticByRoom(roomType, roomName, month, year);
+        LocalDate timeStart;
+        LocalDate timeEnd;
+        if (month == "") {
+            if (year == "") {
+                timeStart = LocalDate.of(2000, 1, 1);
+                timeEnd = LocalDate.of(2100, 1, 1);
+            } else {
+                int y = Integer.parseInt(year);
+                timeStart = LocalDate.of(y, 1, 1).minusDays(1);
+                timeEnd = LocalDate.of(y, 12, 31).plusDays(1);
+            }
+        } else {
+            int y = Integer.parseInt(year);
+            int m = Integer.parseInt(month);
+            YearMonth yearMonth = YearMonth.of(y, m);
+            timeStart = yearMonth.atDay(1).minusDays(1);
+            timeEnd = yearMonth.atEndOfMonth().plusDays(1);
+        }
+        return registrationHistoryRepository.statisticByRoom(roomType, roomName, timeStart, timeEnd);
     }
 
     @Override
@@ -49,24 +65,49 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     public float registrationPerformance(String roomType, String roomName, String month, String year) {
-        int m = Integer.parseInt(month);
-        int y = Integer.parseInt(year);
-        YearMonth yearMonth = YearMonth.of(y, m);
-        LocalDate startMonth = yearMonth.atDay(1);
-        LocalDate endMonth = yearMonth.atEndOfMonth();
-        long totalTime = dayConversion(startMonth, endMonth) * 8 * 60 * 60;
+        long totalTime = 0;
+        LocalDate timeStart;
+        LocalDate timeEnd;
+        if (month == "") {
+            if (year == "") {
+                timeStart = LocalDate.of(2000, 1, 1);
+                timeEnd = LocalDate.of(2100, 1, 1);
+            } else {
+                int y = Integer.parseInt(year);
+                timeStart = LocalDate.of(y, 1, 1);
+                timeEnd = LocalDate.of(y, 12, 31);
+                if (Year.of(y).isLeap()) {
+                    totalTime = 366 * 8 * 60 * 60;
+                } else {
+                    totalTime = 365 * 8 * 60 * 60;
+                }
+            }
+        } else {
+            int y = Integer.parseInt(year);
+            int m = Integer.parseInt(month);
+            YearMonth yearMonth = YearMonth.of(y, m);
+            timeStart = yearMonth.atDay(1);
+            timeEnd = yearMonth.atEndOfMonth();
+            totalTime = dayConversion(timeStart, timeEnd) * 8 * 60 * 60;
+        }
 
         long totalUseTime = 0;
         List<RegistrationHistory> registrationHistories = this.statisticByRoom(roomType, roomName, month, year);
         for (RegistrationHistory registrationHistory : registrationHistories) {
-            YearMonth yearMonthStart = YearMonth.of(registrationHistory.getDateStart().getYear(), registrationHistory.getDateStart().getMonthValue());
-            YearMonth yearMonthEnd = YearMonth.of(registrationHistory.getDateEnd().getYear(), registrationHistory.getDateEnd().getMonthValue());
-            int dayConversion;
+            LocalDate dateStart = registrationHistory.getDateStart();
+            LocalDate dateEnd = registrationHistory.getDateEnd();
+            int dayConversion = 0;
             long secondConversion;
-            if (yearMonthEnd.compareTo(yearMonthStart) != 0) {
-                dayConversion = dayConversion(registrationHistory.getDateStart(), yearMonthStart.atEndOfMonth());
-            } else {
-                dayConversion = dayConversion(registrationHistory.getDateStart(), registrationHistory.getDateEnd());
+            if (dateStart.compareTo(timeStart.minusDays(1)) > 0 && dateEnd.compareTo(timeEnd.plusDays(1)) < 0) {
+                dayConversion = dayConversion(dateStart, dateEnd);
+            } else if (dateStart.compareTo(timeStart.minusDays(1)) < 0 && dateEnd.compareTo(timeEnd.plusDays(1)) > 0) {
+                dayConversion = dayConversion(timeStart, timeEnd);
+            } else if (dateStart.compareTo(timeStart.minusDays(1)) < 0
+                    && (dateEnd.compareTo(timeStart.minusDays(1)) > 0 && dateEnd.compareTo(timeEnd.plusDays(1)) < 0)) {
+                dayConversion = dayConversion(timeStart, dateEnd);
+            } else if ((dateStart.compareTo(timeStart.minusDays(1)) > 0 && dateStart.compareTo(timeEnd.plusDays(1)) < 0)
+                    && dateEnd.compareTo(timeEnd.plusDays(1)) > 0) {
+                dayConversion = dayConversion(dateStart, timeEnd);
             }
             secondConversion = secondConversion(registrationHistory.getTimeStart(), registrationHistory.getTimeEnd());
             totalUseTime += dayConversion * secondConversion;
@@ -77,16 +118,29 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public int roomCountStatistic(String roomType, String roomName, String month, String year) {
+        int y = Integer.parseInt(year);
+        int m = Integer.parseInt(month);
+        LocalDate timeStart;
+        LocalDate timeEnd;
+        YearMonth yearMonth = YearMonth.of(y, m);
+        timeStart = yearMonth.atDay(1);
+        timeEnd = yearMonth.atEndOfMonth();
         int totalUse = 0;
         List<RegistrationHistory> registrationHistories = this.statisticByRoom(roomType, roomName, month, year);
         for (RegistrationHistory registrationHistory : registrationHistories) {
-            YearMonth yearMonthStart = YearMonth.of(registrationHistory.getDateStart().getYear(), registrationHistory.getDateStart().getMonthValue());
-            YearMonth yearMonthEnd = YearMonth.of(registrationHistory.getDateEnd().getYear(), registrationHistory.getDateEnd().getMonthValue());
-            int dayConversion;
-            if (yearMonthEnd.compareTo(yearMonthStart) != 0) {
-                dayConversion = dayConversion(registrationHistory.getDateStart(), yearMonthStart.atEndOfMonth());
-            } else {
-                dayConversion = dayConversion(registrationHistory.getDateStart(), registrationHistory.getDateEnd());
+            LocalDate dateStart = registrationHistory.getDateStart();
+            LocalDate dateEnd = registrationHistory.getDateEnd();
+            int dayConversion = 0;
+            if (dateStart.compareTo(timeStart.minusDays(1)) > 0 && dateEnd.compareTo(timeEnd.plusDays(1)) < 0) {
+                dayConversion = dayConversion(dateStart, dateEnd);
+            } else if (dateStart.compareTo(timeStart.minusDays(1)) < 0 && dateEnd.compareTo(timeEnd.plusDays(1)) > 0) {
+                dayConversion = dayConversion(timeStart, timeEnd);
+            } else if (dateStart.compareTo(timeStart.minusDays(1)) < 0
+                    && (dateEnd.compareTo(timeStart.minusDays(1)) > 0 && dateEnd.compareTo(timeEnd.plusDays(1)) < 0)) {
+                dayConversion = dayConversion(timeStart, dateEnd);
+            } else if ((dateStart.compareTo(timeStart.minusDays(1)) > 0 && dateStart.compareTo(timeEnd.plusDays(1)) < 0)
+                    && dateEnd.compareTo(timeEnd.plusDays(1)) > 0) {
+                dayConversion = dayConversion(dateStart, timeEnd);
             }
             totalUse += dayConversion;
         }
@@ -100,36 +154,8 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     private long secondConversion(LocalTime timeStart, LocalTime timeEnd) {
-        long dayConversion = Duration.between(timeStart, timeEnd).getSeconds();
-        return dayConversion;
+        long secondConversion = Duration.between(timeStart, timeEnd).getSeconds();
+        return secondConversion;
     }
 
-//    @Override
-//    public List<RegistrationHistory> listSearch(String roomName)  {
-//
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        try {
-//            if(dateStart == null ){
-//                dateStart = simpleDateFormat.parse("2000-01-01");
-//            }
-//            if (dateEnd == null){
-//                dateEnd = simpleDateFormat.parse("3000-01-01");
-//            }
-//        }catch (ParseException parseException){
-//            System.out.println(parseException.getMessage());
-//        };
-//
-//        if (roomName == null){
-//            roomName ="";
-//        }
-//        if (status == null){
-//            status = "";
-//        }
-//        if (roomType == null){
-//            roomType="";
-//        }
-//        return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName);
-
-    // return registrationHistoryRepository.REGISTRATION_HISTORY_LIST(roomName,dateStart,dateEnd,status);
-//}
 }

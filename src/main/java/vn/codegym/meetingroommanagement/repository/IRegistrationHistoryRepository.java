@@ -16,17 +16,19 @@ import java.util.List;
 @Repository
 public interface IRegistrationHistoryRepository extends JpaRepository<RegistrationHistory, String> {
     @Query("select r " +
-            "from RegistrationHistory r inner join r.room inner join r.room.roomType inner join r.user " +
+            "from RegistrationHistory r " +
             "where r.isCancel=false " +
             "and r.dateStart>=?1 and r.dateEnd<=?2")
     List<RegistrationHistory> statisticByTime(LocalDate startTime, LocalDate endTime);
 
-    @Query("select r " +
-            "from RegistrationHistory r inner join r.room inner join r.room.roomType inner join r.user " +
-            "where r.room.roomType.name like concat('%',:roomType,'%') " +
-            "and r.isCancel=false " +
-            "and r.room.name like concat('%',:roomName,'%')" +
-            "and ((substring(r.dateStart,6, 2) like concat('%',:month,'%') and substring(r.dateStart,1, 4) like concat('%',:year,'%')) " +
-            "or (substring(r.dateEnd,6, 2) like concat('%',:month,'%') and substring(r.dateEnd,1, 4) like concat('%',:year,'%')))")
-    List<RegistrationHistory> statisticByRoom(@Param("roomType") String roomType, @Param("roomName") String roomName, @Param("month") String month, @Param("year") String year);
+    @Query(value="select * from registration_history \n" +
+            "inner join user on registration_history.user_id= user.id\n" +
+            "inner join room on registration_history.room_id= room.id\n" +
+            "inner join room_type on room.room_type_id= room_type.id\n" +
+            "where is_cancel=0 and room_type.name like %:roomType% and room.name like %:roomName% \n" +
+            "and ((date_start > :timeStart and date_end < :timeEnd )\n" +
+            "or (date_start < :timeStart and date_end between :timeStart and :timeEnd)\n" +
+            "or (date_start between :timeStart and :timeEnd and date_end > :timeEnd)\n" +
+            "or (date_start < :timeStart and date_end > :timeEnd))",nativeQuery = true)
+    List<RegistrationHistory> statisticByRoom(@Param("roomType") String roomType, @Param("roomName") String roomName, @Param("timeStart") LocalDate timeStart, @Param("timeEnd") LocalDate timeEnd);
 }

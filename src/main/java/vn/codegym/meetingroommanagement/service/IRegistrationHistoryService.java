@@ -21,6 +21,4 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
 
     int roomCountStatistic(String roomType, String roomName, String month, String year);
 
-//    List<RegistrationHistory> listSearch(String roomName);
-    // List<RegistrationHistory> listSearch(String roomName, Date dateStart, Date dateEnd, String status);
 }
