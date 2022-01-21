@@ -8,6 +8,10 @@ import org.hibernate.annotations.GenericGenerator;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -26,6 +30,8 @@ public class User {
     )
     private String id;
 
+    @NotEmpty(message = "Họ và tên không được để trống")
+    @Size(min = 1, max = 30, message = "Họ và tên tối đa 30 kí tự")
     private String fullName;
 
     @ManyToOne

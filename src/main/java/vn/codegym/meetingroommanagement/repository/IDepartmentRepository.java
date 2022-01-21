@@ -6,4 +6,5 @@ import vn.codegym.meetingroommanagement.model.user.Department;
 
 @Repository
 public interface IDepartmentRepository extends JpaRepository<Department, Integer> {
+
 }
