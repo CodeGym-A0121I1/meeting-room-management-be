@@ -31,11 +31,6 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
-    public void delete(Department entity) {
-        iDepartmentRepository.delete(entity);
-    }
-
-    @Override
     public void deleteById(Integer key) {
         iDepartmentRepository.deleteById(key);
     }
