@@ -36,15 +36,31 @@ public class UserController {
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
 
-    @PostMapping("/add/user")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User newUser = iUserService.save(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    @GetMapping("/username")
+    public ResponseEntity<List<String>> getAllUsername() {
+        List<String> listUsername = iUserService.getAllUsername();
+        return new ResponseEntity<>(listUsername, HttpStatus.OK);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = iUserService.getAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping("/add/account")
     public ResponseEntity<Account> addAccount(@RequestBody Account account) {
-        Account newAccount = iAccountService.save(account);
-        return new ResponseEntity<>(newAccount, HttpStatus.CREATED);
+        if (iAccountService.checkExistUsername(account.getUsername())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            Account newAccount = iAccountService.save(account);
+            return new ResponseEntity<>(newAccount, HttpStatus.CREATED);
+        }
+    }
+
+    @PostMapping("/add/user")
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        User newUser = iUserService.save(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 }

@@ -17,26 +17,30 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getAll() {
-        return iuserRepository.findAll();
+        return this.iuserRepository.findAll();
     }
 
     @Override
     public Optional<User> getById(String id) {
-        return iuserRepository.findById(id);
+        return this.iuserRepository.findById(id);
     }
 
     @Override
     public User save(User user) {
-        return iuserRepository.save(user);
+        return this.iuserRepository.save(user);
     }
 
     @Override
     public void delete(User user) {
-        iuserRepository.delete(user);
+        this.iuserRepository.delete(user);
     }
 
     @Override
     public void deleteById(String id) {
-        iuserRepository.deleteById(id);
+        this.iuserRepository.deleteById(id);
+    }
+
+    public List<String> getAllUsername() {
+        return this.iuserRepository.getAllUsername();
     }
 }
