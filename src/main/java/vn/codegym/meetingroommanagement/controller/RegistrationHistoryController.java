@@ -1,12 +1,15 @@
 package vn.codegym.meetingroommanagement.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +21,23 @@ public class RegistrationHistoryController {
 
     public RegistrationHistoryController(IRegistrationHistoryService registrationHistoryService) {
         this.registrationHistoryService = registrationHistoryService;
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<RegistrationHistory>> getAll(){
+        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.getAll();
+        if (registrationHistoryList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<RegistrationHistory>>(registrationHistoryList, HttpStatus.OK);
+    }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<RegistrationHistory> getRegistrationHistoryById(@PathVariable("id") String id) {
+        Optional<RegistrationHistory> registrationHistory = registrationHistoryService.getById(id);
+        if (!registrationHistory.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<RegistrationHistory>(registrationHistory.get(),HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/cancel/{id}")
@@ -32,6 +52,15 @@ public class RegistrationHistoryController {
         optionalRegistrationHistory.get().setCancel(true);
         registrationHistoryService.save(optionalRegistrationHistory.get());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get") //đổi tên
+    public ResponseEntity<List<RegistrationHistory>> getListByIsCancel(){
+        List<RegistrationHistory> registrationHistories = registrationHistoryService.registrationHistoryByIsCancel();
+        if (registrationHistories.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<RegistrationHistory>>(registrationHistories, HttpStatus.OK);
     }
 
     @GetMapping("static-by-time")
@@ -62,6 +91,23 @@ public class RegistrationHistoryController {
         registrationHistories = registrationHistoryService.roomCountStatistic(roomName);
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam(value = "roomName",required = false) String name,
+                                                                             @RequestParam(value = "dateStart",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
+                                                                           @RequestParam(value = "dateEnd",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateEnd,
+                                                                             @RequestParam(value = "status",required = false) EStatus status,
+                                                                             @RequestParam(value = "roomType",required = false) Integer roomType
+
+                                                                             ){
+
+        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.REGISTRATION_HISTORY_LIST(name,start,dateEnd,status,roomType);
+
+        if (registrationHistoryList == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(registrationHistoryList, HttpStatus.OK);
+    }
+
 
     @GetMapping("static-room-id")
     public ResponseEntity<Integer> roomStatisticById(@RequestParam("roomId") String roomID) {

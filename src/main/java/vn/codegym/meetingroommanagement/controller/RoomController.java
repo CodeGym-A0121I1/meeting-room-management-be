@@ -20,7 +20,6 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/rooms")
-@CrossOrigin
 public class RoomController {
 
     private final IRoomService roomService;
@@ -38,8 +37,8 @@ public class RoomController {
     public RoomController(IRoomService roomService,
                           IEquipmentService equipmentService,
                           IAreaService areaService,
-                          IFloorService floorService,
                           IRoomTypeService roomTypeService,
+                          IFloorService floorService,
                           ModelMapper modelMapper) {
         this.roomService = roomService;
         this.equipmentService = equipmentService;
@@ -55,15 +54,15 @@ public class RoomController {
 
         return roomList.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(roomList, HttpStatus.OK);
     }
-    
+
     @GetMapping("dto")
-    public ResponseEntity<List<RoomDTO>> getAllRoomDTO(){
+    public ResponseEntity<List<RoomDTO>> getAllRoomDTO() {
         List<Room> roomList = this.roomService.getAll();
         if (roomList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<RoomDTO> roomDTOList = new ArrayList<>();
-        for (Room room: roomList) {
+        for (Room room : roomList) {
             roomDTOList.add(modelMapper.map(room, RoomDTO.class));
         }
         return new ResponseEntity<>(roomDTOList, HttpStatus.OK);
