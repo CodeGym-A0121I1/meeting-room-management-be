@@ -119,13 +119,24 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public int roomCountStatistic(String roomType, String roomName, String month, String year) {
-        int y = Integer.parseInt(year);
-        int m = Integer.parseInt(month);
         LocalDate timeStart;
         LocalDate timeEnd;
-        YearMonth yearMonth = YearMonth.of(y, m);
-        timeStart = yearMonth.atDay(1);
-        timeEnd = yearMonth.atEndOfMonth();
+        if (month == "") {
+            if (year == "") {
+                timeStart = LocalDate.of(2000, 1, 1);
+                timeEnd = LocalDate.of(2100, 1, 1);
+            } else {
+                int y = Integer.parseInt(year);
+                timeStart = LocalDate.of(y, 1, 1);
+                timeEnd = LocalDate.of(y, 12, 31);
+            }
+        } else {
+            int y = Integer.parseInt(year);
+            int m = Integer.parseInt(month);
+            YearMonth yearMonth = YearMonth.of(y, m);
+            timeStart = yearMonth.atDay(1);
+            timeEnd = yearMonth.atEndOfMonth();
+        }
         int totalUse = 0;
         List<RegistrationHistory> registrationHistories = this.statisticByRoom(roomType, roomName, month, year);
         for (RegistrationHistory registrationHistory : registrationHistories) {
