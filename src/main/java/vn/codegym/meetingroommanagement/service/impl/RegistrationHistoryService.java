@@ -28,8 +28,8 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         LocalDate timeEnd;
         if (month == "") {
             if (year == "") {
-                timeStart = LocalDate.of(2000, 1, 1);
-                timeEnd = LocalDate.of(2100, 1, 1);
+                timeStart = LocalDate.of(2015, 1, 1);
+                timeEnd = LocalDate.of(2025, 1, 1);
             } else {
                 int y = Integer.parseInt(year);
                 timeStart = LocalDate.of(y, 1, 1).minusDays(1);
@@ -71,17 +71,12 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         LocalDate timeEnd;
         if (month == "") {
             if (year == "") {
-                timeStart = LocalDate.of(2000, 1, 1);
-                timeEnd = LocalDate.of(2100, 1, 1);
+                timeStart = LocalDate.of(2015, 1, 1);
+                timeEnd = LocalDate.of(2025, 1, 1);
             } else {
                 int y = Integer.parseInt(year);
                 timeStart = LocalDate.of(y, 1, 1);
                 timeEnd = LocalDate.of(y, 12, 31);
-                if (Year.of(y).isLeap()) {
-                    totalTime = 366 * 8 * 60 * 60;
-                } else {
-                    totalTime = 365 * 8 * 60 * 60;
-                }
             }
         } else {
             int y = Integer.parseInt(year);
@@ -89,8 +84,8 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
             YearMonth yearMonth = YearMonth.of(y, m);
             timeStart = yearMonth.atDay(1);
             timeEnd = yearMonth.atEndOfMonth();
-            totalTime = dayConversion(timeStart, timeEnd) * 8 * 60 * 60;
         }
+        totalTime = dayConversion(timeStart, timeEnd) * 8 * 60 * 60;
 
         long totalUseTime = 0;
         List<RegistrationHistory> registrationHistories = this.statisticByRoom(roomType, roomName, month, year);
@@ -123,8 +118,8 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         LocalDate timeEnd;
         if (month == "") {
             if (year == "") {
-                timeStart = LocalDate.of(2000, 1, 1);
-                timeEnd = LocalDate.of(2100, 1, 1);
+                timeStart = LocalDate.of(2015, 1, 1);
+                timeEnd = LocalDate.of(2025, 1, 1);
             } else {
                 int y = Integer.parseInt(year);
                 timeStart = LocalDate.of(y, 1, 1);
