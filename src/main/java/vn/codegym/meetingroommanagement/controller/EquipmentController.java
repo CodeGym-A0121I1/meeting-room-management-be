@@ -38,8 +38,10 @@ public class EquipmentController {
     // return: danh sách Category để dùng khi update hoặc create 1 Equipment
     // test in Postman OK
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCategory() {
+    public ResponseEntity<List<CategoryDTO>> getAllCategory(@RequestParam(value = "room") String roomID) {
+
         List<Category> categoryList = this.categoryService.getAll();
+
         if (categoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -50,12 +52,19 @@ public class EquipmentController {
             categoryDTOList.add(modelMapper.map(category, CategoryDTO.class));
         }
 
-        for (CategoryDTO categoryDTO : categoryDTOList) {
-            categoryDTO.setEquipmentList(categoryDTO.getEquipmentList().stream().filter(equipment ->
-                    equipment.getStatus() == EStatus.AVAILABLE
-            ).collect(Collectors.toList()));
+        if (!roomID.equals("")) {
+            for (CategoryDTO categoryDTO : categoryDTOList) {
+                categoryDTO.setEquipmentList(categoryDTO.getEquipmentList().stream().filter(equipment ->
+                        equipment.getStatus() == EStatus.AVAILABLE || equipment.getRoom().getId().equals(roomID)
+                ).collect(Collectors.toList()));
+            }
+        } else {
+            for (CategoryDTO categoryDTO : categoryDTOList) {
+                categoryDTO.setEquipmentList(categoryDTO.getEquipmentList().stream().filter(equipment ->
+                        equipment.getStatus() == EStatus.AVAILABLE
+                ).collect(Collectors.toList()));
+            }
         }
-
         categoryDTOList = categoryDTOList.stream().filter(categoryDTO -> !categoryDTO.getEquipmentList().isEmpty()).collect(Collectors.toList());
 
         return categoryDTOList.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(categoryDTOList, HttpStatus.OK);
