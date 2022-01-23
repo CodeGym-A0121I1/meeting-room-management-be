@@ -6,12 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.format.annotation.DateTimeFormat;
 import vn.codegym.meetingroommanagement.model.room.Room;
 import vn.codegym.meetingroommanagement.model.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -29,8 +32,10 @@ public class RegistrationHistory {
     )
     private String id;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateStart;
 
+    @DateTimeFormat(pattern="dd-MM-YYYY")
     private LocalDate dateEnd;
 
     private LocalTime timeStart;
