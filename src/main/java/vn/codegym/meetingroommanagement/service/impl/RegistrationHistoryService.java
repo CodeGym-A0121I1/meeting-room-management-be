@@ -1,9 +1,7 @@
 package vn.codegym.meetingroommanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.stereotype.Service;
-import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.repository.IRegistrationHistoryRepository;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
@@ -35,6 +33,12 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     @Override
     public int roomCountStatistic(String roomName) {
         return registrationHistoryRepository.roomCountStatistic(roomName);
+    }
+
+    @Override
+    public List<?> finall() {
+
+        return registrationHistoryRepository.findAll();
     }
 
     @Override

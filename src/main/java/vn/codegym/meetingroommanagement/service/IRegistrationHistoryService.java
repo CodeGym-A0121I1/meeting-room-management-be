@@ -3,6 +3,7 @@ package vn.codegym.meetingroommanagement.service;
 import org.springframework.stereotype.Service;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
+import vn.codegym.meetingroommanagement.model.room.RoomType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,4 +24,6 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
 
 
     List<RegistrationHistory> findAllRegistrationHistoryByRoomId(String id);
+    List<?> finall();
+
 }

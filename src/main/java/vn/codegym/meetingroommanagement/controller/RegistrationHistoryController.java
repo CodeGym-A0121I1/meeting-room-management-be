@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.model.EStatus;
 import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
+import vn.codegym.meetingroommanagement.model.room.Area;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
 import java.time.LocalDate;
@@ -114,5 +115,23 @@ public class RegistrationHistoryController {
         int registrationHistories;
         registrationHistories = registrationHistoryService.roomCountStatisticById(roomID);
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
+    }
+
+    //     Như đăng ký phòng họp
+    @PostMapping("/signupRoom")
+    public ResponseEntity<RegistrationHistory> createArea(@RequestBody RegistrationHistory history) {
+
+        return ResponseEntity.ok(registrationHistoryService.save(history));
+    }
+    // show history
+    @GetMapping(value = "/show")
+    public ResponseEntity<List<?>> listAllCustomers() {
+        System.out.println("đang list ra sao koddc ta");
+        List<?> history = registrationHistoryService.finall();
+//        System.out.println(registrationHistoryService.finall());
+//        if (history.isEmpty()) {
+//            return new ResponseEntity<List<?>>(HttpStatus.NO_CONTENT);
+//        }
+        return new ResponseEntity<List<?>>(history, HttpStatus.OK);
     }
 }

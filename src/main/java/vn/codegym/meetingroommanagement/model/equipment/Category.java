@@ -25,6 +25,4 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private List<Equipment> equipmentList;
-
-
 }
