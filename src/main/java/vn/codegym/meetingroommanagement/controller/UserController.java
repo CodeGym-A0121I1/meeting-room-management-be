@@ -42,19 +42,30 @@ public class UserController {
         return new ResponseEntity<>(listUsername, HttpStatus.OK);
     }
 
-    @PostMapping("/add/account")
-    public ResponseEntity<Account> addAccount(@RequestBody Account account) {
+//    @PostMapping("/add/account")
+//    public ResponseEntity<Account> addAccount(@RequestBody Account account) {
+//        if (iAccountService.checkExistUsername(account.getUsername())) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        } else {
+//            Account newAccount = iAccountService.save(account);
+//            return new ResponseEntity<>(newAccount, HttpStatus.CREATED);
+//        }
+//    }
+//
+//    @PostMapping("/add/user")
+//    public ResponseEntity<User> addUser(@RequestBody User user) {
+//        User newUser = iUserService.save(user);
+//        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+//    }
+
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user, @RequestBody Account account) {
         if (iAccountService.checkExistUsername(account.getUsername())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            Account newAccount = iAccountService.save(account);
-            return new ResponseEntity<>(newAccount, HttpStatus.CREATED);
+            iAccountService.save(account);
+            User newUser = iUserService.save(user);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         }
-    }
-
-    @PostMapping("/add/user")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User newUser = iUserService.save(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 }
