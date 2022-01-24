@@ -10,11 +10,11 @@ import java.util.List;
 
 @Service
 public interface IRegistrationHistoryService extends IService<RegistrationHistory, String> {
-    List<?> roomStatisticByTime(LocalDate startDate, LocalDate endDate);
-  
-    List<?> roomStatistic(String roomType, String roomName, String month, String year);
+    List<RegistrationHistory> statisticByTime(LocalDate startDate, LocalDate endDate);
 
-    int roomCountStatistic(String roomName);
+    List<RegistrationHistory> statisticByRoom(String roomType, String roomName, String month, String year);
+
+    float registrationPerformance(String roomType, String roomName, String month, String year);
 
     Integer roomCountStatisticById(String roomName);
 
@@ -25,5 +25,7 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
 
     List<RegistrationHistory> findAllRegistrationHistoryByRoomId(String id);
     List<?> finall();
+
+    int roomCountStatistic(String roomType, String roomName, String month, String year);
 
 }
