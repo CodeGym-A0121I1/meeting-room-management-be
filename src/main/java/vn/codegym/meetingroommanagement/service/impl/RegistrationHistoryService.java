@@ -39,6 +39,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
     @Override
     public List<RegistrationHistory> registrationHistoryByIsCancel() {
+        //chưa check id user
         return registrationHistoryRepository.countRegistrationHistoryByIsCancel();
     }
 
@@ -58,10 +59,6 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
         if (roomName == null) {
             roomName = "";
         }
-
-//        if (status == null){
-//            status = ;
-//        }
 
         if(dateEnd!=null&&dateStart!=null && status!=null&& roomName!=null){
             registrationHistories = registrationHistoryRepository.searchRegistrationHistoryByNotRoomType(roomName,dateStart,dateEnd,status);

@@ -94,7 +94,7 @@ public class RoomController {
     }
     @GetMapping("/roomTypes")
     public ResponseEntity<List<RoomType>> getAllRoomType() {
-        List<RoomType> roomTypes = (List<RoomType>) roomTypeService.findAll();
+        List<RoomType> roomTypes = roomTypeService.getAll();
 
         return roomTypes.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(roomTypes
                 , HttpStatus.OK);

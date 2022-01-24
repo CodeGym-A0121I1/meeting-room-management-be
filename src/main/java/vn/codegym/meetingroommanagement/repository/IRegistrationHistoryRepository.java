@@ -38,9 +38,10 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
             " inner join " +
             "Room as o on r.room.id=o.id " +
             " where" +
+            " r.isCancel = true and" +
             " o.name like %:roomName% and" +
             " o.status = :status" +
-            " and o.roomType.id = :roomType and o.name like %:roomName% and r.dateStart between :start and :end and r.dateEnd between :start and :end")
+            " and o.roomType.id = :roomType and r.dateStart between :start and :end and r.dateEnd between :start and :end")
     List<RegistrationHistory> REGISTRATION_HISTORY_LIST(@Param("roomName") String roomName,
                                                         @Param("start") LocalDate dateStart,
                                                         @Param("end") LocalDate dateEnd,
@@ -52,9 +53,10 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
             " inner join " +
             "Room as o on r.room.id=o.id " +
             " where" +
+            " r.isCancel = true and" +
             " o.name like %:roomName% and" +
             " o.status = :status" +
-            " and o.name like %:roomName% and r.dateStart between :start and :end and r.dateEnd between :start and :end")
+            " and r.dateStart between :start and :end and r.dateEnd between :start and :end")
     List<RegistrationHistory> searchRegistrationHistoryByNotRoomType(@Param("roomName") String roomName,
                                                         @Param("start") LocalDate dateStart,
                                                         @Param("end") LocalDate dateEnd,

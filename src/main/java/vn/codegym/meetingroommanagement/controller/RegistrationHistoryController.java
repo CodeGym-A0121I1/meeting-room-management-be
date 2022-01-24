@@ -55,7 +55,7 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/get") //đổi tên
+        @GetMapping(value = "/getListRegistrationHistoryNotCancel") //đổi tên
     public ResponseEntity<List<RegistrationHistory>> getListByIsCancel(){
         List<RegistrationHistory> registrationHistories = registrationHistoryService.registrationHistoryByIsCancel();
         if (registrationHistories.isEmpty()){
@@ -103,7 +103,7 @@ public class RegistrationHistoryController {
 
         List<RegistrationHistory> registrationHistoryList = registrationHistoryService.REGISTRATION_HISTORY_LIST(name,start,dateEnd,status,roomType);
 
-        if (registrationHistoryList == null) {
+        if (registrationHistoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(registrationHistoryList, HttpStatus.OK);
