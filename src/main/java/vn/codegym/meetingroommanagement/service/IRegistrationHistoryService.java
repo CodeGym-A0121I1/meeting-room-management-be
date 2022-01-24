@@ -22,4 +22,5 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
     List<RegistrationHistory> REGISTRATION_HISTORY_LIST(String roomName,LocalDate dateStart,LocalDate dateEnd, EStatus status, Integer roomType);
 
 
+    List<RegistrationHistory> findAllRegistrationHistoryByRoomId(String id);
 }

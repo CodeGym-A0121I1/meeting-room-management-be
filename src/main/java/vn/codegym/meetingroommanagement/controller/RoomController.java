@@ -34,18 +34,22 @@ public class RoomController {
 
     private final ModelMapper modelMapper;
 
+    private final IRegistrationHistoryService registrationHistoryService;
+
     public RoomController(IRoomService roomService,
                           IEquipmentService equipmentService,
                           IAreaService areaService,
                           IRoomTypeService roomTypeService,
                           IFloorService floorService,
-                          ModelMapper modelMapper) {
+                          ModelMapper modelMapper,
+                          IRegistrationHistoryService registrationHistoryService) {
         this.roomService = roomService;
         this.equipmentService = equipmentService;
         this.areaService = areaService;
         this.floorService = floorService;
         this.roomTypeService = roomTypeService;
         this.modelMapper = modelMapper;
+        this.registrationHistoryService = registrationHistoryService;
     }
 
     @GetMapping
@@ -104,13 +108,14 @@ public class RoomController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteRoom(@PathVariable("id") String id) {
+    public ResponseEntity<Room> deleteRoom(@PathVariable("id") String id) {
         Optional<Room> room = roomService.getById(id);
-
         return room.map(r -> {
-            roomService.deleteById(id);
-
-            return ResponseEntity.ok("Delete Successful");
+            if (roomService.deleteRoomById(id)) {
+                return new ResponseEntity<>(room.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(room.get(), HttpStatus.METHOD_NOT_ALLOWED);
+            }
         }).orElseGet(ResponseEntity.notFound()::build);
     }
 

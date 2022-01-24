@@ -9,7 +9,6 @@ import vn.codegym.meetingroommanagement.model.history.RegistrationHistory;
 import vn.codegym.meetingroommanagement.service.IRegistrationHistoryService;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,20 +23,21 @@ public class RegistrationHistoryController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<RegistrationHistory>> getAll(){
+    public ResponseEntity<List<RegistrationHistory>> getAll() {
         List<RegistrationHistory> registrationHistoryList = registrationHistoryService.getAll();
-        if (registrationHistoryList.isEmpty()){
+        if (registrationHistoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<RegistrationHistory>>(registrationHistoryList, HttpStatus.OK);
     }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<RegistrationHistory> getRegistrationHistoryById(@PathVariable("id") String id) {
         Optional<RegistrationHistory> registrationHistory = registrationHistoryService.getById(id);
-        if (!registrationHistory.isPresent()){
+        if (!registrationHistory.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<RegistrationHistory>(registrationHistory.get(),HttpStatus.OK);
+        return new ResponseEntity<RegistrationHistory>(registrationHistory.get(), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/cancel/{id}")
@@ -55,9 +55,9 @@ public class RegistrationHistoryController {
     }
 
     @GetMapping(value = "/get") //đổi tên
-    public ResponseEntity<List<RegistrationHistory>> getListByIsCancel(){
+    public ResponseEntity<List<RegistrationHistory>> getListByIsCancel() {
         List<RegistrationHistory> registrationHistories = registrationHistoryService.registrationHistoryByIsCancel();
-        if (registrationHistories.isEmpty()){
+        if (registrationHistories.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<RegistrationHistory>>(registrationHistories, HttpStatus.OK);
@@ -91,23 +91,23 @@ public class RegistrationHistoryController {
         registrationHistories = registrationHistoryService.roomCountStatistic(roomName);
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam(value = "roomName",required = false) String name,
-                                                                             @RequestParam(value = "dateStart",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
-                                                                           @RequestParam(value = "dateEnd",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateEnd,
-                                                                             @RequestParam(value = "status",required = false) EStatus status,
-                                                                             @RequestParam(value = "roomType",required = false) Integer roomType
+    public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam(value = "roomName", required = false) String name,
+                                                                             @RequestParam(value = "dateStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
+                                                                             @RequestParam(value = "dateEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateEnd,
+                                                                             @RequestParam(value = "status", required = false) EStatus status,
+                                                                             @RequestParam(value = "roomType", required = false) Integer roomType
 
-                                                                             ){
+    ) {
 
-        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.REGISTRATION_HISTORY_LIST(name,start,dateEnd,status,roomType);
+        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.REGISTRATION_HISTORY_LIST(name, start, dateEnd, status, roomType);
 
         if (registrationHistoryList == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(registrationHistoryList, HttpStatus.OK);
     }
-
 
     @GetMapping("static-room-id")
     public ResponseEntity<Integer> roomStatisticById(@RequestParam("roomId") String roomID) {

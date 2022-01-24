@@ -81,6 +81,11 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     @Override
+    public List<RegistrationHistory> findAllRegistrationHistoryByRoomId(String id) {
+        return registrationHistoryRepository.findAllRegistrationHistoryByRoomId(id);
+    }
+
+    @Override
     public List<RegistrationHistory> getAll() {
         return registrationHistoryRepository.findAll();
     }

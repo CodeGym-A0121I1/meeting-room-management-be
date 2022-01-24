@@ -67,4 +67,8 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
 
     @Query(value = "select r from RegistrationHistory as r where r.isCancel = false ")
     List<RegistrationHistory> countRegistrationHistoryByIsCancel ();
+
+    @Query("select  s from RegistrationHistory s " +
+            "where s.room.id=?1")
+    List<RegistrationHistory> findAllRegistrationHistoryByRoomId(String id);
 }
