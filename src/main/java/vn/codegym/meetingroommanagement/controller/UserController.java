@@ -1,11 +1,16 @@
 package vn.codegym.meetingroommanagement.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.meetingroommanagement.dto.ChangePasswordRequest;
 import vn.codegym.meetingroommanagement.model.user.Department;
+import vn.codegym.meetingroommanagement.model.user.Department;
+import vn.codegym.meetingroommanagement.model.user.ERole;
 import vn.codegym.meetingroommanagement.model.user.User;
+import vn.codegym.meetingroommanagement.repository.IUserRepository;
 import vn.codegym.meetingroommanagement.service.IAccountService;
 import vn.codegym.meetingroommanagement.service.IDepartmentService;
 import vn.codegym.meetingroommanagement.service.IUserService;
@@ -16,6 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin
 public class UserController {
 
     private final IUserService userService;
@@ -75,5 +81,11 @@ public class UserController {
     public ResponseEntity<List<String>> getAllUsername() {
         List<String> listUsername = userService.getAllUsername();
         return new ResponseEntity<>(listUsername, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> search( @Param("username") String username ,@Param("role") ERole role ,@Param("fullName") String fullName ,@Param("departmentName") Integer departmentName ){
+        List<User> userList = userService.search(username,role ,fullName ,departmentName);
+        return new ResponseEntity<>(userList,HttpStatus.OK);
     }
 }
