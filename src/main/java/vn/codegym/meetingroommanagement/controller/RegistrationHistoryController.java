@@ -121,6 +121,12 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
     }
 
+    @GetMapping("history-room-id")
+    public ResponseEntity<List<RegistrationHistory>> roomHistoryById(@RequestParam("roomId") String roomID) {
+        List<RegistrationHistory> registrationHistories = registrationHistoryService.findAllRegistrationHistoryByRoomId(roomID);
+        return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
+    }
+
     //     Như đăng ký phòng họp
     @PostMapping("/signupRoom")
     public ResponseEntity<RegistrationHistory> createArea(@RequestBody RegistrationHistory history) {
