@@ -116,9 +116,14 @@ public class RegistrationHistoryController {
 
     @GetMapping("static-room-id")
     public ResponseEntity<Integer> roomStatisticById(@RequestParam("roomId") String roomID) {
-        int registrationHistories;
-        registrationHistories = registrationHistoryService.roomCountStatisticById(roomID);
+        int registrationHistories = 0;
+        try {
+            registrationHistories = registrationHistoryService.roomCountStatisticById(roomID);
+        } catch (Exception e) {
+            registrationHistories = 0;
+        }
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
+
     }
 
     //     Như đăng ký phòng họp
