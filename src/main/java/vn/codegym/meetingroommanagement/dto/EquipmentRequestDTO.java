@@ -20,5 +20,5 @@ public class EquipmentRequestDTO {
 
     private Category category;
 
-    private RoomDTO roomDTO;
+    private RoomDTO room;
 }
