@@ -12,6 +12,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class JwtResponse {
     private String jwtToken;
+    private String userId;
     private Optional<Account> account;
     private String status;
 }

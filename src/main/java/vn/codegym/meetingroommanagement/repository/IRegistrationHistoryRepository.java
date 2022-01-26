@@ -31,7 +31,7 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
     int roomCountStatistic(String roomName);
 
     @Query("select count(s.room.id) " +
-            "from RegistrationHistory s inner join s.room " +
+            "from RegistrationHistory s " +
             "where s.isCancel=false " +
             "group by s.room.id having s.room.id=?1")
     Integer roomCountStatisticById(String roomid);

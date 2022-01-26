@@ -10,5 +10,7 @@ import java.util.List;
 public interface IUserService extends IService<User, String> {
     List<String> getAllUsername();
 
-    List<User> search(String username, ERole role, String fullName,Integer departmentName);
+    List<User> search(String username, ERole role, String fullName, Integer departmentName);
+
+    String getUserIdByAccount(String account);
 }

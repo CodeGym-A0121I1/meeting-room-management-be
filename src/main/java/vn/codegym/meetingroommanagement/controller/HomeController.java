@@ -11,6 +11,7 @@ import vn.codegym.meetingroommanagement.model.jwt.JwtRequest;
 import vn.codegym.meetingroommanagement.model.jwt.JwtResponse;
 import vn.codegym.meetingroommanagement.model.user.Account;
 import vn.codegym.meetingroommanagement.service.IAccountService;
+import vn.codegym.meetingroommanagement.service.IUserService;
 import vn.codegym.meetingroommanagement.utils.JwtUtil;
 
 import java.util.Optional;
@@ -25,10 +26,13 @@ public class HomeController {
 
     private final IAccountService accountService;
 
-    public HomeController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, IAccountService accountService) {
+    private final IUserService userService;
+
+    public HomeController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, IAccountService accountService, IUserService userService) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
         this.accountService = accountService;
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -39,6 +43,7 @@ public class HomeController {
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> authenticate(@RequestBody JwtRequest jwtRequest) {
         String token = null;
+        String userId = "";
         Optional<Account> account = Optional.empty();
         String status = "Login successful";
         UserDetails userDetails;
@@ -52,6 +57,7 @@ public class HomeController {
             );
             userDetails = accountService.loadUserByUsername(jwtRequest.getUsername());
             account = accountService.getById(jwtRequest.getUsername());
+            userId = userService.getUserIdByAccount(jwtRequest.getUsername());
             token = jwtUtil.generateToken(userDetails);
             httpStatus = HttpStatus.OK;
 
@@ -62,6 +68,6 @@ public class HomeController {
             status = "Not found user : " + jwtRequest.getUsername();
             httpStatus = HttpStatus.BAD_REQUEST;
         }
-        return new ResponseEntity<>(new JwtResponse(token, account, status), httpStatus);
+        return new ResponseEntity<>(new JwtResponse(token, userId, account, status), httpStatus);
     }
 }
