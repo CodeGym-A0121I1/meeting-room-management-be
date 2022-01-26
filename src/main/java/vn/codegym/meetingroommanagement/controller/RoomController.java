@@ -137,6 +137,20 @@ public class RoomController {
         return ResponseEntity.ok(areaService.getAll());
     }
 
+    @GetMapping("/searchRoom")
+    public ResponseEntity<List<Room>> getRoomSearch(@RequestParam(value = "name",required = false) String name,
+                                                    @RequestParam(value = "floor",required = false) Integer floor,
+                                                    @RequestParam(value = "area",required = false) Integer area,
+                                                    @RequestParam(value = "roomType",required = false) Integer roomType,
+                                                    @RequestParam(value = "capacity",required = false) Integer capacity,
+                                                    @RequestParam(value = "status",required = false) EStatus status) {
+        List<Room> rooms = roomService.findRoomFilter(name,floor,area,roomType,capacity,status);
+        if(rooms.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(rooms,HttpStatus.OK);
+    }
+
     @GetMapping("/roomTypes")
     public ResponseEntity<List<RoomType>> getAllRoomTypes() {
 

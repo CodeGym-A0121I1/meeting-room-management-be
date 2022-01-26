@@ -108,4 +108,8 @@ public class RoomService implements IRoomService {
         });
         return checkStatus.get();
     }
+    @Override
+    public List<Room> findRoomFilter(String name, Integer floor, Integer area, Integer roomType, Integer capacity, EStatus status) {
+        return roomRepository.findRoomFilter(name,floor,area,roomType,capacity,status);
+    }
 }
