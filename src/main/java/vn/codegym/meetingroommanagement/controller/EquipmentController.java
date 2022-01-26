@@ -124,7 +124,9 @@ public class EquipmentController {
         Optional<Equipment> equipmentOptional = equipmentService.getById(id);
         if (equipmentOptional.isPresent()) {
             EquipmentRequestDTO equipmentRequestDTO = modelMapper.map(equipmentOptional.get(), EquipmentRequestDTO.class);
-            equipmentRequestDTO.setRoom(modelMapper.map(equipmentOptional.get(), RoomDTO.class));
+            if (equipmentOptional.get().getRoom() != null) {
+                equipmentRequestDTO.setRoom(modelMapper.map(equipmentOptional.get().getRoom(), RoomDTO.class));
+            }
             return new ResponseEntity<>(equipmentRequestDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
