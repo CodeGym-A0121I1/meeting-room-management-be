@@ -119,6 +119,7 @@ public class EquipmentController {
         return ResponseEntity.ok().body(equipment);
     }
 
+    //DatNT
     @GetMapping("/{id}")
     public ResponseEntity<EquipmentRequestDTO> getById(@PathVariable("id") String id) {
         Optional<Equipment> equipmentOptional = equipmentService.getById(id);
