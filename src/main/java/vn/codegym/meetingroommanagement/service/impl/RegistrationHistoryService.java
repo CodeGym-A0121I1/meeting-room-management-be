@@ -39,9 +39,9 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
     }
 
     @Override
-    public Integer roomCountStatisticById(String roomId) {
-        return registrationHistoryRepository.roomCountStatisticById(roomId);
-
+    public int roomCountStatisticById(String roomId) {
+        Integer result = registrationHistoryRepository.roomCountStatisticById(roomId);
+        return result == null ? 0 : result;
     }
 
     @Override

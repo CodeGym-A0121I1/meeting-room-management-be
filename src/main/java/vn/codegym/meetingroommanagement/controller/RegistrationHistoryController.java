@@ -116,12 +116,7 @@ public class RegistrationHistoryController {
 
     @GetMapping("static-room-id")
     public ResponseEntity<Integer> roomStatisticById(@RequestParam("roomId") String roomID) {
-        int registrationHistories = 0;
-        try {
-            registrationHistories = registrationHistoryService.roomCountStatisticById(roomID);
-        } catch (Exception e) {
-            registrationHistories = 0;
-        }
+        int registrationHistories = registrationHistoryService.roomCountStatisticById(roomID);
         return new ResponseEntity<>(registrationHistories, HttpStatus.OK);
 
     }
