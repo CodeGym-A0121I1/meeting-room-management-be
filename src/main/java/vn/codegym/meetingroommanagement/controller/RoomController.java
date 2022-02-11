@@ -33,8 +33,7 @@ public class RoomController {
     private final IRoomTypeService roomTypeService;
 
     private final ModelMapper modelMapper;
-
-    private final IRegistrationHistoryService registrationHistoryService;
+    
 
     public RoomController(IRoomService roomService,
                           IEquipmentService equipmentService,
@@ -49,7 +48,6 @@ public class RoomController {
         this.floorService = floorService;
         this.roomTypeService = roomTypeService;
         this.modelMapper = modelMapper;
-        this.registrationHistoryService = registrationHistoryService;
     }
 
     @GetMapping
