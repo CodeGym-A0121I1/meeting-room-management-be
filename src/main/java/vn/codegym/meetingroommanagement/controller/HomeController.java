@@ -15,7 +15,7 @@ import vn.codegym.meetingroommanagement.service.IUserService;
 import vn.codegym.meetingroommanagement.utils.JwtUtil;
 
 import java.util.Optional;
-
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class HomeController {

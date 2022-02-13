@@ -29,6 +29,16 @@ public class RegistrationHistoryController {
         return new ResponseEntity<List<RegistrationHistory>>(registrationHistoryList, HttpStatus.OK);
     }
 
+//    @GetMapping(value = "/list/{idUser}")
+//    public ResponseEntity<List<RegistrationHistory>> getListById(@PathVariable("idUser") String idUser) {
+//        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.getListById(idUser);
+//        if (registrationHistoryList.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<List<RegistrationHistory>>(registrationHistoryList, HttpStatus.OK);
+//    }
+
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<RegistrationHistory> getRegistrationHistoryById(@PathVariable("id") String id) {
         Optional<RegistrationHistory> registrationHistory = registrationHistoryService.getById(id);
@@ -52,7 +62,7 @@ public class RegistrationHistoryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getListRegistrationHistoryNotCancel") //đổi tên
+    @GetMapping(value = "/getListRegistrationHistoryNotCancel")
     public ResponseEntity<List<RegistrationHistory>> getListByIsCancel() {
         List<RegistrationHistory> registrationHistories = registrationHistoryService.registrationHistoryByIsCancel();
         if (registrationHistories.isEmpty()) {
@@ -60,6 +70,8 @@ public class RegistrationHistoryController {
         }
         return new ResponseEntity<List<RegistrationHistory>>(registrationHistories, HttpStatus.OK);
     }
+
+
 
     @PutMapping("static-by-time")
     public ResponseEntity<List<RegistrationHistory>> staticByTime(@RequestParam("startDate") LocalDate startDate,
@@ -92,18 +104,6 @@ public class RegistrationHistoryController {
         float registrationPerformance = registrationHistoryService.registrationPerformance(roomType, roomName, month, year);
         return new ResponseEntity<>(registrationPerformance, HttpStatus.OK);
     }
-
-//    @GetMapping("/search")
-//    public ResponseEntity<List<RegistrationHistory>> registrationHistoryList(@RequestParam(value = "roomName", required = false) String name,
-//                                                                             @RequestParam(value = "dateStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
-//                                                                             @RequestParam(value = "dateEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateEnd,
-//                                                                             @RequestParam(value = "status", required = false) EStatus status,
-//                                                                             @RequestParam(value = "roomType", required = false) Integer roomType
-//
-//    ) {
-//
-//        List<RegistrationHistory> registrationHistoryList = registrationHistoryService.REGISTRATION_HISTORY_LIST(name, start, dateEnd, status, roomType);
-//    }
 
     @GetMapping("static-room-total")
     public ResponseEntity<Integer> totalUseMeetingRoom(@RequestParam("roomType") String roomType,
@@ -144,5 +144,14 @@ public class RegistrationHistoryController {
 //            return new ResponseEntity<List<?>>(HttpStatus.NO_CONTENT);
 //        }
         return new ResponseEntity<List<?>>(history, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/list/{idUser}")
+    public ResponseEntity<List<RegistrationHistory>> getListByIdAndNotCancel(@PathVariable("idUser") String idUser) {
+        List<RegistrationHistory> registrationHistories = registrationHistoryService.getListByIdAndNotCancel(idUser);
+        if (registrationHistories.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<RegistrationHistory>>(registrationHistories, HttpStatus.OK);
     }
 }

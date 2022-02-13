@@ -24,6 +24,14 @@ public interface IRegistrationHistoryRepository extends JpaRepository<Registrati
             "group by s.room.id having s.room.id=?1")
     Integer roomCountStatisticById(String roomid);
 
+    // lấy list theo id
+    //@Query(value = "select * from `meeting-room-management`.registration_history as r inner join `meeting-room-management`.user as u on u.id = r.user_id where user_id= :id", nativeQuery = true)
+    @Query(value = "select r from RegistrationHistory as r where r.isCancel = false and r.user.id = :id")
+    List<RegistrationHistory> getListById(String id);
+
+
+
+
     //query search list
 
     @Query(value = "select r from RegistrationHistory as r" +

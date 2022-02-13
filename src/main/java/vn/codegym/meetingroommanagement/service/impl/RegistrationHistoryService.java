@@ -32,6 +32,7 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 //        return registrationHistoryRepository.roomCountStatistic(roomName);
 //    }
 
+
     @Override
     public List<?> finall() {
 
@@ -214,6 +215,17 @@ public class RegistrationHistoryService implements IRegistrationHistoryService {
 
         return totalUse;
     }
+
+    @Override
+    public List<RegistrationHistory> getListById(String id) {
+        return registrationHistoryRepository.getListById(id);
+    }
+
+    @Override
+    public List<RegistrationHistory> getListByIdAndNotCancel(String id) {
+        return registrationHistoryRepository.getListById(id);
+    }
+
 
     private long dayConversion(LocalDate dateStart, LocalDate dateEnd) {
         return ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;

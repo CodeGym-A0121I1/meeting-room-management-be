@@ -28,4 +28,9 @@ public interface IRegistrationHistoryService extends IService<RegistrationHistor
 
     int roomCountStatistic(String roomType, String roomName, String month, String year);
 
+    List<RegistrationHistory> getListById(String id);
+
+    List<RegistrationHistory> getListByIdAndNotCancel(String id);
+
+
 }
