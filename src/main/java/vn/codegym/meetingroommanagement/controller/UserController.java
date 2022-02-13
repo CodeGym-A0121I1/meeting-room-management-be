@@ -45,6 +45,15 @@ public class UserController {
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
+        Optional<User> currentUser = userService.getById(id);
+        if (!currentUser.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(currentUser.get(), HttpStatus.OK);
+    }
+
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUser() {
         List<User> userList = userService.getAll();
